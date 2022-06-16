@@ -1,0 +1,10 @@
+# main links
+main:
+  - title: "Logbook"
+    url: /year-archive/
+  - title: "About"
+    url: /about/
+  # - title: "Sample Collections"
+  #   url: /collection-archive/
+  # - title: "Sitemap"
+  #   url: /sitemap/
