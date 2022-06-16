@@ -18,6 +18,6 @@ As tutors and advisors of my master thesis, I have the pleasure to count with:
 
 <br>
 <p align="center">
-<img src="/assets/images/nissingeppou.jpeg" width="400">
+<img src="/assets/images/nissingeppou.png" width="400">
 <figcaption style="text-align: center">NISSHINNGEPPO: to progress everyday without failing</figcaption>
 </p>
