@@ -16,10 +16,7 @@ As tutors and advisors of my master thesis, I have the pleasure to count with:
 - [José María Cañas Plaza](https://gsyc.urjc.es/jmplaza/)
 - [Sergio Paniego](https://roboticslaburjc.github.io/2019-phd-sergio-paniego/)
 
-<!-- <br>
-<p align="center">
-<img src="/assets/images/nissingeppou.png" width="400">
-<figcaption style="text-align: center">NISSHINNGEPPO: to progress everyday without failing</figcaption>
-</p> -->
-
-{% include image.html url="/assets/images/nissingeppou.png" description="NISSHINNGEPPO: to progress everyday without failing" width="1" %}
+<figure style="width:60%" class="align-center">
+  <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nissingeppou.png" alt="">
+  <figcaption>NISSHINNGEPPO: to progress everyday without failing</figcaption>
+</figure> 

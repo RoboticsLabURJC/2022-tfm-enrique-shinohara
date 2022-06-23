@@ -1,0 +1,14 @@
+I"	<p>Starting to warming up, as I am currently in the first training period of my thesis, I must read a lot of papers related to the task at hand, understand them and if possible, starting to plan the environment where I can begin to work. Given that the thesis revolves around reinforcement learning, my tutor and advisors kindly pointed me towards DeepMind famous projects, such as <a href="https://www.deepmind.com/research/highlighted-research/alphago">AlphaGo</a> or <a href="https://www.deepmind.com/blog/agent57-outperforming-the-human-atari-benchmark">Agent57</a>.</p>
+
+<p>The thesis, as it is going to involve the control of an autonomous vehicle with the use of reinforcement learning, it would be more advisable to read about Agent57. To vaguely resume it, Agent57 is the latest Deep Reinforcement Learning Agent capable of outperforming the human level on the 57 games that where included in the Atari 2600. A read of the progress made first in 2013 until Agent57 in 2020 gives us a first look at the general picture of how to tackle reinforcement learning problems with state of the art models. I leave the papers below:</p>
+
+<ul>
+  <li>2013: <a href="https://arxiv.org/pdf/1312.5602v1.pdf">https://arxiv.org/pdf/1312.5602v1.pdf</a></li>
+  <li>2020: <a href="https://arxiv.org/pdf/2003.13350.pdf">https://arxiv.org/pdf/2003.13350.pdf</a></li>
+</ul>
+
+<p>As a starting point to learn more deeply about reinforcement learning, an online course is available for free on <a href="https://www.youtube.com/watch?v=FgzM3zpZ55o&amp;list=PLoROMvodv4rOSOPzutgyCTapiGlY2Nd8u">Youtube</a> shared by the Standford University which I find remarkable.</p>
+
+<p>Finally, to start thinking towards the environment, the first thing to have in mind is the world where the agents will move and learn, in other words, the simulation. In this area, there are multiple good options to choose from and which are available for free, but a good first analysis must be made in order to have a good framework that doesn’t fails us further ahead in our project.
+The first simulation that came to mind was Carla. This is because I had experienced beforehand (for my bachelor degree final project) with this simulation, but because it is so computationally intensive, a first installation and check in my local machine was necessary.</p>
+:ET
