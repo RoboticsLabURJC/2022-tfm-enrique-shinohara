@@ -22,8 +22,8 @@ subtitle                 : Programming Robot Intelligence
 name                     : "JdeRobot"
 description              : "Programming Robot Intelligence"
 url                      : https://roboticslaburjc.github.io/2022-tfm-enrique-shinohara/
-baseurl                  : 
-repository               : JdeRobot
+baseurl                  : "/2022-tfm-enrique-shinohara"
+repository               : "RoboticsLabURJC/2022-tfm-enrique-shinohara"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : /assets/images/logo.png
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title

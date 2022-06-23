@@ -1,4 +1,4 @@
-I"ê<p>Ready, set, go!</p>
+I")<p>Ready, set, go!</p>
 
 <p>With this first entry on my weekly blog, I start my master‚Äôs thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as <a href="https://classic.gazebosim.org/download">Gazebo</a> (a simulator where we can test our robots virtually) and <a href="http://wiki.ros.org/noetic/Installation/Ubuntu">ROS</a> (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.</p>
 
@@ -11,7 +11,9 @@
 
 <p>Both of them having multiple examples in order to know and test functionalities, on my own, of Github Pages and Jekyll Templates for an aesthetically pleasing blog website.</p>
 
-<p align="center">
-<img src="/assets/images/minimal_mistakes.png" width="300" />
-</p>
+<!-- <p align="center">
+<img src="/assets/images/minimal_mistakes.png" width="300">
+</p> -->
+
+<p><img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/minimal_mistakes.png" alt="image-center" class="align-center" /></p>
 :ET
