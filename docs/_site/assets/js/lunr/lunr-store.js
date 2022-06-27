@@ -10,4 +10,10 @@ var store = [{
         "tags": ["deep mind","reinforcement learning","standford"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-1/",
         "teaser": null
+      },{
+        "title": "Week 2",
+        "excerpt":"     ","categories": ["Weekly Log"],
+        "tags": ["deep mind","reinforcement learning","standford"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-2/",
+        "teaser": null
       }]
