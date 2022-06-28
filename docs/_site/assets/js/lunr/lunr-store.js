@@ -12,8 +12,8 @@ var store = [{
         "teaser": null
       },{
         "title": "Week 2",
-        "excerpt":"     ","categories": ["Weekly Log"],
-        "tags": ["deep mind","reinforcement learning","standford"],
+        "excerpt":"Testing Carla Simulation. Carla, is an open-source simulator builded for autonomous driving research. The software behind Carla is constantly being mainteined and developed, having every year a few mayor launches, and forums where they are pretty active with the community. It was clearly a good starting point for the project...","categories": ["Weekly Log"],
+        "tags": ["carla"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-2/",
         "teaser": null
       }]
