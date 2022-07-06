@@ -1,0 +1,22 @@
+I"�<p>Hello World.</p>
+
+<p>As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. In order to do this, we need to start coding a “brain” for our car in the simulation, we need to be able to order commands and execute them on to the car, and as of now, our car have two types of velocity: angular (steering angle) and linear (throttle or brake). For the sake of simplicity, at the moment the linear velocity will be constant, changing only the steering input.</p>
+
+<p>Before we start with the coding section, it should be a good idea to play with the available towns/maps for the server. Doing a simple check on the maps, we can come up with the conclusion to select Town02. This town is the easiest one roadwise, giving us also better performance on low graphics when compared to other towns. Below, we can have a better visual of the complexity of the roads on Town01, compared to Town02.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town01_carla.png" alt="" style="width:51%" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town02_carla.png" alt="" />
+  <figcaption>Bird's-eye view of Town01 (left) and Town02 (right).</figcaption>
+</figure>
+
+<p>The objective right now is to implement a car to follow the road, keeping itself inside the lanes. In the case of intersections, the car will simply turn to the right, always. To do this, we want to hard code a simple program that with computer vision (using a single RGB camera) it would be able to extract the necessary information to follow the lane without getting out of it. The first step would be to preprocess the image</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/original.png" alt="" style="width:40%;height:5%" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/canny.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/morph.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/final.png" alt="" />
+  <figcaption>Bird's-eye view of Town01 (left) and Town02 (right).</figcaption>
+</figure>
+:ET

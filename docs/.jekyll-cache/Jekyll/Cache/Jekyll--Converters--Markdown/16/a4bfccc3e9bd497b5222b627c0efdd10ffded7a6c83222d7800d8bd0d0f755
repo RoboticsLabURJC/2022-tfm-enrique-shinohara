@@ -1,0 +1,29 @@
+I"|<p>Hello World.</p>
+
+<p>As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. In order to do this, we need to start coding a “brain” for our car in the simulation, we need to be able to order commands and execute them on to the car, and as of now, our car have two types of velocity: angular (steering angle) and linear (throttle or brake). For the sake of simplicity, at the moment the linear velocity will be constant, changing only the steering input.</p>
+
+<p>Before we start with the coding section, it should be a good idea to play with the available towns/maps for the server. Doing a simple check on the maps, we can come up with the conclusion to select Town02. This town is the easiest one roadwise, giving us also better performance on low graphics when compared to other towns. Below, we can have a better visual of the complexity of the roads on Town01, compared to Town02.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town01_carla.png" alt="" style="width:51%" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town02_carla.png" alt="" />
+  <figcaption>Bird's-eye view of Town01 (left) and Town02 (right).</figcaption>
+</figure>
+
+<p>The objective right now is to implement a car to follow the road, keeping itself inside the lanes. In the case of intersections, the car will simply turn to the right, always. To do this, we want to hard code a simple program that with computer vision (using a single RGB camera) it would be able to extract the necessary information to follow the lane without getting out of it.
+First we will need to detect the lanes that surround our vehicle, to do this, the Canny edge detection algorithm can be really handy. By doing some morphological transformations to the image (dilation and erosion) we can highlight the lanes in our mask, making it possible to extract each lane coordinates in our image. Once we have this information, with some simple operations we can compute the direction of the “road”, that added to the middle position of our camera, we are able to get the angle of the vehicle relative to the road.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/original.png" alt="" style="width:40%;height:5%" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/canny.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/morph.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/final.png" alt="" />
+  <figcaption>Preprocessing sequence: Original (top-left), Canny (top-right), Morphological Transformation (bottom-left), Final (bottom-right).</figcaption>
+</figure>
+
+<p>Now, with the angle of the car known, we can make a proportional controller (which will be more than enough for the objective at hand right now). By adding the angle to the steering value, we can make proportional corrections and make it follow the road (green line on top of the red line). The rest of the implementation reside on doing some tweakings to the constant multiplied to the angle and consider the rare cases when the lane line disapear.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/1DdQwXonS0M"></iframe></a>
+</figure>
+:ET

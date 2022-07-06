@@ -13,7 +13,13 @@ var store = [{
       },{
         "title": "Week 2",
         "excerpt":"Testing Carla Simulation. Carla, is an open-source simulator builded for autonomous driving research. The software behind Carla is constantly being mainteined and developed, having every year a few mayor launches, and forums where they are pretty active with the community. It was clearly a good starting point for the project...","categories": ["Weekly Log"],
-        "tags": ["carla"],
+        "tags": ["carla","reinforcement learning"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-2/",
+        "teaser": null
+      },{
+        "title": "Week 3",
+        "excerpt":"Hello World. As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. In order to do this, we need to start coding a “brain” for our car in the simulation, to...","categories": ["Weekly Log"],
+        "tags": ["carla","computer vision","opencv"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-3/",
         "teaser": null
       }]
