@@ -22,4 +22,10 @@ var store = [{
         "tags": ["carla","computer vision","opencv"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-3/",
         "teaser": null
+      },{
+        "title": "Week 4",
+        "excerpt":"Neural Networks might come to action, but not just yet. As we go further within the project, we stamble ourselfs already trying to introduce the concept of machine learning to the autonomous vehicle. But before we do this, it is necessary to find a good dataset from where we could...","categories": ["Weekly Log"],
+        "tags": ["carla","lidar","sensors","dataset"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-4/",
+        "teaser": null
       }]

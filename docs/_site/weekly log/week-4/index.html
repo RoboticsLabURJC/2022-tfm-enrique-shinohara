@@ -9,28 +9,32 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Posts by Year - Robotics Lab URJC</title>
-<meta name="description" content="Programming Robot Intelligence">
+<!-- begin _includes/seo.html --><title>Week 4 - Robotics Lab URJC</title>
+<meta name="description" content="Neural Networks might come to action, but not just yet.">
 
 
   <meta name="author" content="Enrique Shinohara">
   
+  <meta property="article:author" content="Enrique Shinohara">
+  
 
 
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Posts by Year">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/year-archive/">
+<meta property="og:title" content="Week 4">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-4/">
 
 
-  <meta property="og:description" content="Programming Robot Intelligence">
-
-
-
+  <meta property="og:description" content="Neural Networks might come to action, but not just yet.">
 
 
 
+
+
+
+
+  <meta property="article:published_time" content="2022-07-13T00:00:00+02:00">
 
 
 
@@ -41,7 +45,7 @@
   
 
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/year-archive/">
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-4/">
 
 
 
@@ -92,7 +96,7 @@
 
   </head>
 
-  <body class="layout--posts">
+  <body class="layout--single">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -133,6 +137,8 @@
 
     <div class="initial-content">
       
+
+
 
 
 
@@ -256,45 +262,20 @@
 
 
 
-  <div class="archive">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Week 4">
+    <meta itemprop="description" content="Neural Networks might come to action, but not just yet.">
+    <meta itemprop="datePublished" content="2022-07-13T00:00:00+02:00">
     
-      <h1 id="page-title" class="page__title">Posts by Year</h1>
-    
-    
 
-
-<ul class="taxonomy__index">
-  
-  
-    <li>
-      <a href="#2022">
-        <strong>2022</strong> <span class="taxonomy__count">5</span>
-      </a>
-    </li>
-  
-</ul>
-
-
-
-
-  <section id="2022" class="taxonomy__section">
-    <h2 class="archive__subtitle">2022</h2>
-    <div class="entries-list">
+    <div class="page__inner-wrap">
       
-        
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-4/" rel="permalink">Week 4
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-4/" class="u-url" itemprop="url">Week 4
 </a>
-      
-    </h2>
-    
+          </h1>
+          
 
   <p class="page__meta">
     
@@ -315,17 +296,123 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">Neural Networks might come to action, but not just yet.
-</p>
-  </article>
-</div>
-
+        </header>
       
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Neural Networks might come to action, but not just yet.</p>
+
+<p>As we go further within the project, we stamble ourselfs already trying to introduce the concept of machine learning to the autonomous vehicle. But before we do this, it is necessary to find a good dataset from where we could begin training and testing some models. This step can be seen as a light introduction for later in the future where we will start to work with Reinforcement Learning techniques.</p>
+
+<p>Seeing that the simulation we are using is Carla, it would be a good start to find some Carla related datasets for a vehicle driving autonomously following a road. But such specific task is difficult to find when we narrow down the datasets to only the ones from Carla simulator. As of now, we have found a <a href="https://archive.org/details/comma-dataset">dataset</a> that gives us the image and the steering angle needed for making a vehicle to follow the road.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/2406.jpg" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/41121.jpg" alt="" />
+  <figcaption>Examples images of the dataset.</figcaption>
+</figure>
+
+<p>Further research will be made in order to either search a better suited dataset for the objective at hand right now, or creating our own dataset by driving the vehicle in Carla with the controller that we created on the third week.</p>
+
+<p>One more task that we needed to tackle this week was either if we could retrieve more information from the simulation. Given that we can already extract RGB images from camera sensor, how many more sensors are available for us in the Carla Simulation. Given that we are playing with a pretty old version of Carla, many usefull sensors are not available for us, but we can still have access to a LIDAR sensor and the location (x, y, z) of the car in the 3D world. By ignoring for now the simplicity to obtain the location of the car, we try to focus on the LIDAR, how to configure it and wether the adquisition of the cloud points is good or not.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/rgb_lidar.png" alt="" style="width:42%" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/lidar01.png" alt="" style="width:51%" />
+  <figcaption>RGB image and LIDAR cloud points for the same frame in the simulation</figcaption>
+</figure>
+
+<p>Given my low understanding of how to treat LIDAR cloud points, further experimentation from myself is to be expected, but as of now, we have augmented the quantity of sensors that we can retrieve from the Carla Simulator.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#dataset" class="page__taxonomy-item p-category" rel="tag">dataset</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#lidar" class="page__taxonomy-item p-category" rel="tag">lidar</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#sensors" class="page__taxonomy-item p-category" rel="tag">sensors</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/2022-tfm-enrique-shinohara/categories/#weekly-log" class="page__taxonomy-item p-category" rel="tag">Weekly Log</a>
+    
+    </span>
+  </p>
+
+
         
 
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-07-13T00:00:00+02:00">July 13, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Week+4%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-4%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-4%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-4%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
 
 
-<div class="list__item">
+      
+  <nav class="pagination">
+    
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-3/" class="pagination--pager" title="Week 3
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -360,12 +447,12 @@
   </article>
 </div>
 
-      
         
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -400,12 +487,12 @@
   </article>
 </div>
 
-      
         
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -439,12 +526,12 @@
   </article>
 </div>
 
-      
         
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -479,14 +566,13 @@
   </article>
 </div>
 
-      
+        
+      </div>
     </div>
-    <a href="#page-title" class="back-to-top">Back to Top &uarr;</a>
-  </section>
-
-
-  </div>
+  
+  
 </div>
+
     </div>
 
     
