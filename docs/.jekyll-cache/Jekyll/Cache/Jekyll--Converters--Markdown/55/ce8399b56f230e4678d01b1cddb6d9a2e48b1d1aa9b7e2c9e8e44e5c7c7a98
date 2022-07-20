@@ -1,0 +1,25 @@
+I"¨
+<p>Neural Networks might come to action, but not just yet.</p>
+
+<p>As we go further within the project, we stamble ourselfs already trying to introduce the concept of machine learning to the autonomous vehicle. But before we do this, it is necessary to find a good dataset from where we could begin training and testing some models. This step can be seen as a light introduction for later in the future where we will start to work with Reinforcement Learning techniques.</p>
+
+<p>Seeing that the simulation we are using is Carla, it would be a good start to find some Carla related datasets for a vehicle driving autonomously following a road. But such specific dataset is difficult to find when we narrow down the datasets to only the ones from Carla simulator. As of now, we have found a <a href="https://github.com/SullyChen/driving-datasets">dataset</a> that gives us the image and the steering angle needed for making a vehicle to follow the road.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/2406.jpg" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/41121.jpg" alt="" />
+  <figcaption>Examples images from the dataset.</figcaption>
+</figure>
+
+<p>Further research will be made in order to either search a better suited dataset for the objective at hand right now, or create our own dataset by driving the vehicle in Carla with the controller that we created on the third week.</p>
+
+<p>One more task that we needed to tackle this week was either if we could retrieve more information from the simulation or not. Given that we can already extract RGB images from camera sensor, how many more sensors are available for us in the Carla Simulation. Because we are playing with a pretty old version of Carla, many usefull sensors are not yet available for us, but we can still have access to a LIDAR sensor and the location (x, y, z) of the car in the 3D world. By ignoring for now the simplicity to obtain the location of the car, we try to focus on the LIDAR, how to configure it and wether the adquisition of the cloud points is good or not.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/rgb_lidar.png" alt="" style="width:42%" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/lidar01.png" alt="" style="width:51%" />
+  <figcaption>RGB image and LIDAR cloud points for the same frame in the simulation</figcaption>
+</figure>
+
+<p>Given my low understanding of how to treat LIDAR cloud points, I will need to experiment with it further more, but as of now, we have augmented the quantity of sensors that we can retrieve from the Carla Simulator.</p>
+:ET

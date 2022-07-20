@@ -1,2 +1,12 @@
 venv
+venv36
 .python-version
+carla/CarlaUE4
+carla/Datasets
+carla/Engine
+carla/*py
+carla/*egg
+carla/PythonAPI/tests/_lidar_output
+carla/PythonAPI/tests/_out
+carla/PythonAPI/tests/backup
+carla/PythonAPI/tests/20220405-115235_pilotnet_new_dataset_opencv_plus_difficult_cases_extreme_cases_support_100_epochs_new_checkpoint_monitor_cp.h5

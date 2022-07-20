@@ -28,4 +28,10 @@ var store = [{
         "tags": ["carla","lidar","sensors","dataset"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-4/",
         "teaser": null
+      },{
+        "title": "Week 5",
+        "excerpt":"Setting up CUDA for Deep Neural Networks. As we saw in the previous post, we are very close to finally playing with some machine learning algorithms for our road following car. But as always, first we need to prepare the playground before we dive deep into the machine learning problems...","categories": ["Weekly Log"],
+        "tags": ["carla"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-5/",
+        "teaser": null
       }]

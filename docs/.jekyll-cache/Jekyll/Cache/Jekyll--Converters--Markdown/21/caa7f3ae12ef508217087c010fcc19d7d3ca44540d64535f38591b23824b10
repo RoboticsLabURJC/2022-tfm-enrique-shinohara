@@ -1,0 +1,20 @@
+I"u<p>Setting up CUDA for Deep Neural Networks.</p>
+
+<p>As we saw in the previous post, we are very close to finally playing with some machine learning algorithms for our road following car. But as always, first we need to prepare the playground before we dive deep into the machine learning problems for our thesis, and by preparing I mean installing the ever famous <a href="https://developer.nvidia.com/cuda-toolkit">CUDA toolkit</a>, this will allow us to train and predict algorithms with GPU-acceleration by using the graphic card in our local machine. Given that I have a RTX 3060 6Gb graphics card in my laptop, it would be a total loss not to test it.</p>
+
+<p>Having said that, installing CUDA for our purpose is not a simple task. The installation itself is pretty straight forward, but the environment in which we are going to use it, plays an important role when choosing the version of the software we are going to use it on. To do this, we need four things that are the ones that will cause the most problems if they are not compatible with each other:</p>
+
+<ul>
+  <li>CUDA Toolkit 11.0</li>
+  <li>Python 3.6</li>
+  <li>cuDNN 8.0</li>
+  <li>Tensorflow 2.4.0</li>
+</ul>
+
+<p>The setting we choosed was defined firstly by the Carla Simulator, because we are using an old version of Carla 0.9.2 some libraries can only be used on a certain version of python, that as of now have only been tested on 3.5 and 3.6. And secontly, Tensorflow for it plays a huge rol on the selection of a certain CUDA and cuDNN version. On the <a href="https://www.tensorflow.org/install/source">Tensorflow installation</a> website, we can find a table with multiple tested configurations.</p>
+
+<figure style="width:100%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/tensorflow_gpu.png" alt="" />
+  <figcaption>Tensorflow GPU installation homepage.</figcaption>
+</figure>
+:ET
