@@ -93,39 +93,6 @@ def pygame_callback(data, obj, vehicle, model):
     obj.surface = pygame.surfarray.make_surface(img.swapaxes(0,1))
 
 
-
-def save_image(image):
-    number = image.frame_number
-    image = np.array(image.raw_data)
-    i2 = image.reshape((IM_HEIGHT, IM_WIDTH, 4))
-    i3 = i2[:, :, :3]
-    j = Image.fromarray(i3)
-    j.save("_out/%06d.png" % number)
-
-
-def lidar_callback(point_cloud, point_list):
-    """Prepares a point cloud with intensity
-    colors ready to be consumed by Open3D"""
-    data = np.copy(np.frombuffer(point_cloud.raw_data, dtype=np.dtype('f4')))
-    data = np.reshape(data, (int(data.shape[0] / 3), 3))
-
-    # Isolate the 3D data
-    points = data[:, :-1]
-
-    # We're negating the y to correclty visualize a world that matches
-    # what we see in Unreal since Open3D uses a right-handed coordinate system
-    points[:, :1] = -points[:, :1]
-
-    # # An example of converting points from sensor to vehicle space if we had
-    # # a carla.Transform variable named "tran":
-    # points = np.append(points, np.ones((points.shape[0], 1)), axis=1)
-    # points = np.dot(tran.get_matrix(), points.T).T
-    # points = points[:, :-1]
-
-    point_list.points = o3d.utility.Vector3dVector(points)
-    o3d.io.write_point_cloud("out_name.ply", point_list)
-
-
 def main():
     actor_list = []
     collision_detect = False
@@ -193,37 +160,9 @@ def main():
         actor_list.append(camera)
         print('created %s' % camera.type_id)
 
-        # Now let's add the LIDAR to the vehicle
-        lidar_bp = blueprint_library.find('sensor.lidar.ray_cast')
-        lidar_bp.set_attribute('channels', str(128))
-        lidar_bp.set_attribute('rotation_frequency', '100')
-        lidar_bp.set_attribute('points_per_second', str(120000))
-        lidar_transform = carla.Transform(carla.Location(x=-0.5, z=1.8))
-        lidar = world.spawn_actor(lidar_bp, lidar_transform, attach_to=vehicle)
-        actor_list.append(lidar)
-        print('created %s' % lidar.type_id)
-
-        """collision_sensor = world.spawn_actor(blueprint_library.find('sensor.other.collision'), camera_transform, attach_to=vehicle)
-        actor_list.append(collision_sensor)
-        print('created %s' % collision_sensor.type_id)"""
-        
-        # Now we register the function that will be called each time the sensor
-        # receives an image. In this example we are saving the image to disk
-        # camera.listen(lambda image: image.save_to_disk('_out/%06d.png' % image.frame_number))
-
-        if not os.path.exists('./_out/'):
-            os.makedirs('./_out/')
-        if not os.path.exists('./_lidar_output/'):
-            os.makedirs('./_lidar_output/')
-
         renderObject = RenderObject(IM_WIDTH, IM_HEIGHT)
-        point_list = o3d.geometry.PointCloud()
 
         camera.listen(lambda image: pygame_callback(image, renderObject, vehicle, savedModel))
-        # camera.listen(lambda image: save_image(image))
-        # lidar.listen(lambda point_cloud: lidar_callback(point_cloud, point_list))
-        # lidar.listen(lambda LidarMeasurement: LidarMeasurement.save_to_disk('_lidar_output/%06d.ply' % LidarMeasurement.frame_number))
-        # collision_sensor.listen(lambda event: collision_handler(event))
 
         # Oh wait, I don't like the location we gave to the vehicle, I'm going
         # to move it a bit forward.
