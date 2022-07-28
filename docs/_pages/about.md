@@ -14,7 +14,7 @@ A general idea of the thesis would be to understand and implement the underlying
 
 As tutors and advisors of my master thesis, I have the pleasure to count with:
 - [José María Cañas Plaza](https://gsyc.urjc.es/jmplaza/)
-- [Sergio Paniego](https://roboticslaburjc.github.io/2019-phd-sergio-paniego/)
+- [Sergio Paniego](https://sergiopaniego.github.io/)
 
 <figure style="width:60%" class="align-center">
   <img src="{{ site.url }}{{ site.baseurl }}/assets/images/nissingeppou.png" alt="">

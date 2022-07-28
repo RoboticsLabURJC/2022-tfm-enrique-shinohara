@@ -1,0 +1,48 @@
+I"É<p>For this week we have multiple work borders open that I am going to explain more in detail in this post. To have a better visual of it, the task were as follows:</p>
+
+<ul>
+  <li>Keep exploring some datasets to train from</li>
+  <li>Study of the frames-per-second and latencies from the server-client model simulation, Carla</li>
+  <li>Be able to train a model in my local computer from a <a href="https://github.com/JdeRobot/DeepLearningStudio/tree/main/Formula1-FollowLine/tensorflow">dataset</a> made by <a href="https://sergiopaniego.github.io/">Sergio Paniego</a></li>
+  <li>Refining the previous PilotNet model implemented in a vehicle from the Carla Simulator</li>
+</ul>
+
+<h2 id="dataset-exploration">Dataset exploration</h2>
+
+<p>First, the exploration of the data, a task that I found more complicated than I thought, for most of the public dataset for self-driving cars were orientated towards segmentation and detection tasks. Despite these complications I could find some dataset from Udacity, an educational organization which has available multiple dataset for free, that comes with the images from RGB cameras, the steering and the throttle values among others that I find most useful for future task of my thesis.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/udacity_1.jpg" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/udacity_2.jpg" alt="" />
+  <figcaption>Examples images from the dataset.</figcaption>
+</figure>
+
+<h2 id="latency-study">Latency study</h2>
+
+<p>Secondly I centered myself most of the week on trying to understand and comprehend, the necessary information that comes from analyzing the frequencies on the server-client simulation, Carla. To better understand how our machine can handle the simulation demand of resources, we need to know if the speed at which the server is rendering new images is fast enought to keep with the client speed to recieve and process the images, and viceversa. In order to do this, we analyze the latencies in two possible ways, one where the client only recieves the images, and other where the client uses a model to predict the images output. A table containing the frames-per-second from the client and the server without using a PilotNet model and using it can be seen below.</p>
+
+<table style="border-collapse:collapse;border-spacing:0" class="tg"><thead><tr><th style="background-color:#656565;border-color:#000000;border-style:solid;border-width:1px;color:#ffffff;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">FPS</th><th style="background-color:#656565;border-color:#000000;border-style:solid;border-width:1px;color:#ffffff;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal" colspan="2">Client</th><th style="background-color:#656565;border-color:black;border-style:solid;border-width:1px;color:#ffffff;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Server</th></tr></thead><tbody><tr><td style="background-color:#656565;border-color:#000000;border-style:solid;border-width:1px;color:#ffffff;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Empty</td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal" colspan="2">5*10‚Åµ</td><td style="border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">87</td></tr><tr><td style="background-color:#656565;border-color:#000000;border-style:solid;border-width:1px;color:#ffffff;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Model<br /></td><td style="border-color:inherit;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal" colspan="2">23</td><td style="border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">60 - 80</td></tr></tbody></table>
+
+<p>Further study of this results may be needed, for the frames-per-second were seen decaying the longer we kept the simulation running. Also, the results from this version of the code were different compared to an older version of the code, so I would like to deepen my understanding of this little inconsistency.</p>
+
+<h2 id="model-training">Model training</h2>
+
+<p>A training of a model from the <a href="https://github.com/JdeRobot/DeepLearningStudio">DeepLearningStudio</a> repository was achieved, by adjusting the Python version to 3.7 and 3.6 along with some minor updates for the packages. It was posible to train a model in our local machine using the DeepLearningStudio dataset. It took around 7 minutes to complete the training. More study of the code would be wise to again deepen my knowledge of how to use Tensorflow to train deep neural networks.</p>
+
+<h2 id="refining-the-pilotnet-based-model-for-carla">Refining the PilotNet-based model for Carla</h2>
+
+<p>For the final task of the week, we needed to test wether if we were adapting correctly the PilotNet-based model from <a href="https://github.com/JdeRobot/DeepLearningStudio">DeepLearningStudio</a> to the carla simulation or if we were doing something wrong as we saw in the previous post from the failed neural network video. To do this, two changes were made:</p>
+
+<ul>
+  <li>One of them consisted on cutting the horizon from the recieved image of the camera, and changing the color that delimitates the lanes to red. This changes were made in order to simulate in the closest way possible, the environment in which the model was trained.</li>
+  <li>The other big change was basically to tweak the output (throttle and steer) of the model, to adapt it for the Carla Simulation values.</li>
+</ul>
+
+<p>The result of this refining work can be seen in the next video:</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/hZHqT77YTVU"></iframe></a>
+</figure>
+
+<p>Simulating the same path were we saw the model fail in the previous week, we can see that the car follow the lane without doing some weird movements that take it out of its course. It is clear, that the model was going to fail in our case when no lane is detected in the image, but this was the expected behaviour, because the vehicle is also following the lane as the model was train to do.</p>
+:ET
