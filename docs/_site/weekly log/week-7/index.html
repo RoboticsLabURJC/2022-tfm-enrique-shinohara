@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Week 0 - Ready, set, go! - Robotics Lab URJC</title>
-<meta name="description" content="With this first entry on my weekly blog, I start my master’s thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as Gazebo (a simulator where we can test our robots virtually) and ROS (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.">
+<!-- begin _includes/seo.html --><title>Week 7~11 - Slow but steady wins the race - Robotics Lab URJC</title>
+<meta name="description" content="As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what our to-do list is going to be, meaning, what is the primary problem to be solved right now.">
 
 
   <meta name="author" content="Enrique Shinohara">
@@ -22,30 +22,30 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Week 0 - Ready, set, go!">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-0/">
+<meta property="og:title" content="Week 7~11 - Slow but steady wins the race">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7/">
 
 
-  <meta property="og:description" content="With this first entry on my weekly blog, I start my master’s thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as Gazebo (a simulator where we can test our robots virtually) and ROS (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2022-06-15T00:00:00+02:00">
+  <meta property="og:description" content="As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what our to-do list is going to be, meaning, what is the primary problem to be solved right now.">
 
 
 
 
 
-  
+
+
+  <meta property="article:published_time" content="2022-08-06T00:00:00+02:00">
+
+
+
+
 
   
 
+  
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-0/">
+
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7/">
 
 
 
@@ -263,16 +263,16 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Week 0 - Ready, set, go!">
-    <meta itemprop="description" content="With this first entry on my weekly blog, I start my master’s thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as Gazebo (a simulator where we can test our robots virtually) and ROS (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.">
-    <meta itemprop="datePublished" content="2022-06-15T00:00:00+02:00">
+    <meta itemprop="headline" content="Week 7~11 - Slow but steady wins the race">
+    <meta itemprop="description" content="As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what our to-do list is going to be, meaning, what is the primary problem to be solved right now.">
+    <meta itemprop="datePublished" content="2022-08-06T00:00:00+02:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-0/" class="u-url" itemprop="url">Week 0 - Ready, set, go!
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7/" class="u-url" itemprop="url">Week 7~11 - Slow but steady wins the race
 </a>
           </h1>
           
@@ -301,27 +301,22 @@
 
       <section class="page__content e-content" itemprop="text">
         
-        <p>With this first entry on my weekly blog, I start my master’s thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as <a href="https://classic.gazebosim.org/download">Gazebo</a> (a simulator where we can test our robots virtually) and <a href="http://wiki.ros.org/noetic/Installation/Ubuntu">ROS</a> (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.</p>
+        <p>As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what our to-do list is going to be, meaning, what is the primary problem to be solved right now.</p>
 
-<p>Finally, we needed to undertand how we were going to do a blog for our thesis. For this, thanks to the feedback provided by my thesis tutor, it was decided to write the blog with Github Pages which start static servers to host website directly from our Github repository. In order to mess with this function I had to clone the following repositories:</p>
+<p>As we established in the sixth week, we need to refine even more the brain we are using to make our car, in the Carla Simulator, follow a line. We already made some improvements in the last week but they weren’t enough, for the car wasn’t technically following the line as the model was trained to do. In order to find where the problem might be, we tried to simulate pretty closely the <a href="https://github.com/JdeRobot/DeepLearningStudio">DeepLearningStudio</a> project (even though this one was trained on the Gazebo Simulator), that is, the image we feeded to the model was a close representation of the images from which they trained their models, and the outputs were scaled to try to translate the Gazebo values to Carla values. Because this changes didn’t make the car follow the line as we wanted it to, an assumption was made by thinking that the problem resided in the differences between the both simulations cars dynamics. To pinpoint wether this was true or not, we have to test it by training a model using a Carla Simulation based dataset.</p>
 
+<p>Now that we have landed into the tasks at hand, the next steps can be divided in:</p>
 <ul>
-  <li><a href="https://github.com/JdeRobot/jderobot.github.io">jderobot.github.io</a>: repository of the website of the association of Robotics and Artificial Intelligence, JdeRobot.</li>
-  <li><a href="https://github.com/mmistakes/minimal-mistakes">minimal-mistakes</a>: repository of the minimal mistakes Jekyll theme for Github Pages.</li>
+  <li>Create an explicit brain to make our car follow a line. We already had a brain to make the car follow the road, but for the sake of undestanding the problem we explained beforehand, we need to simplify the task, by making it follow a line.</li>
+  <li>Create a dataset for the follow-line task in the Carla Simulation. This dataset will be recolected with the use of the explicit follow-line brain.</li>
+  <li>Train a model on our own with the recently created dataset, to see if it is capable of following the line better than the PilotNet-based model trained in Gazebo.</li>
 </ul>
 
-<p>Both of them having multiple examples in order to know and test functionalities, on my own, of Github Pages and Jekyll Templates for an aesthetically pleasing blog website.</p>
+<h2 id="creating-the-explicit-follow-line-brain">Creating the explicit follow-line brain</h2>
 
-<!-- <p align="center">
-<img src="/assets/images/minimal_mistakes.png" width="300">
-</p> -->
+<h2 id="creating-and-organizing-the-data">Creating and organizing the data</h2>
 
-<!-- ![image-center](http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/minimal_mistakes.png){: .align-center} -->
-
-<figure style="width:50%" class="align-center">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/minimal_mistakes.png" alt="" />
-  <figcaption>Minimal mistakes template for Jekyll</figcaption>
-</figure>
+<h2 id="training-the-follow-line-model">Training the follow-line model</h2>
 
         
       </section>
@@ -338,11 +333,9 @@
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#gazebo" class="page__taxonomy-item p-category" rel="tag">gazebo</a><span class="sep">, </span>
+      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#github-page" class="page__taxonomy-item p-category" rel="tag">github page</a><span class="sep">, </span>
-    
-      <a href="/2022-tfm-enrique-shinohara/tags/#ros-noetic" class="page__taxonomy-item p-category" rel="tag">ros noetic</a>
+      <a href="/2022-tfm-enrique-shinohara/tags/#gazebo" class="page__taxonomy-item p-category" rel="tag">gazebo</a>
     
     </span>
   </p>
@@ -367,29 +360,29 @@
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-06-15T00:00:00+02:00">June 15, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-08-06T00:00:00+02:00">August 6, 2022</time></p>
 
       </footer>
 
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+0+-+Ready%2C+set%2C+go%21%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-0%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+7~11+-+Slow+but+steady+wins+the+race%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-0%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-0%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="#" class="pagination--pager disabled">Previous</a>
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-6/" class="pagination--pager" title="Week 6 - Refining some code and testing some frequencies among others…
+">Previous</a>
     
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-1/" class="pagination--pager" title="Week 1 - Soaking myself with context
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -403,45 +396,6 @@
     <div class="page__related">
       <h2 class="page__related-title">You May Also Enjoy</h2>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-7/" rel="permalink">Week 7~11 - Slow but steady wins the race
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not me...</p>
-  </article>
-</div>
-
         
           
 
@@ -556,6 +510,45 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">As we go further within the project, we stamble ourselfs already trying to introduce the concept of machine learning to the autonomous vehicle. But before we...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-3/" rel="permalink">Week 3 - Hello World
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. I...</p>
   </article>
 </div>
 

@@ -35,9 +35,15 @@ var store = [{
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-5/",
         "teaser": null
       },{
-        "title": "Week 6 - Refining some code and testing some latencies among others...",
-        "excerpt":"For this week we have multiple work borders open that I am going to explain more in detail in this post. To have a better visual of it, the task were as follows: Keep exploring some datasets to train from Study of the frames-per-second and latencies from the server-client model...","categories": ["Weekly Log"],
-        "tags": ["carla"],
+        "title": "Week 6 - Refining some code and testing some frequencies among others...",
+        "excerpt":"For this week we have multiple work borders open that I am going to explain more in detail in this post. To have a better visual of it, the task were as follows: Keep exploring some datasets to train from Study of the frames-per-second and frequencies from the server-client model...","categories": ["Weekly Log"],
+        "tags": ["carla","udacity","machine learning"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-6/",
+        "teaser": null
+      },{
+        "title": "Week 7~11 - Slow but steady wins the race",
+        "excerpt":"As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what...","categories": ["Weekly Log"],
+        "tags": ["carla","gazebo"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-7/",
         "teaser": null
       }]
