@@ -1,4 +1,4 @@
-I"L	<p>As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what our to-do list is going to be, meaning, what is the primary problem to be solved right now.</p>
+I"N<p>As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what our to-do list is going to be, meaning, what is the primary problem to be solved right now.</p>
 
 <p>As we established in the sixth week, we need to refine even more the brain we are using to make our car, in the Carla Simulator, follow a line. We already made some improvements in the last week but they weren’t enough, for the car wasn’t technically following the line as the model was trained to do. In order to find where the problem might be, we tried to simulate pretty closely the <a href="https://github.com/JdeRobot/DeepLearningStudio">DeepLearningStudio</a> project (even though this one was trained on the Gazebo Simulator), that is, the image we feeded to the model was a close representation of the images from which they trained their models, and the outputs were scaled to try to translate the Gazebo values to Carla values. Because this changes didn’t make the car follow the line as we wanted it to, an assumption was made by thinking that the problem resided in the differences between the both simulations cars dynamics. To pinpoint wether this was true or not, we have to test it by training a model using a Carla Simulation based dataset.</p>
 
@@ -11,7 +11,22 @@
 
 <h2 id="creating-the-explicit-follow-line-brain">Creating the explicit follow-line brain</h2>
 
+<p>For this first task, we are going to make our car follow a line, in our case, this line will be the lane that separates the road. In order to solve this problem, we are goint to use what I learned from the Robotic Vision course in my master’s studies, in which luckily enough we were asked to keep a <a href="https://enriqueshino.wixsite.com/visionrobotica/post/follow-line">blog</a> to track our progress for the different projects. The project that interests us is one where we were asked to make a Formula 1 car follow a line. Pretty much the same, right?</p>
+
+<p>Few changes were made to the controller, for we don’t need to make our car follow the line as fast as possible. One change that we can notice is that our line in the Carla Simulator is not exactly a single line, but this have a rather simple solution for we only need to get the left side of the left line and the right side of the right line to get the center of this two.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/ecg7oopKsJc"></iframe></a>
+</figure>
+
 <h2 id="creating-and-organizing-the-data">Creating and organizing the data</h2>
+
+<p>Now that we have a car that follows a line, we need to collect data from multiple runs. The data we are going to collect is pretty simple: the image from the frontal camera, the throttle and the steering value at the moment the image was taken.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/dataset_carla.png" alt="" />
+  <figcaption>Examples images from the udacity dataset.</figcaption>
+</figure>
 
 <h2 id="training-the-follow-line-model">Training the follow-line model</h2>
 :ET

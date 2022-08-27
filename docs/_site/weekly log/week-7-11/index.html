@@ -23,7 +23,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
 <meta property="og:title" content="Week 7~11 - Slow but steady wins the race">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7/">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7-11/">
 
 
   <meta property="og:description" content="As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what our to-do list is going to be, meaning, what is the primary problem to be solved right now.">
@@ -45,7 +45,7 @@
   
 
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7/">
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7-11/">
 
 
 
@@ -272,7 +272,7 @@
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7/" class="u-url" itemprop="url">Week 7~11 - Slow but steady wins the race
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-7-11/" class="u-url" itemprop="url">Week 7~11 - Slow but steady wins the race
 </a>
           </h1>
           
@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          3 minute read
         
       </span>
     
@@ -314,7 +314,31 @@
 
 <h2 id="creating-the-explicit-follow-line-brain">Creating the explicit follow-line brain</h2>
 
+<p>For this first task, we are going to make our car follow a line, in our case, this line will be the lane that separates the road. In order to solve this problem, we are goint to use what I learned from the Robotic Vision course in my master’s studies, in which luckily enough we were asked to keep a <a href="https://enriqueshino.wixsite.com/visionrobotica/post/follow-line">blog</a> to track our progress for the different projects. The project that interests us is one where we were asked to make a Formula 1 car follow a line. Pretty much the same, right?</p>
+
+<p>Few changes were made to the controller, for we don’t need to make our car follow the line as fast as possible. One change that we can notice is that our line in the Carla Simulator is not exactly a single line, but this have a rather simple solution for we only need to get the left side of the left line and the right side of the right line to get the center of this two.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/ecg7oopKsJc"></iframe></a>
+</figure>
+
 <h2 id="creating-and-organizing-the-data">Creating and organizing the data</h2>
+
+<p>Now that we have a car that follows a line, we need to collect data from multiple runs. The data we are going to collect is pretty simple: the image from the frontal camera, the throttle and the steering value at the moment the image was taken.</p>
+
+<figure style="width:60%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/dataset_carla.png" alt="" />
+  <figcaption>Number of instances taken for our dataset.</figcaption>
+</figure>
+
+<p>This gets us to a total of a little more than 15.000 images from the dataset. As always, analyzing the quality of the data is an important step for machine learning in order to understand better if our neural network is going to learn like we want it to, or if we are feeding it some uncomplete data.</p>
+
+<figure style="width:80%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_steer_12.png" alt="" />
+  <figcaption>Histogram of the steering values in our dataset.</figcaption>
+</figure>
+
+<p>For a first neural network, a first test is going to be made with this dataset. But, we are probably going to need to polish our dataset, meaning, we are going to need a better distributed dataset if we are going to make our car follow a line. Already, we can foresee the car performing probably well on straight lines, but badly on curves for the lack of turning values in the steering (exeption from the extreme cases -1 and 1).</p>
 
 <h2 id="training-the-follow-line-model">Training the follow-line model</h2>
 
@@ -367,11 +391,11 @@
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+7~11+-+Slow+but+steady+wins+the+race%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+7~11+-+Slow+but+steady+wins+the+race%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7-11%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7-11%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-7-11%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
