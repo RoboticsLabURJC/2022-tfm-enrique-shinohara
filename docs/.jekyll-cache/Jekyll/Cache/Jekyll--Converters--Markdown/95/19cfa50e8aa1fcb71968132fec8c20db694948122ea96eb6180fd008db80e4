@@ -1,0 +1,37 @@
+I"�
+<p>With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.</p>
+
+<p>We are going to replicate the steps we took for the follow line problem so that we can resume improving the model and analyzing possible improvements. So, to recall, we had 3 major tasks to tackle:</p>
+
+<ul>
+  <li>Create an explicit brain for the follow lane problem</li>
+  <li>Create a dataset from the explicit brain algorithm</li>
+  <li>Train with our dataset, a PilotNet model</li>
+</ul>
+
+<h2 id="creating-the-explicit-follow-lane-brain">Creating the explicit follow-lane brain</h2>
+
+<p>The follow lane brain was already made as seen on the Week 3 post, but building upon this algorithm, I have improve it to take better the curves and to oscillate less when the left lane dissapears for a moment in an intersection.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/P9wC4w6Jy8E"></iframe></a>
+</figure>
+
+<h2 id="creating-the-dataset-for-the-follow-lane">Creating the dataset for the follow lane</h2>
+
+<p>The creation of the dataset follows the same lines as the one we took on the previous post. The dataset contains the image, the steering and the throttle value on the timestep where the image was taken. A total of 5Gb of data was collected giving us an overall of almost 25.000 images. Differences when compared to the dataset on the previous blog where the task was to follow a line, the algorithm used this time to follow the road is more consistent, meaning that the car almost never oscilate, giving us more data when the steer is not moving or is moving a negligible amount, and little to none data when it is steering left or right.</p>
+
+<p>By getting the steering values on an histogram we can have a better view of the data from another perspective. From the next image, we can appreciate the imbalance of the data.</p>
+
+<figure style="width:80%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_20.png" alt="" />
+  <figcaption>Histogram of the steering values in our dataset.</figcaption>
+</figure>
+
+<p>By doing some oversampling, we can try to use better the data, giving more weight the “extreme” cases that are almost never considered when compared to the straight steering values.</p>
+
+<figure style="width:80%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_20_extreme.png" alt="" />
+  <figcaption>Histogram of the oversampled steering values in our dataset.</figcaption>
+</figure>
+:ET

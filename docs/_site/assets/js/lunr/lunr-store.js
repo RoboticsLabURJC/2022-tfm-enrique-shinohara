@@ -43,7 +43,13 @@ var store = [{
       },{
         "title": "Week 7~11 - Slow but steady wins the race",
         "excerpt":"As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not mean that no progress will be made in the meantime. First, for the sake of organizing the month we need to know what...","categories": ["Weekly Log"],
-        "tags": ["carla","gazebo"],
+        "tags": ["carla","tensorflow","dataset"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-7-11/",
+        "teaser": null
+      },{
+        "title": "Week 12 - Following the road",
+        "excerpt":"With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a...","categories": ["Weekly Log"],
+        "tags": ["carla","pilotnet","dataset"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-12/",
         "teaser": null
       }]

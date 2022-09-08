@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Week 3 - Hello World - Robotics Lab URJC</title>
-<meta name="description" content="As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. In order to do this, we need to start coding a “brain” for our car in the simulation, to be able to order commands and execute them on to the car, and as of now, our car needs two commands for the velocity: angular (steering angle) and linear (throttle or brake). For the sake of simplicity, the linear velocity will be constant, changing only the steering input.">
+<!-- begin _includes/seo.html --><title>Week 12 - Following the road - Robotics Lab URJC</title>
+<meta name="description" content="With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.">
 
 
   <meta name="author" content="Enrique Shinohara">
@@ -22,30 +22,30 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Week 3 - Hello World">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-3/">
+<meta property="og:title" content="Week 12 - Following the road">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-12/">
 
 
-  <meta property="og:description" content="As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. In order to do this, we need to start coding a “brain” for our car in the simulation, to be able to order commands and execute them on to the car, and as of now, our car needs two commands for the velocity: angular (steering angle) and linear (throttle or brake). For the sake of simplicity, the linear velocity will be constant, changing only the steering input.">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2022-07-04T00:00:00+02:00">
+  <meta property="og:description" content="With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.">
 
 
 
 
 
-  
+
+
+  <meta property="article:published_time" content="2022-09-07T00:00:00+02:00">
+
+
+
+
 
   
 
+  
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-3/">
+
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-12/">
 
 
 
@@ -263,16 +263,16 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Week 3 - Hello World">
-    <meta itemprop="description" content="As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. In order to do this, we need to start coding a “brain” for our car in the simulation, to be able to order commands and execute them on to the car, and as of now, our car needs two commands for the velocity: angular (steering angle) and linear (throttle or brake). For the sake of simplicity, the linear velocity will be constant, changing only the steering input.">
-    <meta itemprop="datePublished" content="2022-07-04T00:00:00+02:00">
+    <meta itemprop="headline" content="Week 12 - Following the road">
+    <meta itemprop="description" content="With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.">
+    <meta itemprop="datePublished" content="2022-09-07T00:00:00+02:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-3/" class="u-url" itemprop="url">Week 3 - Hello World
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-12/" class="u-url" itemprop="url">Week 12 - Following the road
 </a>
           </h1>
           
@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
@@ -301,34 +301,41 @@
 
       <section class="page__content e-content" itemprop="text">
         
-        <p>As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. In order to do this, we need to start coding a “brain” for our car in the simulation, to be able to order commands and execute them on to the car, and as of now, our car needs two commands for the velocity: angular (steering angle) and linear (throttle or brake). For the sake of simplicity, the linear velocity will be constant, changing only the steering input.</p>
+        <p>With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.</p>
 
-<p>Before we start with the coding section, it was important to play with the available towns/maps for the server. Doing a simple check on the maps, we can come up with the conclusion to stick with the Town02. This town is the easiest one roadwise, giving us also better performance on low graphics when compared to other towns. Below, we can have a better visual of the complexity of the roads on Town01, compared to Town02.</p>
+<p>We are going to replicate the steps we took for the follow line problem so that we can resume improving the model and analyzing possible improvements. So, to recall, we had 3 major tasks to tackle:</p>
 
-<figure class="half">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town01_carla.png" alt="" style="width:51%" />
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town02_carla.png" alt="" />
-  <figcaption>Bird's-eye view of Town01 (left) and Town02 (right).</figcaption>
-</figure>
+<ul>
+  <li>Create an explicit brain for the follow lane problem</li>
+  <li>Create a dataset from the explicit brain algorithm</li>
+  <li>Train with our dataset, a PilotNet model</li>
+</ul>
 
-<p>The objective right now is to implement a car to follow the road, keeping itself inside the lanes. In the case of intersections, the car will simply turn to the right, always. To do this, we want to hard code a simple program that with computer vision (using a single RGB camera) it would be able to extract the necessary information to follow the lane without getting out of it.
-First we need to detect the lanes that surround our vehicle, to do this, the Canny edge detection algorithm can be really handy. By doing some morphological transformations to the image (dilation and erosion) we can highlight the lanes in our mask, making it possible to extract each lane coordinates in our image. Once we have this information, with some simple operations we can compute the direction of the “road”, that added to the middle position of our camera, it gives us the angle of the vehicle relative to the road.</p>
+<h2 id="creating-the-explicit-follow-lane-brain">Creating the explicit follow-lane brain</h2>
 
-<figure class="half">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/original.png" alt="" style="width:40%;height:5%" />
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/canny.png" alt="" />
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/morph.png" alt="" />
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/final.png" alt="" />
-  <figcaption>Preprocessing sequence: Original (top-left), Canny (top-right), Morphological Transformation (bottom-left), Final (bottom-right).</figcaption>
-</figure>
-
-<p>Now, with the angle of the car known, we can make a proportional controller (which will be more than enough for the objective at hand right now). By adding the angle to the steering value, we can make proportional corrections and make it follow the road (green line on top of the red line). The rest of the implementation reside on doing some tweakings to the constant multiplied to the angle and consider the rare cases when the lane line disapear.</p>
+<p>The follow lane brain was already made as seen on the Week 3 post, but building upon this algorithm, I have improve it to take better the curves and to oscillate less when the left lane dissapears for a moment in an intersection.</p>
 
 <figure class="align-center">
-    <a href=""><iframe src="https://www.youtube.com/embed/1DdQwXonS0M"></iframe></a>
+    <a href=""><iframe src="https://www.youtube.com/embed/P9wC4w6Jy8E"></iframe></a>
 </figure>
 
-<p>With this test, we have a better comprehension of how we can communicate with our vehicle in the Carla Simulator.</p>
+<h2 id="creating-the-dataset-for-the-follow-lane">Creating the dataset for the follow lane</h2>
+
+<p>The creation of the dataset follows the same lines as the one we took on the previous post. The dataset contains the image, the steering and the throttle value on the timestep where the image was taken. A total of 5Gb of data was collected giving us an overall of almost 25.000 images. Differences when compared to the dataset on the previous blog where the task was to follow a line, the algorithm used this time to follow the road is more consistent, meaning that the car almost never oscilate, giving us more data when the steer is not moving or is moving a negligible amount, and little to none data when it is steering left or right.</p>
+
+<p>By getting the steering values on an histogram we can have a better view of the data from another perspective. From the next image, we can appreciate the imbalance of the data.</p>
+
+<figure style="width:80%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_20.png" alt="" />
+  <figcaption>Histogram of the steering values in our dataset.</figcaption>
+</figure>
+
+<p>By doing some oversampling, we can try to use better the data, giving more weight the “extreme” cases that are almost never considered when compared to the straight steering values.</p>
+
+<figure style="width:80%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_20_extreme.png" alt="" />
+  <figcaption>Histogram of the oversampled steering values in our dataset.</figcaption>
+</figure>
 
         
       </section>
@@ -347,9 +354,9 @@ First we need to detect the lanes that surround our vehicle, to do this, the Can
     
       <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#computer-vision" class="page__taxonomy-item p-category" rel="tag">computer vision</a><span class="sep">, </span>
+      <a href="/2022-tfm-enrique-shinohara/tags/#dataset" class="page__taxonomy-item p-category" rel="tag">dataset</a><span class="sep">, </span>
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#opencv" class="page__taxonomy-item p-category" rel="tag">opencv</a>
+      <a href="/2022-tfm-enrique-shinohara/tags/#pilotnet" class="page__taxonomy-item p-category" rel="tag">pilotnet</a>
     
     </span>
   </p>
@@ -374,30 +381,29 @@ First we need to detect the lanes that surround our vehicle, to do this, the Can
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-07-04T00:00:00+02:00">July 4, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-09-07T00:00:00+02:00">September 7, 2022</time></p>
 
       </footer>
 
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+3+-+Hello+World%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-3%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+12+-+Following+the+road%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-12%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-3%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-12%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-3%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-12%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-2/" class="pagination--pager" title="Week 2 - Testing Carla Simulation.
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-7-11/" class="pagination--pager" title="Week 7~11 - Slow but steady wins the race
 ">Previous</a>
     
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-4/" class="pagination--pager" title="Week 4 - Neural Networks might come to action, but not just yet
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -411,45 +417,6 @@ First we need to detect the lanes that surround our vehicle, to do this, the Can
     <div class="page__related">
       <h2 class="page__related-title">You May Also Enjoy</h2>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-12/" rel="permalink">Week 12 - Following the road
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the c...</p>
-  </article>
-</div>
-
         
           
 
@@ -564,6 +531,45 @@ First we need to detect the lanes that surround our vehicle, to do this, the Can
 
 
     <p class="archive__item-excerpt" itemprop="description">As we saw in the previous post, we are very close to finally playing with some machine learning algorithms for our road following car. But as always, first w...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-4/" rel="permalink">Week 4 - Neural Networks might come to action, but not just yet
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">As we go further within the project, we stamble ourselfs already trying to introduce the concept of machine learning to the autonomous vehicle. But before we...</p>
   </article>
 </div>
 

@@ -1,0 +1,18 @@
+I"ž<p>With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.</p>
+
+<p>We are going to replicate the steps we took for the follow line problem so that we can resume improving the model and analyzing possible improvements. So, to recall, we had 3 major tasks to tackle:</p>
+
+<ul>
+  <li>Create an explicit brain for the follow lane problem</li>
+  <li>Create a dataset from the explicit brain algorithm</li>
+  <li>Train with our dataset, a PilotNet model</li>
+</ul>
+
+<h2 id="creating-the-explicit-follow-line-brain">Creating the explicit follow-line brain</h2>
+
+<p>The follow lane brain was already made as seen on the Week 3 post, but building upon this algorithm, I have improve it to take better the curves and to oscillate less when the left lane dissapears for a moment in an intersection.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/P9wC4w6Jy8E"></iframe></a>
+</figure>
+:ET
