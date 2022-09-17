@@ -52,4 +52,10 @@ var store = [{
         "tags": ["carla","pilotnet","dataset"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-12/",
         "teaser": null
+      },{
+        "title": "Week 13 - Handling the curve",
+        "excerpt":"Stumbling myself with an obstacle, in this week, the work was mainly focused on improving the dataset to handle better the curves. We already had a car that was able to follow the road when it was straight, but as soon as a curve was in front of it, it...","categories": ["Weekly Log"],
+        "tags": ["carla","pilotnet","dataset"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-13/",
+        "teaser": null
       }]
