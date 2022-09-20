@@ -55,7 +55,7 @@ class RenderObject(object):
 # Camera sensor callback, reshapes raw data from camera into 2D RGB and applies to PyGame surface
 def pygame_callback(data, obj, vehicle, model):
     step_start = time.time()
-    
+
     img = np.reshape(np.copy(data.raw_data), (data.height, data.width, 4))
     img = img[:,:,:3]
     img = img[:, :, ::-1]
@@ -180,7 +180,7 @@ def main():
         print('created %s' % vehicle.type_id)
 
         # Let's put the vehicle to drive around.
-        # vehicle.set_autopilot(True)
+        vehicle.set_autopilot(True)
 
         # Let's add now a "depth" camera attached to the vehicle. Note that the
         # transform we give here is now relative to the vehicle.

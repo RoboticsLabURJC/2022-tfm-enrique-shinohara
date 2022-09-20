@@ -50,6 +50,7 @@ class RenderObject(object):
         self.v = .0
         self.w = .0
         self.fps = deque(maxlen=60)
+        self.counter = 0
         
 
 # Camera sensor callback, reshapes raw data from camera into 2D RGB and applies to PyGame surface
@@ -61,7 +62,7 @@ def pygame_callback(data, obj, vehicle, model):
     img = img[:, :, ::-1]
     cropped = img[246:-1,:]
 
-    hsv = cv2.cvtColor(cropped, cv2.COLOR_RGB2HSV)
+    """hsv = cv2.cvtColor(cropped, cv2.COLOR_RGB2HSV)
     YELLOW_MIN = np.array([15, 80, 80],np.uint8)
     YELLOW_MAX = np.array([35, 255, 255],np.uint8)
     frame_threshed = cv2.inRange(hsv, YELLOW_MIN, YELLOW_MAX)
@@ -80,13 +81,14 @@ def pygame_callback(data, obj, vehicle, model):
     
     obj.v = throttle_val
     obj.w = steer_val
-    # print(obj.v, obj.w)
+    # print(obj.v, obj.w)"""
 
     frame_time = time.time() - step_start
     obj.fps.append(frame_time)
-    print(f'Agent: {len(obj.fps)/sum(obj.fps):>4.1f} FPS | {frame_time*1000} ms')
+    # print(f'Agent: {len(obj.fps)/sum(obj.fps):>4.1f} FPS | {frame_time*1000} ms')
+    obj.counter += 1
 
-    vehicle.apply_control(carla.VehicleControl(throttle=float(obj.v), steer=float(obj.w)))
+    # vehicle.apply_control(carla.VehicleControl(throttle=float(obj.v), steer=float(obj.w)))
 
     # print(vehicle.get_location())
 
@@ -179,8 +181,16 @@ def main():
         gameDisplay.blit(renderObject.surface, (0,0))
         pygame.display.flip()
 
-        t_end = time.time() + 60*5
+        t_end = time.time() + 60*1
+        step_start = time.time()
         while (time.time() < t_end):
+            frame_time = time.time() - step_start
+            if (frame_time >= 1) and frame_time <= 1.001:
+                step_start = time.time()
+                print(renderObject.counter)
+                print("Un segundo a pasado!!!!!!!!!!")
+                renderObject.counter = 0
+
             gameDisplay.blit(renderObject.surface, (0,0))
             pygame.display.flip()
         
