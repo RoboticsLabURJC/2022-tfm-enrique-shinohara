@@ -1,0 +1,23 @@
+I"�<p>Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?</p>
+
+<p>To tackle this questions and find the solution, an enumeration of where proposed for me by my tutor and advisor. The lines to keep on track right now are:</p>
+
+<ul>
+  <li>Introduce more variety onto the dataset</li>
+  <li>Measure the behaviour of the network</li>
+  <li>Explore other works along the side of a car following a road using neural networks</li>
+</ul>
+
+<p>To conclude the exploration part of this week, it is possible to find blogs of people who have tried this problem before with success. As expected, this is just the base when we see the bigger picture (given that we have also in mind to experiment with reinforcement learning), but is a base that we need to “conquer”. Given that this problem is being draged on since the previous week, we need to establish the next route to find the problem, and as one of the tasks at hand, we are going to need to search and measure the neural network and its training process (where the problem will be more likely to be found).</p>
+
+<h2 id="measuring-the-behaviour-of-the-training-process">Measuring the behaviour of the training process</h2>
+
+<p>One of the possible explanation of why is the car not turning, could be that the car is overfitting on straights, meaning that it is not extracting good, or enough information from the curves. To solve this, we have tried to increase the data, one by adding more curve cases to our dataset, and second by adding weird start cases. This last one has the purpose of giving the car more context of what to do in this strange situations. To do this, we simply rotate the yaw of the car along different points of the road for it to adjust itself and continue on the road as the follow-road algorithm intend it to.</p>
+
+<iframe src="https://giphy.com/embed/VUcpEtOCDNYeebZLcO" width="480" height="360" frameborder="0" class="align-center" allowfullscreen=""></iframe>
+<p></p>
+
+<p>By making a scatter plot of the groundtruth and the predicted values of the steering angle, we can have a good understanding of what is happening with the neural network. One of the first thing we can notice, is a certain correlation between this two, meaning that it is certainly learning something. On the bad side, we can comment on two things: one, the visible vertical line in the middle, meaning that the car still oscillates to maintain itself inside the road, otherwise it would learn to follow the road more smoothly, and second, the Y-axis of the plot. This last part is quite tricky, because it means that the network is doing some predictions that don’t correspond to the range of values from which it was trained.</p>
+
+<p>To better understand this, the dataset saved for the training has two values, the steering and the throttle. And while the throttle range from 0 to 1 in the Carla Simulation, the steering range from -1 to 1. This was the way the dataset was saved, but one solution that helped to understand this better is the normalization of the neural network. Normally, the neural networks train better when the data is normalized between 0 and 1, so by changig this step we only need to denormalize the values predicted from the model.</p>
+:ET

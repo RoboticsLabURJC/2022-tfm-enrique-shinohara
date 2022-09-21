@@ -1,0 +1,18 @@
+I"�<p>Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?</p>
+
+<p>To tackle this questions and find the solution, an enumeration of where proposed for me by my tutor and advisor. The lines to keep on track right now are:</p>
+
+<ul>
+  <li>Introduce more variety onto the dataset</li>
+  <li>Measure the behaviour of the network</li>
+  <li>Explore other works along the side of a car following a road using neural networks</li>
+</ul>
+
+<p>To conclude the exploration part of this week, it is possible to find blogs of people who have tried this problem before with success. As expected, this is just the base when we see the bigger picture (given that we have also in mind to experiment with reinforcement learning), but is a base that we need to “conquer”. Given that this problem is being draged on since the previous week, we need to establish the next route to find the problem, and as one of the tasks at hand, we are going to need to search and measure the neural network and its training process (where the problem will be more likely to be found).</p>
+
+<h1 id="measuring-the-behaviour-of-the-training-process">Measuring the behaviour of the training process</h1>
+
+<p>One of the possible explanation of why is the car not turning, could be that the car is overfitting on straights, meaning that it is not extracting good, or enough information from the curves. To solve this, we have tried to increase the data, one by adding more curve cases to our dataset, and second by adding weird start cases. This last one has the purpose of giving the car more context of what to do in this strange situations. To do this, we simply rotate the yaw of the car along different points of the road for it to adjust itself and continue on the road as the follow-road algorithm intend it to.</p>
+
+<iframe src="https://giphy.com/embed/VUcpEtOCDNYeebZLcO" width="480" height="360" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+:ET

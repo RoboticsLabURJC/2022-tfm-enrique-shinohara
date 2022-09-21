@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Week 0 - Ready, set, go! - Robotics Lab URJC</title>
-<meta name="description" content="With this first entry on my weekly blog, I start my master’s thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as Gazebo (a simulator where we can test our robots virtually) and ROS (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.">
+<!-- begin _includes/seo.html --><title>Week 14 - Why it is not turning? - Robotics Lab URJC</title>
+<meta name="description" content="Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?">
 
 
   <meta name="author" content="Enrique Shinohara">
@@ -22,30 +22,30 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Week 0 - Ready, set, go!">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-0/">
+<meta property="og:title" content="Week 14 - Why it is not turning?">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/">
 
 
-  <meta property="og:description" content="With this first entry on my weekly blog, I start my master’s thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as Gazebo (a simulator where we can test our robots virtually) and ROS (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2022-06-15T00:00:00+02:00">
+  <meta property="og:description" content="Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?">
 
 
 
 
 
-  
+
+
+  <meta property="article:published_time" content="2022-09-17T00:00:00+02:00">
+
+
+
+
 
   
 
+  
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-0/">
+
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/">
 
 
 
@@ -263,16 +263,16 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Week 0 - Ready, set, go!">
-    <meta itemprop="description" content="With this first entry on my weekly blog, I start my master’s thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as Gazebo (a simulator where we can test our robots virtually) and ROS (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.">
-    <meta itemprop="datePublished" content="2022-06-15T00:00:00+02:00">
+    <meta itemprop="headline" content="Week 14 - Why it is not turning?">
+    <meta itemprop="description" content="Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?">
+    <meta itemprop="datePublished" content="2022-09-17T00:00:00+02:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-0/" class="u-url" itemprop="url">Week 0 - Ready, set, go!
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/" class="u-url" itemprop="url">Week 14 - Why it is not turning?
 </a>
           </h1>
           
@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          2 minute read
         
       </span>
     
@@ -301,27 +301,28 @@
 
       <section class="page__content e-content" itemprop="text">
         
-        <p>With this first entry on my weekly blog, I start my master’s thesis with the objective and hope to learn and solve problems related to autonomous driving using computer vision. This first week, the focus is pointed towards installing and playing with softwares such as <a href="https://classic.gazebosim.org/download">Gazebo</a> (a simulator where we can test our robots virtually) and <a href="http://wiki.ros.org/noetic/Installation/Ubuntu">ROS</a> (Robot Operating System). The installation was pretty straight forward, given that both softwares are currently only officially supported for Ubuntu, the instructions can be followed in their respective homepages.</p>
+        <p>Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?</p>
 
-<p>Finally, we needed to undertand how we were going to do a blog for our thesis. For this, thanks to the feedback provided by my thesis tutor, it was decided to write the blog with Github Pages which start static servers to host website directly from our Github repository. In order to mess with this function I had to clone the following repositories:</p>
+<p>To tackle this questions and find the solution, an enumeration of where proposed for me by my tutor and advisor. The lines to keep on track right now are:</p>
 
 <ul>
-  <li><a href="https://github.com/JdeRobot/jderobot.github.io">jderobot.github.io</a>: repository of the website of the association of Robotics and Artificial Intelligence, JdeRobot.</li>
-  <li><a href="https://github.com/mmistakes/minimal-mistakes">minimal-mistakes</a>: repository of the minimal mistakes Jekyll theme for Github Pages.</li>
+  <li>Introduce more variety onto the dataset</li>
+  <li>Measure the behaviour of the network</li>
+  <li>Explore other works along the side of a car following a road using neural networks</li>
 </ul>
 
-<p>Both of them having multiple examples in order to know and test functionalities, on my own, of Github Pages and Jekyll Templates for an aesthetically pleasing blog website.</p>
+<p>To conclude the exploration part of this week, it is possible to find blogs of people who have tried this problem before with success. As expected, this is just the base when we see the bigger picture (given that we have also in mind to experiment with reinforcement learning), but is a base that we need to “conquer”. Given that this problem is being draged on since the previous week, we need to establish the next route to find the problem, and as one of the tasks at hand, we are going to need to search and measure the neural network and its training process (where the problem will be more likely to be found).</p>
 
-<!-- <p align="center">
-<img src="/assets/images/minimal_mistakes.png" width="300">
-</p> -->
+<h2 id="measuring-the-behaviour-of-the-training-process">Measuring the behaviour of the training process</h2>
 
-<!-- ![image-center](http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/minimal_mistakes.png){: .align-center} -->
+<p>One of the possible explanation of why is the car not turning, could be that the car is overfitting on straights, meaning that it is not extracting good, or enough information from the curves. To solve this, we have tried to increase the data, one by adding more curve cases to our dataset, and second by adding weird start cases. This last one has the purpose of giving the car more context of what to do in this strange situations. To do this, we simply rotate the yaw of the car along different points of the road for it to adjust itself and continue on the road as the follow-road algorithm intend it to.</p>
 
-<figure style="width:50%" class="align-center">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/minimal_mistakes.png" alt="" />
-  <figcaption>Minimal mistakes template for Jekyll</figcaption>
-</figure>
+<iframe src="https://giphy.com/embed/VUcpEtOCDNYeebZLcO" width="480" height="360" frameborder="0" class="align-center" allowfullscreen=""></iframe>
+<p></p>
+
+<p>By making a scatter plot of the groundtruth and the predicted values of the steering angle, we can have a good understanding of what is happening with the neural network. One of the first thing we can notice, is a certain correlation between this two, meaning that it is certainly learning something. On the bad side, we can comment on two things: one, the visible vertical line in the middle, meaning that the car still oscillates to maintain itself inside the road, otherwise it would learn to follow the road more smoothly, and second, the Y-axis of the plot. This last part is quite tricky, because it means that the network is doing some predictions that don’t correspond to the range of values from which it was trained.</p>
+
+<p>To better understand this, the dataset saved for the training has two values, the steering and the throttle. And while the throttle range from 0 to 1 in the Carla Simulation, the steering range from -1 to 1. This was the way the dataset was saved, but one solution that helped to understand this better is the normalization of the neural network. Normally, the neural networks train better when the data is normalized between 0 and 1, so by changig this step we only need to denormalize the values predicted from the model.</p>
 
         
       </section>
@@ -338,11 +339,9 @@
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#gazebo" class="page__taxonomy-item p-category" rel="tag">gazebo</a><span class="sep">, </span>
+      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#github-page" class="page__taxonomy-item p-category" rel="tag">github page</a><span class="sep">, </span>
-    
-      <a href="/2022-tfm-enrique-shinohara/tags/#ros-noetic" class="page__taxonomy-item p-category" rel="tag">ros noetic</a>
+      <a href="/2022-tfm-enrique-shinohara/tags/#dataset" class="page__taxonomy-item p-category" rel="tag">dataset</a>
     
     </span>
   </p>
@@ -367,29 +366,29 @@
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-06-15T00:00:00+02:00">June 15, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-09-17T00:00:00+02:00">September 17, 2022</time></p>
 
       </footer>
 
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+0+-+Ready%2C+set%2C+go%21%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-0%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+14+-+Why+it+is+not+turning%3F%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-0%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-0%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="#" class="pagination--pager disabled">Previous</a>
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-13/" class="pagination--pager" title="Week 13 - Handling the curve
+">Previous</a>
     
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-1/" class="pagination--pager" title="Week 1 - Soaking myself with context
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -403,45 +402,6 @@
     <div class="page__related">
       <h2 class="page__related-title">You May Also Enjoy</h2>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-14/" rel="permalink">Week 14 - Why it is not turning?
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the...</p>
-  </article>
-</div>
-
         
           
 
@@ -556,6 +516,45 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not me...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-6/" rel="permalink">Week 6 - Refining some code and testing some frequencies among others…
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">For this week we have multiple work borders open that I am going to explain more in detail in this post. To have a better visual of it, the task were as foll...</p>
   </article>
 </div>
 
