@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Week 14 - Why it is not turning? - Robotics Lab URJC</title>
+<!-- begin _includes/seo.html --><title>Week 14 - Why is it not turning? - Robotics Lab URJC</title>
 <meta name="description" content="Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?">
 
 
@@ -22,7 +22,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Week 14 - Why it is not turning?">
+<meta property="og:title" content="Week 14 - Why is it not turning?">
 <meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/">
 
 
@@ -263,7 +263,7 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Week 14 - Why it is not turning?">
+    <meta itemprop="headline" content="Week 14 - Why is it not turning?">
     <meta itemprop="description" content="Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?">
     <meta itemprop="datePublished" content="2022-09-17T00:00:00+02:00">
     
@@ -272,7 +272,7 @@
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/" class="u-url" itemprop="url">Week 14 - Why it is not turning?
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/" class="u-url" itemprop="url">Week 14 - Why is it not turning?
 </a>
           </h1>
           
@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          3 minute read
         
       </span>
     
@@ -313,7 +313,7 @@
 
 <p>To conclude the exploration part of this week, it is possible to find blogs of people who have tried this problem before with success. As expected, this is just the base when we see the bigger picture (given that we have also in mind to experiment with reinforcement learning), but is a base that we need to “conquer”. Given that this problem is being draged on since the previous week, we need to establish the next route to find the problem, and as one of the tasks at hand, we are going to need to search and measure the neural network and its training process (where the problem will be more likely to be found).</p>
 
-<h2 id="measuring-the-behaviour-of-the-training-process">Measuring the behaviour of the training process</h2>
+<h2 id="measuring-the-behaviour-of-the-training-process-and-increasing-the-dataset">Measuring the behaviour of the training process and increasing the dataset</h2>
 
 <p>One of the possible explanation of why is the car not turning, could be that the car is overfitting on straights, meaning that it is not extracting good, or enough information from the curves. To solve this, we have tried to increase the data, one by adding more curve cases to our dataset, and second by adding weird start cases. This last one has the purpose of giving the car more context of what to do in this strange situations. To do this, we simply rotate the yaw of the car along different points of the road for it to adjust itself and continue on the road as the follow-road algorithm intend it to.</p>
 
@@ -323,6 +323,18 @@
 <p>By making a scatter plot of the groundtruth and the predicted values of the steering angle, we can have a good understanding of what is happening with the neural network. One of the first thing we can notice, is a certain correlation between this two, meaning that it is certainly learning something. On the bad side, we can comment on two things: one, the visible vertical line in the middle, meaning that the car still oscillates to maintain itself inside the road, otherwise it would learn to follow the road more smoothly, and second, the Y-axis of the plot. This last part is quite tricky, because it means that the network is doing some predictions that don’t correspond to the range of values from which it was trained.</p>
 
 <p>To better understand this, the dataset saved for the training has two values, the steering and the throttle. And while the throttle range from 0 to 1 in the Carla Simulation, the steering range from -1 to 1. This was the way the dataset was saved, but one solution that helped to understand this better is the normalization of the neural network. Normally, the neural networks train better when the data is normalized between 0 and 1, so by changig this step we only need to denormalize the values predicted from the model.</p>
+
+<p>The normalization of the data gives us faster and probably an overall better training of our model, but this doesn’t takes the fact that the output values that the model is giving us doesn’t correspond with the range of values from the input. One solution that helped to improve the results were to try to interpret better how the ouput of the network correlates with the -1 to 1 range of the Carla simulation steering. Once this is tuned correctly, the car shows us a better take on how it handle the curve.</p>
+
+<p>The two videos below shows us how the car performs on two different curves. They both approach it a little differently but both of them show us more improvement on the overall car behaviour.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/ItRGSR-uukg"></iframe></a>
+</figure>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/mY9dlCyR_os"></iframe></a>
+</figure>
 
         
       </section>
@@ -339,9 +351,11 @@
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
+      <a href="/2022-tfm-enrique-shinohara/tags/#augmentation" class="page__taxonomy-item p-category" rel="tag">augmentation</a><span class="sep">, </span>
+    
       <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#dataset" class="page__taxonomy-item p-category" rel="tag">dataset</a>
+      <a href="/2022-tfm-enrique-shinohara/tags/#scatter-plot" class="page__taxonomy-item p-category" rel="tag">scatter plot</a>
     
     </span>
   </p>
@@ -373,7 +387,7 @@
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+14+-+Why+it+is+not+turning%3F%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+14+-+Why+is+it+not+turning%3F%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
   <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 

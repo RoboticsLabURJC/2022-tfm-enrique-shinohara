@@ -59,9 +59,9 @@ var store = [{
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-13/",
         "teaser": null
       },{
-        "title": "Week 14 - Why it is not turning?",
+        "title": "Week 14 - Why is it not turning?",
         "excerpt":"Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more...","categories": ["Weekly Log"],
-        "tags": ["carla","dataset"],
+        "tags": ["carla","scatter plot","augmentation"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-14/",
         "teaser": null
       }]
