@@ -315,6 +315,13 @@
 
 <h2 id="measuring-the-behaviour-of-the-training-process-and-increasing-the-dataset">Measuring the behaviour of the training process and increasing the dataset</h2>
 
+<p>As an experiment, the training was made with 45 epochs, to show us the behaviour of the training with our dataset and see how many epochs would be necessary for our model to not overfit. With this little experiment we simply visualize better that the training stabilize around 10 epochs.</p>
+
+<figure style="width:80%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/loss_45.png" alt="" />
+  <figcaption>Evolution of the error along 45 epochs.</figcaption>
+</figure>
+
 <p>One of the possible explanation of why is the car not turning, could be that the car is overfitting on straights, meaning that it is not extracting good, or enough information from the curves. To solve this, we have tried to increase the data, one by adding more curve cases to our dataset, and second by adding weird start cases. This last one has the purpose of giving the car more context of what to do in this strange situations. To do this, we simply rotate the yaw of the car along different points of the road for it to adjust itself and continue on the road as the follow-road algorithm intend it to.</p>
 
 <iframe src="https://giphy.com/embed/VUcpEtOCDNYeebZLcO" width="480" height="360" frameborder="0" class="align-center" allowfullscreen=""></iframe>
