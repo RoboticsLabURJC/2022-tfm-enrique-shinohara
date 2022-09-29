@@ -9,28 +9,32 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Robotics Lab URJC - Page 2</title>
-<meta name="description" content="Programming Robot Intelligence">
+<!-- begin _includes/seo.html --><title>Week 15 - Building momentum - Robotics Lab URJC</title>
+<meta name="description" content="Finally, we have made some visible progress with the car learning how to follow the lane implicitly. To do this the idea is pretty much the same as the previous weeks, to enrich the dataset with more complex situations so that the car is able to handle the straights and the curves of the road. Once we have increased once again the dataset, we have the next composition of a balanced dataset.">
 
 
   <meta name="author" content="Enrique Shinohara">
   
+  <meta property="article:author" content="Enrique Shinohara">
+  
 
 
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Robotics Lab URJC">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/page2/">
+<meta property="og:title" content="Week 15 - Building momentum">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-15/">
 
 
-  <meta property="og:description" content="Programming Robot Intelligence">
-
-
-
+  <meta property="og:description" content="Finally, we have made some visible progress with the car learning how to follow the lane implicitly. To do this the idea is pretty much the same as the previous weeks, to enrich the dataset with more complex situations so that the car is able to handle the straights and the curves of the road. Once we have increased once again the dataset, we have the next composition of a balanced dataset.">
 
 
 
+
+
+
+
+  <meta property="article:published_time" content="2022-09-28T00:00:00+02:00">
 
 
 
@@ -41,13 +45,9 @@
   
 
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/page2/">
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-15/">
 
 
-  <link rel="prev" href="http://localhost:4000/2022-tfm-enrique-shinohara/">
-
-
-  <link rel="next" href="http://localhost:4000/2022-tfm-enrique-shinohara/page3/">
 
 
 <script type="application/ld+json">
@@ -96,7 +96,7 @@
 
   </head>
 
-  <body class="layout--home">
+  <body class="layout--single">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -137,6 +137,8 @@
 
     <div class="initial-content">
       
+
+
 
 
 
@@ -260,29 +262,151 @@
 
 
 
-  <div class="archive">
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Week 15 - Building momentum">
+    <meta itemprop="description" content="Finally, we have made some visible progress with the car learning how to follow the lane implicitly. To do this the idea is pretty much the same as the previous weeks, to enrich the dataset with more complex situations so that the car is able to handle the straights and the curves of the road. Once we have increased once again the dataset, we have the next composition of a balanced dataset.">
+    <meta itemprop="datePublished" content="2022-09-28T00:00:00+02:00">
     
-      <h1 id="page-title" class="page__title"></h1>
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-15/" class="u-url" itemprop="url">Week 15 - Building momentum
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
     
+
     
 
-<h3 class="archive__subtitle">Recent Posts</h3>
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
 
 
+        </header>
+      
 
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>Finally, we have made some visible progress with the car learning how to follow the lane implicitly. To do this the idea is pretty much the same as the previous weeks, to enrich the dataset with more complex situations so that the car is able to handle the straights and the curves of the road. Once we have increased once again the dataset, we have the next composition of a balanced dataset.</p>
 
-<div class="entries-list">
+<figure style="width:80%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_20+curves+weird_extreme_good.png" alt="" />
+  <figcaption>Histogram of the steering values used for training</figcaption>
+</figure>
+
+<p>In total we end up with around 45.000 images. By adding this complex situations and adjusting the output of the network, this last task has to be done manually, adjusting the range of the output with the range of the Carla simulation to be able to interpret the predictions of the neural network. Once we have all this adjusted, we end up with the next run.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/YDHKA6ymo7s"></iframe></a>
+</figure>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/RAjDoJGylo4"></iframe></a>
+</figure>
+
+<p>It is interesting to watch some of the behaviour of the car in the previous video, for it has learned how to correct complex scenarios. As an example, in the first video (around the 28 second) once the turn is over, the car heads for the sidewalk, but then abruptly turns to the left straightening itself back to the lane. Trying to remember, previously we added to the dataset some weird start cases were we turned the car some degrees along the yaw so that it could learn how to straight itself back to the lane, and in the example from the video we can appreciate similar behaviour were it tries to overcome this scenario by following the lane accordingly.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
   
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
     
+      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a>
+    
+    </span>
+  </p>
 
 
 
-<div class="list__item">
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/2022-tfm-enrique-shinohara/categories/#weekly-log" class="page__taxonomy-item p-category" rel="tag">Weekly Log</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-09-28T00:00:00+02:00">September 28, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Week+15+-+Building+momentum%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-15%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-15%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-15%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-14/" class="pagination--pager" title="Week 14 - Why is it not turning?
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-6/" rel="permalink">Week 6 - Refining some code and testing some frequencies among others…
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-14/" rel="permalink">Week 14 - Why is it not turning?
 </a>
       
     </h2>
@@ -307,60 +431,21 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">For this week we have multiple work borders open that I am going to explain more in detail in this post. To have a better visual of it, the task were as foll...</p>
+    <p class="archive__item-excerpt" itemprop="description">Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the...</p>
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-5/" rel="permalink">Week 5 - Setting up CUDA for Deep Neural Networks
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          3 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">As we saw in the previous post, we are very close to finally playing with some machine learning algorithms for our road following car. But as always, first w...</p>
-  </article>
-</div>
-
-  
-    
-
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-4/" rel="permalink">Week 4 - Neural Networks might come to action, but not just yet
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-13/" rel="permalink">Week 13 - Handling the curve
 </a>
       
     </h2>
@@ -385,21 +470,21 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">As we go further within the project, we stamble ourselfs already trying to introduce the concept of machine learning to the autonomous vehicle. But before we...</p>
+    <p class="archive__item-excerpt" itemprop="description">Stumbling myself with an obstacle, in this week, the work was mainly focused on improving the dataset to handle better the curves. We already had a car that ...</p>
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-3/" rel="permalink">Week 3 - Hello World
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-12/" rel="permalink">Week 12 - Following the road
 </a>
       
     </h2>
@@ -424,21 +509,21 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">As we make our way into the depths of the Carla Simulator, it is a good idea to grasp a better understanding of the Carla framework and its infrastructure. I...</p>
+    <p class="archive__item-excerpt" itemprop="description">With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the c...</p>
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-2/" rel="permalink">Week 2 - Testing Carla Simulation.
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-7-11/" rel="permalink">Week 7~11 - Slow but steady wins the race
 </a>
       
     </h2>
@@ -456,67 +541,24 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          4 minute read
         
       </span>
     
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">A first introduction to the Carla simulation would be a good place to start with this weeks job, for we need to get acquainted with this simulation if we wan...</p>
+    <p class="archive__item-excerpt" itemprop="description">As we enter a vacation period in our thesis planification, advances will surely slow down when we compared them with the previous weeks. But this does not me...</p>
   </article>
 </div>
 
+        
+      </div>
+    </div>
+  
   
 </div>
 
-
-<nav class="pagination">
-  
-  <ul>
-    
-    
-      
-        <li><a href="/2022-tfm-enrique-shinohara/">Previous</a></li>
-      
-    
-
-    
-    
-      <li><a href="/2022-tfm-enrique-shinohara/">1</a></li>
-    
-
-    
-    
-
-    
-    
-    
-
-    
-      
-        <li><a href="/2022-tfm-enrique-shinohara/page2/" class="disabled current">2</a></li>
-      
-    
-
-    
-    
-
-    
-      <li><a href="/2022-tfm-enrique-shinohara/page3/">3</a></li>
-    
-
-    
-    
-      <li><a href="/2022-tfm-enrique-shinohara/page3/">Next</a></li>
-    
-  </ul>
-</nav>
-
-
-
-  </div>
-</div>
     </div>
 
     

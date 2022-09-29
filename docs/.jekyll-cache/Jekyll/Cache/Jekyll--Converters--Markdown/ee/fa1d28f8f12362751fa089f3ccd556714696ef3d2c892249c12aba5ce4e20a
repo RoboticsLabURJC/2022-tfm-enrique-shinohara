@@ -1,0 +1,17 @@
+I"<p>Finally, we have made some visible progress with the car learning how to follow the lane implicitly. To do this the idea is pretty much the same as the previous weeks, to enrich the dataset with more complex situations so that the car is able to handle the straights and the curves of the road. Once we have increased once again the dataset, we have the next composition of a balanced dataset.</p>
+
+<figure style="width:80%" class="align-center">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_20+curves+weird_extreme_good.png" alt="" />
+  <figcaption>Histogram of the steering values used for training</figcaption>
+</figure>
+
+<p>In total we end up with around 45.000 images. By adding this complex situations and adjusting the output of the network, this last task has to be done manually, adjusting the range of the output with the range of the Carla simulation to be able to interpret the predictions of the neural network. Once we have all this adjusted, we end up with the next run.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/YDHKA6ymo7s"></iframe></a>
+</figure>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/RAjDoJGylo4"></iframe></a>
+</figure>
+:ET
