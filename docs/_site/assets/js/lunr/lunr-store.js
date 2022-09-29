@@ -67,7 +67,7 @@ var store = [{
       },{
         "title": "Week 15 - Building momentum",
         "excerpt":"Finally, we have made some visible progress with the car learning how to follow the lane implicitly. To do this the idea is pretty much the same as the previous weeks, to enrich the dataset with more complex situations so that the car is able to handle the straights and...","categories": ["Weekly Log"],
-        "tags": ["carla"],
+        "tags": ["carla","dataset"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-15/",
         "teaser": null
       }]
