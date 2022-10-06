@@ -1,0 +1,7 @@
+I"±<p>For this week we need to focus on a variety of tasks:</p>
+<ul>
+  <li>Setting everything up for the new version of the Carla Simulator, such us, packages compatibility for us to keep using the same code used for the 0.9.2 version.</li>
+  <li>To enrich our neural network adding the velocity on the training and prediction. Right now we are only using the steering values to learn the behaviour of the car.</li>
+  <li>Learn and if possible, implement the <a href="https://arxiv.org/abs/1912.12294">Learning by Cheating</a> paper onto our arquitecture. This should gives us a more robust training method but it requires a slightly different approach as the one taken up to now.</li>
+</ul>
+:ET

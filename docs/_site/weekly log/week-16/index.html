@@ -1,0 +1,659 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Week 16 - The solution of every problem is another problem - Robotics Lab URJC</title>
+<meta name="description" content="And just as the problem of turning was fixed, I stumble my self into another problem, but nothing to be afraid of (yet). The simple task of moving from the 0.9.2 version of Carla to the 0.9.13, has proven to be quite a handful of problems given the fact that I am still not able to emulate the same behaviour as the old Carla version and its impressive ability to turn left and right, but to understand and keep trying to find a solution, let us first start from the beginning.">
+
+
+  <meta name="author" content="Enrique Shinohara">
+  
+  <meta property="article:author" content="Enrique Shinohara">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics Lab URJC">
+<meta property="og:title" content="Week 16 - The solution of every problem is another problem">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-16/">
+
+
+  <meta property="og:description" content="And just as the problem of turning was fixed, I stumble my self into another problem, but nothing to be afraid of (yet). The simple task of moving from the 0.9.2 version of Carla to the 0.9.13, has proven to be quite a handful of problems given the fact that I am still not able to emulate the same behaviour as the old Carla version and its impressive ability to turn left and right, but to understand and keep trying to find a solution, let us first start from the beginning.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-10-06T00:00:00+02:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-16/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000/2022-tfm-enrique-shinohara/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/2022-tfm-enrique-shinohara/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics Lab URJC Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/2022-tfm-enrique-shinohara/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/2022-tfm-enrique-shinohara/"><img src="/2022-tfm-enrique-shinohara/assets/images/logo.png" alt="Robotics Lab URJC"></a>
+        
+        <a class="site-title" href="/2022-tfm-enrique-shinohara/">
+          Robotics Lab URJC
+          <span class="site-subtitle">Programming Robot Intelligence</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/2022-tfm-enrique-shinohara/year-archive/">Logbook</a>
+            </li><li class="masthead__menu-item">
+              <a href="/2022-tfm-enrique-shinohara/about/">About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/2022-tfm-enrique-shinohara/">
+        <img src="/2022-tfm-enrique-shinohara/assets/images/Enrique-Yujiro-white2.jpg" alt="Enrique Shinohara" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/2022-tfm-enrique-shinohara/" itemprop="url">Enrique Shinohara</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Master’s thesis blog</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Madrid, Spain</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/RoboticsLabURJC/2022-tfm-enrique-shinohara" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/enrique-yujiro-shinohara-soto" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:enriqueshino@gmail.com" rel="me" class="u-email">
+            <meta itemprop="email" content="enriqueshino@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Week 16 - The solution of every problem is another problem">
+    <meta itemprop="description" content="And just as the problem of turning was fixed, I stumble my self into another problem, but nothing to be afraid of (yet). The simple task of moving from the 0.9.2 version of Carla to the 0.9.13, has proven to be quite a handful of problems given the fact that I am still not able to emulate the same behaviour as the old Carla version and its impressive ability to turn left and right, but to understand and keep trying to find a solution, let us first start from the beginning.">
+    <meta itemprop="datePublished" content="2022-10-06T00:00:00+02:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-16/" class="u-url" itemprop="url">Week 16 - The solution of every problem is another problem
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>And just as the problem of turning was fixed, I stumble my self into another problem, but nothing to be afraid of (yet). The simple task of moving from the 0.9.2 version of Carla to the 0.9.13, has proven to be quite a handful of problems given the fact that I am still not able to emulate the same behaviour as the old Carla version and its impressive ability to turn left and right, but to understand and keep trying to find a solution, let us first start from the beginning.</p>
+
+<p>For this week we had to focus on a variety of tasks:</p>
+<ul>
+  <li>Setting everything up for the new version of the Carla Simulator, such us, packages compatibility for us to keep using the same code used for the 0.9.2 version.</li>
+  <li>To enrich our neural network adding the velocity on the training and prediction. Right now we are only using the steering values to learn the behaviour of the car.</li>
+  <li>Learn and if possible, implement the <a href="https://arxiv.org/abs/1912.12294">Learning by Cheating</a> paper onto our arquitecture. This should gives us a more robust training method but it requires a slightly different approach as the one taken up to now.</li>
+</ul>
+
+<p>To deal with the first two tasks, we needed to collect a bunch of data from the new Carla version. This has to be done because one of the main differences with the new version and the old, as we mentioned on a previous post, resides on the refinement of the car physics. This alone is a feature that aimed to bring closer the simulation to the real world, so it basically changes completely how the car behaves on the simulator and therefore what it learns from it. So we needed to start the process of teaching a neural network from the beginning.</p>
+
+<p>In order to gather our thoughts better, first we need to talk a little about the dataset and the different towns available to us from the 0.9.13 version of the Carla Simulator. The idea we came up with was to collect 30 minutes of autopilot data from the 2, 3 and 4 Town, leaving the Towns 1 and 5 for testing purposes.</p>
+
+<figure class="third">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/Carla_0913Town02.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/Carla_0913Town03.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/Carla_0913Town04.png" alt="" />
+  <figcaption>Bird's-eye view of Town02, Town03 and Town04 respectively.</figcaption>
+</figure>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/Carla_0913Town01.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/Carla_0913Town05.png" alt="" />
+  <figcaption>Bird's-eye view of Town01 (left) and Town05 (right).</figcaption>
+</figure>
+
+<p>The recollection gave us a total of 93.655 images for training and validation. The problem with using so much data, compared to the 32.674 on the previous version, is that the data balancing process as well as the training steps consume much more resources from our machine to the poin that it automatically kills the process for the lack of computation capability. But for the sake of coming with a solution, we go ahead and balance our data as shown in the next figure.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_town234.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_town234_low.png" alt="" />
+  <figcaption>Historigram of the whole dataset without preprocessing (left) and preprocessed and balanced data (right).</figcaption>
+</figure>
+
+<p>Once we have our data balanced we proceed like we did on previous cases, with training the model for the purpose of making the car follow the lane. To train the model, we go ahead and make it learn throught as many epochs as possible, so that we might be able to analyze if it is training correctly or not. One of the main changes done to the parameters, is the learning rate of the training process. We wanted to see how the model adjust its weights along this two different values.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/0_0001.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/0_01.png" alt="" />
+  <figcaption>Training epoch loss between small learning rate of 0.0001 (left) and big learning rate 0.01 (right)</figcaption>
+</figure>
+
+<p>As we can see from the previous graph, the model is barely learning anything, while the training error (orange) is getting lower, the validation error (blue) is much higher. We might be overfitting our data, maybe because of the possibly wrongly balanced data. On the other hand, by increasing the learning rate, we observe a stabilized but similar error on the train and validation data. We could thing good of this training but then again, if we check the scatter plot of the predicted steering values compared to the groundtruth we found the next thing.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/scatter_plot_0913_0_0001.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/scatter_plot_0913_0_01.png" alt="" />
+  <figcaption>Scatter plot from the 50th epoch, learning rate of 0.0001 (left) and 0.01 (right)</figcaption>
+</figure>
+
+<p>While the 0.0001 learning rate gives random prediction as we can see from its distribution (we cannot distinguish any pattern), the 0.01 shows us barely no correlation between the groundtruth and the prediction, proving that it didn’t learn the proper behaviour for steering values.</p>
+
+<p>The fundamental problem with the actual setup of my machine, is that as we talked before, it kills the process before we can see if it is possible for the error to get any lower of it is going to stay the same forever. To try to fix this problem we may have been dragged a few steps back but we will always try to understand and make sense of the issues, finding a suitable solution. For example, one possible way around this, could be to lower the batch size for it to be more computationally friendly, or reduce even more the quantity of data used for training.</p>
+
+<h2 id="bird-eye-view-training">Bird-eye view training</h2>
+
+<p>As the third task, one of my master thesis advisor Sergio, showed me a pretty interesting and renowned paper called <a href="https://arxiv.org/abs/1912.12294">Learning by Cheating</a>. And the premise of this was to make a much easier learning process by using a simple world representation such us the bird-eye view like the one we see in the next video.</p>
+
+<iframe src="https://giphy.com/embed/dX1pygmF5IBoDHV63b" width="150" height="139  " frameborder="0" class="align-center" allowfullscreen=""></iframe>
+<p></p>
+
+<p>It is also demostrated by the authors of the paper that this method makes a robust vision-based autonomous driving system, which we thought was worth a try, at least as a “second” priority task for the week. And as such, all the progress I made around this matter consists on reading and understanding the paper, and installing a pretty neat package called <a href="https://github.com/deepsense-ai/carla-birdeye-view">carla_birdeye_view</a> made to take a 2D world representation (bird-eye view) from the Carla Simulator. With this package, I was able to easily collect a bird-eye data with the autopilot from Carla.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/2022-tfm-enrique-shinohara/categories/#weekly-log" class="page__taxonomy-item p-category" rel="tag">Weekly Log</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-10-06T00:00:00+02:00">October 6, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Week+16+-+The+solution+of+every+problem+is+another+problem%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-16%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-16%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-16%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-15/" class="pagination--pager" title="Week 15 - Building momentum
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-15/" rel="permalink">Week 15 - Building momentum
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Finally, we have made some visible progress with the car learning how to follow the lane implicitly. To do this the idea is pretty much the same as the previ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-14/" rel="permalink">Week 14 - Why is it not turning?
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-13/" rel="permalink">Week 13 - Handling the curve
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Stumbling myself with an obstacle, in this week, the work was mainly focused on improving the dataset to handle better the curves. We already had a car that ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-12/" rel="permalink">Week 12 - Following the road
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the c...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/roboticslaburjc" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/RoboticsLabURJC" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+    
+      <li><a href="/2022-tfm-enrique-shinohara/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/2022-tfm-enrique-shinohara/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

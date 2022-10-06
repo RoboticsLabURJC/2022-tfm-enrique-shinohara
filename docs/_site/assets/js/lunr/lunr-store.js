@@ -70,4 +70,10 @@ var store = [{
         "tags": ["carla","dataset"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-15/",
         "teaser": null
+      },{
+        "title": "Week 16 - The solution of every problem is another problem",
+        "excerpt":"And just as the problem of turning was fixed, I stumble my self into another problem, but nothing to be afraid of (yet). The simple task of moving from the 0.9.2 version of Carla to the 0.9.13, has proven to be quite a handful of problems given the fact that...","categories": ["Weekly Log"],
+        "tags": ["carla"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-16/",
+        "teaser": null
       }]
