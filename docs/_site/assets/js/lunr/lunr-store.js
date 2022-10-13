@@ -76,4 +76,10 @@ var store = [{
         "tags": ["carla"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-16/",
         "teaser": null
+      },{
+        "title": "Week 17 - ",
+        "excerpt":"As a continuation of our current task, we are going to keep trying to make our car follow straight roads and turn on the curves correctly. As a reminder, we already had this feature on the 0.9.2 version of the Carla Simulation, but by upgrading to the 0.9.13 (in order...","categories": ["Weekly Log"],
+        "tags": ["carla"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-17/",
+        "teaser": null
       }]
