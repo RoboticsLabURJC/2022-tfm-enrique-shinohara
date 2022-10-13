@@ -323,8 +323,13 @@
   <figcaption>Un-balanced training set (orange), un-balanced validation set (dark blue); balanced training set (red), balanced validation set (light blue)</figcaption>
 </figure>
 
-<p>Other thing we noticed, is that</p>
+<p>Other thing we noticed, is that by simply increasing the “weird” cases on our dataset wasn’t enough. The loss on our un-balanced validation set, follows almost the same pattern as the one we had on the previous week. Like we said, the main difference training-wise, was seen on the way we balance our data.</p>
 
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/2C-o_6tMh8s"></iframe></a>
+</figure>
+
+<p>As we can see from the video, the car is able to follow a straight road but it cannot stay in one lane, given that it was a desirable quality for the car we need to further improve the way we train with this new dataset. Also, we seem to be stuck once again on the curve problem, it is not able to turn correctly, but as we saw from previous experiences, this problem is mainly resolved by increasing (even more) the quantity of turning events in our dataset, as well as the correct balancing of its values.</p>
 
         
       </section>
