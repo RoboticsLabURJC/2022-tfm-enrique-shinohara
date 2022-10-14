@@ -7,7 +7,7 @@ Babel==2.10.3
 backcall==0.2.0
 beautifulsoup4==4.11.1
 bleach==5.0.0
-carla @ file:///home/yujiro/git/2022-tfm-enrique-shinohara/carla/PythonAPI/carla/dist/carla-0.9.12-cp37-cp37m-manylinux_2_27_x86_64.whl
+carla @ file:///home/yujiro/git/2022-tfm-enrique-shinohara/carla/PythonAPI/carla/dist/carla-0.9.13-cp37-cp37m-manylinux_2_27_x86_64.whl
 certifi==2022.6.15
 cffi==1.15.0
 charset-normalizer==2.0.12
