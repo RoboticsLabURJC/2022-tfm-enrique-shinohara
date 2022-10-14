@@ -34,6 +34,7 @@ from collections import deque
 from agents.rl_agent import *
 from agents.vision_agent import *
 from agents.followline_agent import *
+from carla_birdeye_view import BirdViewProducer, BirdViewCropType, PixelDimensions
 
 try:
     import pygame
@@ -77,18 +78,18 @@ gpus = tf.config.experimental.list_physical_devices('GPU')
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 
-# 10: Simply a right turn
+# 10: Simply a left turn
 # 17: Right turn with an annoying barrier which hitbox hits the car
-SPAWNPOINT = 10
+SPAWNPOINT = 13
 
 
 # ==============================================================================
 # -- find carla module ---------------------------------------------------------
 # ==============================================================================
 try:
-    sys.path.append(glob.glob('../*%d.%d-%s.egg' % (
+    sys.path.append(glob.glob('../carla/dist/*%d.%d-%s.egg' % (
         sys.version_info.major,
-        5,
+        7,
         'win-amd64' if os.name == 'nt' else 'linux-x86_64'))[0])
 except IndexError:
     pass
@@ -136,7 +137,7 @@ class World(object):
         cam_index = self.camera_manager._index if self.camera_manager is not None else 0
         cam_pos_index = self.camera_manager._transform_index if self.camera_manager is not None else 0
 
-        blueprint = self.world.get_blueprint_library().find('vehicle.lincoln.mkz2017')
+        blueprint = self.world.get_blueprint_library().find('vehicle.tesla.model3')
         blueprint.set_attribute('role_name', 'hero')
         if blueprint.has_attribute('color'):
             color = random.choice(blueprint.get_attribute('color').recommended_values)
@@ -158,7 +159,7 @@ class World(object):
             spawn_points = self.world.get_map().get_spawn_points()
             spawn_point = spawn_points[SPAWNPOINT]
             # spawn_point.rotation.yaw += 20
-            # spawn_point.rotation.yaw -= 20
+            spawn_point.rotation.yaw -= 20
             # spawn_point.rotation.yaw += 15
             # spawn_point.rotation.yaw -= 10
             self.vehicle = self.world.spawn_actor(blueprint, spawn_point)
@@ -520,6 +521,24 @@ def line_prepender(filename, line):
         for line in reader:
             writer.writerow(line)
 
+
+def save_instance_to_dataset(world, image, image_counter, first_image_taken):
+    file_path = "_%d/" % (SPAWNPOINT)
+    file_name = "%d.png" % (image_counter) # / 10)
+    j = Image.fromarray(image)
+    j.save(file_path + file_name, compress_level=1)
+
+    row_contents = [file_name, world.vehicle.get_control().throttle, world.vehicle.get_control().steer]
+    # Append a list as new line to an old csv file
+    append_list_as_row(file_path + 'data.csv', row_contents)
+
+    if first_image_taken == 0:
+        line_prepender(file_path + 'data.csv', ['image', 'throttle', 'steer'])
+        first_image_taken = 1
+
+    return first_image_taken
+
+
 # ==============================================================================
 # -- game_loop() ---------------------------------------------------------
 # ==============================================================================
@@ -538,7 +557,7 @@ def game_loop(args):
             pygame.HWSURFACE | pygame.DOUBLEBUF)
 
         hud = HUD(args.width, args.height)
-        world = World(client.get_world(), hud, args)
+        world = World(client.load_world('Town02_Opt'), hud, args)
 
         if args.agent == "rl":
             agent = RLAgent(world.vehicle)
@@ -546,13 +565,22 @@ def game_loop(args):
             agent.model.predict(np.ones((1, 66, 200, 3)))
         elif args.agent == "fl":
             agent = FLAgent(world.vehicle)
-        else:
+        elif args.agent == "fr":
             agent = Agent(world.vehicle)
+        else:
+            agent = None
+            world.vehicle.set_autopilot(True)
 
-
-        if args.rec == True:
+        if args.rec != "":
             if not os.path.exists('./_%d/' % SPAWNPOINT):
                 os.makedirs('./_%d/' % SPAWNPOINT)
+
+        birdview_producer = BirdViewProducer(
+            client,
+            target_size=PixelDimensions(width=150, height=336),
+            pixels_per_meter=4,
+            crop_type=BirdViewCropType.FRONT_AREA_ONLY
+        )
 
 
         clock = pygame.time.Clock()
@@ -568,11 +596,24 @@ def game_loop(args):
 
             step_start = time.time()
             if type(world.camera_manager.image).__module__ == np.__name__:
-                steer, throttle, image = agent.run_step(world.camera_manager.image)
-                world.camera_manager._surface = pygame.surfarray.make_surface(image.swapaxes(0, 1))
-                world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer)))
+                # If we use autopilot of carla and no agent to control the car
+                if agent == None:
+                    world.camera_manager._surface = pygame.surfarray.make_surface(world.camera_manager.image.swapaxes(0, 1))
+                    #Get the traffic light affecting a vehicle
+                    if world.vehicle.is_at_traffic_light():
+                        traffic_light = world.vehicle.get_traffic_light()
+                        if traffic_light.get_state() == carla.TrafficLightState.Red or traffic_light.get_state() == carla.TrafficLightState.Yellow:
+                            traffic_light.set_state(carla.TrafficLightState.Green)
+                            traffic_light.set_green_time(4.0)
 
-                image_counter = image_counter + 1
+                    image_counter = image_counter + 1
+                # The agent selected will be used to control the car
+                else:
+                    steer, throttle, image = agent.run_step(world.camera_manager.image)
+                    world.camera_manager._surface = pygame.surfarray.make_surface(image.swapaxes(0, 1))
+                    world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer)))
+
+                    image_counter = image_counter + 1
 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -585,19 +626,13 @@ def game_loop(args):
                             recording = False
 
                 # if (args.rec == True) and (image_counter % 10 == 0):
-                if recording:
-                    file_path = "_%d/" % (SPAWNPOINT)
-                    file_name = "%d.png" % (image_counter) # / 10)
-                    j = Image.fromarray(world.camera_manager.image)
-                    j.save(file_path + file_name, compress_level=1)
+                if recording and args.rec == "rgb":
+                    first_image_taken = save_instance_to_dataset(world, world.camera_manager.image, image_counter, first_image_taken)
 
-                    row_contents = [file_name, throttle, steer]
-                    # Append a list as new line to an old csv file
-                    append_list_as_row(file_path + 'data.csv', row_contents)
-
-                    if first_image_taken == 0:
-                        line_prepender(file_path + 'data.csv', ['image', 'throttle', 'steer'])
-                        first_image_taken = 1
+                elif recording and args.rec == "bird":
+                    birdview = birdview_producer.produce(agent_vehicle=world.vehicle)
+                    rgb = BirdViewProducer.as_rgb(birdview)
+                    first_image_taken = save_instance_to_dataset(world, rgb, image_counter, first_image_taken)
             
             frame_time = time.time() - step_start
             fps.append(frame_time)
@@ -652,12 +687,13 @@ def main():
         default='640x480',
         help='window resolution (default: 640x480)')
 
-    argparser.add_argument("-r", "--record",
-                        action='store_true',
-                        dest='rec')
+    argparser.add_argument("-r", "--rec",
+                           choices=["rgb", "bird"],
+                           help="select which view to record",
+                           default="rgb")
 
     argparser.add_argument("-a", "--agent", type=str,
-                           choices=["rl", "basic", "fl"],
+                           choices=["rl", "basic", "fl", "fr"],
                            help="select which agent to run",
                            default="basic")
     args = argparser.parse_args()

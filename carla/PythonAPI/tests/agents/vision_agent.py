@@ -37,7 +37,7 @@ def check_bottomtop_lanes(img):
 
 
 def check_leftright_lanes(img):
-    img_rgb = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     edges = cv2.Canny(img, 100, 200)
 
     kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (21, 2))

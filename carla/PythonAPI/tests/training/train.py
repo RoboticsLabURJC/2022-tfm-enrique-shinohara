@@ -3,6 +3,7 @@ import argparse
 import datetime
 import time
 import h5py
+import sys
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -16,6 +17,18 @@ from tensorflow.python.keras.saving import hdf5_format
 
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+
+def progressbar(it, prefix="", size=60, out=sys.stdout): # Python3.3+
+    count = len(it)
+    def show(j):
+        x = int(size*j/count)
+        print("{}[{}{}] {}/{}".format(prefix, "#"*x, "."*(size-x), j, count), 
+                end='\r', file=out, flush=True)
+    show(0)
+    for i, item in enumerate(it):
+        yield item
+        show(i+1)
+    print("\n", flush=True, file=out)
 
 
 class ScatterPlotCallback(tf.keras.callbacks.Callback):
@@ -31,16 +44,18 @@ class ScatterPlotCallback(tf.keras.callbacks.Callback):
             x_true = []
             y_predicted = []
 
-            for x in range(0, len(self.annotations_val)):
+            for x in progressbar(range(0, len(self.annotations_val), 20), "Computing: ", 40):
                 x_true.append(self.annotations_val[x][1])
 
                 final_image = self.images_val[x]
                 final_image = final_image[np.newaxis]
                 prediction = model.predict(final_image)
+                # print(prediction)
 
                 y_predicted.append(prediction[0][1])
 
-            plt.scatter(x_true, y_predicted, c ="green",
+            fig1, ax1 = plt.subplots()
+            ax1.scatter(x_true, y_predicted, c ="green",
                     linewidths = 2,
                     marker =".",
                     s = 50)
@@ -48,7 +63,8 @@ class ScatterPlotCallback(tf.keras.callbacks.Callback):
             plt.xlabel("steer groundtruth")
             plt.ylabel("steer prediction")
             name = 'scatter_plot_10+curves+weird_extreme_epoch' + str(epoch)
-            plt.savefig(name, bbox_inches='tight')
+            fig1.savefig(name, bbox_inches='tight')
+            plt.close(fig1)
 
 
 
@@ -140,7 +156,7 @@ if __name__ == "__main__":
         verbose=1,
         validation_data=valid_gen,
         # workers=2, use_multiprocessing=False,
-        callbacks=[tensorboard_callback, earlystopping, cp_callback, csv_logger])
+        callbacks=[tensorboard_callback, cp_callback, csv_logger, scatter_plot_callback])
 
     # Save model
     model.save(model_file)

@@ -31,7 +31,7 @@ class RLAgent(object):
         self._map = self._vehicle.get_world().get_map()
         self.w = 0
         self.v = 0
-        self.model = load_model('20220920-154923_pilotnet_model_3_albumentations_no_crop_cp.h5')
+        self.model = load_model('20221013-202213_pilotnet_model_3_albumentations_no_crop_cp.h5')
 
 
     def run_step(self, img):
@@ -55,11 +55,11 @@ class RLAgent(object):
         throttle_val = self.v
         # if data.frame_number % 10 == 0:
         example_result = self.model.predict(final_image)
-        # Follow line steering values
-        # steer_val = -example_result[0][1]*0.1
         # Follow lane steering values
-        steer_val = example_result[0][1]*0.02
-        throttle_val = 0.3 # example_result[0][0]
+        steer_val = np.interp(example_result[0][1], (0, 35), (-1, 1))
+        # print(example_result[0][1])
+        # print(example_result[0][0])
+        throttle_val = 0.15 # example_result[0][0]
 
         self.v = throttle_val
         self.w = steer_val

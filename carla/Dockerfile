@@ -1,27 +1,19 @@
-# Make sure drivers are >= 390
-# sudo docker run -p 2000-2002:2000-2002 --runtime=nvidia -e NVIDIA_VISIBLE_DEVICES=ID carla:latest ./CarlaUE4.sh
-# /Game/Maps/Town01 -benchmark -carla-server -fps=10 -world-port=2000 -windowed -ResX=100 -ResY=100 -carla-no-hud
 
-FROM nvidia/opengl:1.0-glvnd-runtime-ubuntu16.04
+# run the docker container as:
+#
+# sudo -E docker run --rm --gpus all -it --net=host carla:latest /bin/bash
 
+FROM nvidia/vulkan:1.1.121-cuda-10.1--ubuntu18.04
 
-RUN apt-get update; apt-get install -y libsdl2-2.0
+RUN packages='libsdl2-2.0 xserver-xorg libvulkan1 libomp5' && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y $packages --no-install-recommends
 
 RUN useradd -m carla
-USER carla
-ENV HOME /home/carla
-COPY . /home/carla
 
-USER root
-RUN chown -R carla:carla /home/carla
-
-RUN apt-get -y install sudo
-RUN echo "carla:carla" | chpasswd && adduser carla sudo
+COPY --chown=carla:carla . /home/carla
 
 USER carla
 WORKDIR /home/carla
 
-
-ENV SDL_VIDEODRIVER=offscreen
-
-CMD /bin/bash CarlaUE4.sh -carla-server
+# you can also run CARLA in offscreen mode with -RenderOffScreen
+# CMD /bin/bash CarlaUE4.sh -RenderOffScreen
+CMD /bin/bash CarlaUE4.sh

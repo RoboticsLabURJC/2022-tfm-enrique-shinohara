@@ -1,6 +1,7 @@
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense, Conv2D, BatchNormalization, Dropout, ConvLSTM2D, Reshape, Activation, MaxPooling2D
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.layers import LeakyReLU
 
 
 def pilotnet_model(img_shape, learning_rate):
