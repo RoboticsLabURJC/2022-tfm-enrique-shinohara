@@ -77,9 +77,15 @@ var store = [{
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-16/",
         "teaser": null
       },{
-        "title": "Week 17 - ",
+        "title": "Week 17 - Combating imbalanced data",
         "excerpt":"As a continuation of our current task, we are going to keep trying to make our car follow straight roads and turn on the curves correctly. As a reminder, we already had this feature on the 0.9.2 version of the Carla Simulation, but by upgrading to the 0.9.13 (in order...","categories": ["Weekly Log"],
         "tags": ["carla"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-17/",
+        "teaser": null
+      },{
+        "title": "Week 18 - Simplifying and gathering a lot of data",
+        "excerpt":"Simplification. That is the goal of our next task, by simplyfing the follow lane, we are going to build up the complexity of the problem. But first, we need to establish a good foundation for our next problems, and this foundation consist of a car capable of doing the same...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-18/",
         "teaser": null
       }]
