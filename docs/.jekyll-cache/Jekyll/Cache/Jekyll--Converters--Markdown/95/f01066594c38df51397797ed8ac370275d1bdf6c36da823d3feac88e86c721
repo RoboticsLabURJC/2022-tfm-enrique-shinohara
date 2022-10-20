@@ -1,4 +1,4 @@
-I"{<p>Simplification. That is the goal of our next task, by simplyfing the follow lane, we are going to build up the complexity of the problem. But first, we need to establish a good foundation for our next problems, and this foundation consist of a car capable of doing the same follow lane that it was possible on the 0.9.2 version of the Carla Simulation. One of the main changes resided on the possibility of using an already implemented autopilot instead of using our own (for now). The problem was that this autopilot was designed to randomly run around the roads of a given map, with this we are only adding very complex situations from the beginning such as intersections or junctions (that we need to take them into account, but not now).</p>
+I"œ<p>Simplification. That is the goal of our next task, by simplyfing the follow lane, we are going to build up the complexity of the problem. But first, we need to establish a good foundation for our next problems, and this foundation consist of a car capable of doing the same follow lane that it was possible on the 0.9.2 version of the Carla Simulation. One of the main changes resided on the possibility of using an already implemented autopilot instead of using our own (for now). The problem was that this autopilot was designed to randomly run around the roads of a given map, with this we are only adding very complex situations from the beginning such as intersections or junctions (that we need to take them into account, but not now).</p>
 
 <p>So, to simplify the actual task that we are going to teach our car, we need to establish a simple route planner. Luckily, this is doable on our trustworthy Carla Simulation. By adjusting some parameters on the traffic manager on Carla, we can make our car decide to go straight when it encounters this complex road situations. The other problem we have lies on the Towns from which we are taking the data, the issue here is that we need to ensure that we find a route that doesnâ€™t end in a junction, and we can always find a map with a suitable route for our purpose with the exception of Town04, because no matter the route taken in this map, it coincidentally always ends in a junction.</p>
 
@@ -24,4 +24,5 @@
 
 <h2 id="increasing-our-dataset">Increasing our dataset</h2>
 
+<p>By increasing the dataset</p>
 :ET
