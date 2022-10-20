@@ -1,0 +1,34 @@
+I"_<p>Simplification. That is the goal of our next task, by simplyfing the follow lane, we are going to build up the complexity of the problem. But first, we need to establish a good foundation for our next problems, and this foundation consist of a car capable of doing the same follow lane that it was possible on the 0.9.2 version of the Carla Simulation. One of the main changes resided on the possibility of using an already implemented autopilot instead of using our own (for now). The problem was that this autopilot was designed to randomly run around the roads of a given map, with this we are only adding very complex situations from the beginning such as intersections or junctions (that we need to take them into account, but not now).</p>
+
+<p>So, to simplify the actual task that we are going to teach our car, we need to establish a simple route planner. Luckily, this is doable on our trustworthy Carla Simulation. By adjusting some parameters on the traffic manager on Carla, we can make our car decide to go straight when it encounters this complex road situations. The other problem we have lies on the Towns from which we are taking the data, the issue here is that we need to ensure that we find a route that doesn’t end in a junction, and we can always find a map with a suitable route for our purpose with the exception of Town04, because no matter the route taken in this map, it coincidentally always ends in a junction.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/Carla_0913Town04.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/Carla_0913Town05_painted.png" alt="" />
+  <figcaption>Bird-eye view of the Towns 04 (left) and 05 (right). It is possible to define a closed route as shown on the Town05, but not on the Town04.</figcaption>
+</figure>
+
+<p>To avoid this and for the sake of simplyfing our task of gathering data for our dataset, we decided to change the training data recollection from the Town04 to the Town05, and use the Town01 and Town04 for testing purposes.</p>
+
+<p>Along-side the recollection of a dataset, I stumbled myself with a pretty interesting <a href="https://arxiv.org/pdf/1710.02410.pdf">paper</a> that approached pretty similarly the same task that we are trying to solve right now, an end-to-end autonomous driving system using imitation learning. And the one thing that caught my eye on this work was how easily they approached the addition of weird scenarios, meaning, scenarios where the car veers from the desired behaviour. By simply doing some noise injection during the data collection. With this, we could try an easy way of adding some outliers to our dataset with the hope of a complete dataset for training.</p>
+
+<p>In the next two images, we show a case of noise injection where it is possible to watch how the noise affects the car straight orientation and how it tries to go back to the expected position.</p>
+
+<iframe src="https://giphy.com/embed/xF2zchGZeY41No9ZSp" width="600" height="400" frameborder="0" class="align-center" allowfullscreen=""></iframe>
+<p></p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/noise_injection.png" alt="" />
+  <figcaption>Graph of the steering values against the noise injected to it.</figcaption>
+</figure>
+
+<h2 id="increasing-our-dataset">Increasing our dataset</h2>
+
+<p>By increasing the dataset, the aim is to improve the model we had up to now, in order to keep trying to make our car learn how to follow roads and take simple turns. By adopting the same thinking as we had before, we once again find ourselves increasing the data we already had, this time from the almost 47.000 images of turning events, we increased it to almost 80.000 images. By doing this we have ourselves some good news and some bad news. By bad news, the thing is that the car is not learning yet as we want it to,</p>
+
+<p>Weirdly I find myself in reverse of the position I was in the previous week.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/yYJUwIlSEtc"></iframe></a>
+</figure>
+:ET
