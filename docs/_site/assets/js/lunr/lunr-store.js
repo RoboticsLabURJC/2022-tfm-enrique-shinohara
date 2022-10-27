@@ -88,4 +88,10 @@ var store = [{
         "tags": ["carla","dataset"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-18/",
         "teaser": null
+      },{
+        "title": "Week 19 - Understanding the problem and untangling the knot",
+        "excerpt":"This week comes as a good point of inflection because by understanding more about the PilotNet and how it works, it was possible to solve a big chunk of the problems I had this past few weeks. But once again, before we see the results right away, it would nice...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset","pilotnet","normalization"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-19/",
+        "teaser": null
       }]

@@ -1,4 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/2022-tfm-enrique-shinohara/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/2022-tfm-enrique-shinohara/" rel="alternate" type="text/html" /><updated>2022-10-21T09:51:07+02:00</updated><id>http://localhost:4000/2022-tfm-enrique-shinohara/feed.xml</id><title type="html">Robotics Lab URJC</title><subtitle>Programming Robot Intelligence</subtitle><author><name>Enrique Shinohara</name><email>enriqueshino@gmail.com</email></author><entry><title type="html">Week 18 - Simplifying and gathering a lot of data</title><link href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-18/" rel="alternate" type="text/html" title="Week 18 - Simplifying and gathering a lot of data" /><published>2022-10-14T00:00:00+02:00</published><updated>2022-10-14T00:00:00+02:00</updated><id>http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-18</id><content type="html" xml:base="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-18/"><![CDATA[<p>Simplification. That is the goal of our next task, by simplyfing the follow lane, we are going to build up the complexity of the problem. But first, we need to establish a good foundation for our next problems, and this foundation consist of a car capable of doing the same follow lane that it was possible on the 0.9.2 version of the Carla Simulation. One of the main changes resided on the possibility of using an already implemented autopilot instead of using our own (for now). The problem was that this autopilot was designed to randomly run around the roads of a given map, with this we are only adding very complex situations from the beginning such as intersections or junctions (that we need to take them into account, but not now).</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="http://localhost:4000/2022-tfm-enrique-shinohara/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/2022-tfm-enrique-shinohara/" rel="alternate" type="text/html" /><updated>2022-10-27T18:15:55+02:00</updated><id>http://localhost:4000/2022-tfm-enrique-shinohara/feed.xml</id><title type="html">Robotics Lab URJC</title><subtitle>Programming Robot Intelligence</subtitle><author><name>Enrique Shinohara</name><email>enriqueshino@gmail.com</email></author><entry><title type="html">Week 19 - Understanding the problem and untangling the knot</title><link href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-19/" rel="alternate" type="text/html" title="Week 19 - Understanding the problem and untangling the knot" /><published>2022-10-27T00:00:00+02:00</published><updated>2022-10-27T00:00:00+02:00</updated><id>http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-19</id><content type="html" xml:base="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-19/"><![CDATA[<p>This week comes as a good point of inflection because by understanding more about the PilotNet and how it works, it was possible to solve a big chunk of the problems I had this past few weeks. But once again, before we see the results right away, it would nice to check what were the changes that led us to finding a good solution.</p>
+
+<h2 id="the-model-arquitecture">The model arquitecture</h2>
+
+<p>Being one big part of the whole deep learning project, the model was one of the few things we didn’t quite tweak to solve our little problem. This little problem consisted of how we translated the output to the Carla Simulation, this is because the output always gave us values bigger than one. This by itself was the main thing that needed fixing, we weren’t dealing correctly with how the model trained from the input data to the output values. So, once we had that checked, it was the moment to try different configurations with the PilotNet model, and the holy grail of the solution was: normalization.</p>
+
+<p>But by normalizing the test image, we had a model with a pretty big systematic offset between the predictions and the groundtruth that obviously wasn’t learning at all. The next image is an example of the previous model and its prediction over the normalized test image, it showed me that it was certainly learning something, but didn’t correlate with the groundtruth scope of the steering values. So, being quite sure that the normalization was part of the problem, we decided to tamper with the arquitecture of the model.</p>
+
+<figure class="align-center" style="width:100%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/plot_graph_epoch0_prediction_normalized.png" alt="" />
+  <figcaption>Graph of the predicted steering values (red) against the groundtruth (green).</figcaption>
+</figure>
+
+<p>The normalization part of this whole project was already covered firstly by a BatchNormalization introduced in the first layer of the model, and secondly on the augmentations of the input images. But it resulted to be insufficient for our problem, by having so many parameters from the convolutional layer passed on to the dense layers, it was taken as an idea to scale this parameters by using a normalization layer and once this was added, we checked wether the model was learning and was staying within the expected range of 0-1.</p>
+
+<iframe src="https://giphy.com/embed/GeY8aqy8gF3zPcwGH5" width="600" height="400" frameborder="0" class="align-center" allowfullscreen=""></iframe>
+<p></p>
+
+<p>And as we can see from the previous graph, it was! The model was adjusting itself from within the correct range and learning the good weights to adjust to the groundtruth.</p>
+
+<h2 id="training">Training</h2>
+
+<p>The training part stays pretty much the same as the previous week, for we were doing it correctly, not knowing that the solution wasn’t on the dataset itself or the training parameters but on the model itself. By balancing the dataset as we did and training for 120 epochs, finally we found an almost good configuration for the follow road task we had for the Carla Simulator.</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/balanced_235.png" alt="" />
+  <figcaption>Histogram of the balanced dataset</figcaption>
+</figure>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/epoch_loss_235_good.png" alt="" />
+  <figcaption>Graph of the loss value along 120 epochs</figcaption>
+</figure>
+
+<p>One thing to notice is that after 40 epochs, the loss stabilize, making it good to stop the training earlier instead of running it for 120 epochs.</p>
+
+<h2 id="results">Results</h2>
+
+<p>Finally, the results are pretty much self-explanatory, where the first video shows us an easier example were we teached the car to turn correctly a single turn being the approach from either left or right.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/3DyRwm_xttw"></iframe></a>
+</figure>
+
+<p>In this second video, the car will run through three different maps. One of them will be a known map (Town05), a map used as a dataset for training the car, and the other two towns are maps that the car never saw before, for they weren’t used for the training and validation. We can see that it performs really well as expected, noticing that it turns correctly on sharp curves and on smoother curves.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/7jq29fJP9e4"></iframe></a>
+</figure>
+
+<p>On the other hand, as expected when it encounters a junction (Town04), the car is not able to overcome it for we never trained the car on this type of situations. Lastly, we noticed that it didn’t stayed on his own lane when running on the Town04. If we try to come up with an explanation, a possible theory is that some of the maps had multiple lanes in one direction. The car never changed lanes in the middle of a run, but having different spawnpoints from which start recollecting the dataset, the car might have used the different lanes and therefore it is difficult for the car to distinguish if it can run over one lane or not.</p>]]></content><author><name>Enrique Shinohara</name><email>enriqueshino@gmail.com</email></author><category term="Weekly Log" /><category term="carla" /><category term="dataset" /><category term="pilotnet" /><category term="normalization" /><summary type="html"><![CDATA[This week comes as a good point of inflection because by understanding more about the PilotNet and how it works, it was possible to solve a big chunk of the problems I had this past few weeks. But once again, before we see the results right away, it would nice to check what were the changes that led us to finding a good solution.]]></summary></entry><entry><title type="html">Week 18 - Simplifying and gathering a lot of data</title><link href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-18/" rel="alternate" type="text/html" title="Week 18 - Simplifying and gathering a lot of data" /><published>2022-10-14T00:00:00+02:00</published><updated>2022-10-14T00:00:00+02:00</updated><id>http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-18</id><content type="html" xml:base="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-18/"><![CDATA[<p>Simplification. That is the goal of our next task, by simplyfing the follow lane, we are going to build up the complexity of the problem. But first, we need to establish a good foundation for our next problems, and this foundation consist of a car capable of doing the same follow lane that it was possible on the 0.9.2 version of the Carla Simulation. One of the main changes resided on the possibility of using an already implemented autopilot instead of using our own (for now). The problem was that this autopilot was designed to randomly run around the roads of a given map, with this we are only adding very complex situations from the beginning such as intersections or junctions (that we need to take them into account, but not now).</p>
 
 <p>So, to simplify the actual task that we are going to teach our car, we need to establish a simple route planner. Luckily, this is doable on our trustworthy Carla Simulation. By adjusting some parameters on the traffic manager on Carla, we can make our car decide to go straight when it encounters this complex road situations. The other problem we have lies on the Towns from which we are taking the data, the issue here is that we need to ensure that we find a route that doesn’t end in a junction, and we can always find a map with a suitable route for our purpose with the exception of Town04, because no matter the route taken in this map, it coincidentally always ends in a junction.</p>
 
@@ -346,36 +396,4 @@
     <a href=""><iframe src="https://www.youtube.com/embed/hZHqT77YTVU"></iframe></a>
 </figure>
 
-<p>Simulating the same path were we saw the model fail in the previous week, we can see that the car follow the lane without doing some weird movements that take it out of its course. It is clear, that the model was going to fail in our case when no lane is detected in the image, but this was the expected behaviour, because the vehicle is also following the lane as the model was train to do.</p>]]></content><author><name>Enrique Shinohara</name><email>enriqueshino@gmail.com</email></author><category term="Weekly Log" /><category term="carla" /><category term="udacity" /><category term="machine learning" /><summary type="html"><![CDATA[For this week we have multiple work borders open that I am going to explain more in detail in this post. To have a better visual of it, the task were as follows:]]></summary></entry><entry><title type="html">Week 5 - Setting up CUDA for Deep Neural Networks</title><link href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-5/" rel="alternate" type="text/html" title="Week 5 - Setting up CUDA for Deep Neural Networks" /><published>2022-07-20T00:00:00+02:00</published><updated>2022-07-20T00:00:00+02:00</updated><id>http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-5</id><content type="html" xml:base="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-5/"><![CDATA[<p>As we saw in the previous post, we are very close to finally playing with some machine learning algorithms for our road following car. But as always, first we need to prepare the playground before we dive deep into the machine learning problems, and by preparing I mean installing the ever famous <a href="https://developer.nvidia.com/cuda-toolkit">CUDA toolkit</a>, this tool will allow us to train and predict algorithms with GPU-acceleration by using the graphic card in our local machine. Given that I have a RTX 3060 6Gb graphics card in my laptop, it would be a total loss not to test it.</p>
-
-<p>Having said that, installing CUDA for our purpose is not a simple task. The installation itself is pretty straight forward, but the environment in which we are going to use it, plays an important role when choosing the version of the software we are going to use it on. To do this, we must be thoughtful with four things that are going to be the ones that will cause the most problems if they are not compatible with each other:</p>
-
-<ul>
-  <li>CUDA Toolkit 11.0</li>
-  <li>Python 3.6</li>
-  <li>cuDNN 8.0</li>
-  <li>Tensorflow 2.4.0</li>
-</ul>
-
-<p>The setting we finally choosed was defined firstly by the Carla Simulator, because we are using an old version of Carla 0.9.2 some libraries can only be used on a certain version of python, we have only tested them on 3.5 and 3.6. And secontly, Tensorflow, for it plays a huge rol on the selection of a certain CUDA and cuDNN version. On the <a href="https://www.tensorflow.org/install/source">Tensorflow installation</a> website, we can find a table with multiple tested configurations.</p>
-
-<figure style="width:100%" class="align-center">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/tensorflow_gpu.png" alt="" />
-  <figcaption>Tensorflow GPU installation homepage.</figcaption>
-</figure>
-
-<p>Once we have our tensorflow supported by CUDA for high-optimized performance, the next step is to read, understand and test some code from the repository <a href="https://github.com/JdeRobot/DeepLearningStudio">DeepLearningStudio</a>. The respository contains code to train models (like a formula 1 car to follow a line) with deep learning which serves us as a guide of how to tackle this kind of problems. At first, the idea was to make a training session from the local machine without changing anything from the original code but because the recommended python version was the 3.10, this caused some compatibility issues with the latest CUDA versions from NVIDIA. To avoid stalling to much on this training part (I will deal with the training part later in the future), I decided to directly download some trained models and load them onto the code I had to make a car follow the road on the Carla Simulator.</p>
-
-<p>With everything configurated it was time to configurate the model so that it recieves an image as input, and return as output two values, the velocity and the steering angle. Once it was coded, the execution showed us that the predictions made by the neural network took 5 seconds, and it was obvious something was off, because with the use of CUDA, even a second is too much for an autonomous vehicle application. By doing some changes in the Nvidia Driver and files inside the CUDA Toolkit, we were able to lower the prediction time to 0.2 seconds, and making a prediction every 10 frames we can make the simulation go smoother without deleting too much information of the actual state of the car.</p>
-
-<figure class="align-center">
-    <a href=""><iframe src="https://www.youtube.com/embed/Rm1q7x_Pmxg"></iframe></a>
-</figure>
-
-<p>As we can see in the video it follows poorly the red line on the ground. In the next video, we can take a better look on how poorly is performing our car, for it is not even trying to follow the red line on the road.</p>
-
-<figure class="align-center">
-    <a href=""><iframe src="https://www.youtube.com/embed/gpgRax2kqFk"></iframe></a>
-</figure>
-
-<p>Further testing will need to be made to check wether this behaviour is expected for our code or not.</p>]]></content><author><name>Enrique Shinohara</name><email>enriqueshino@gmail.com</email></author><category term="Weekly Log" /><category term="carla" /><category term="cuda" /><category term="tensorflow" /><summary type="html"><![CDATA[As we saw in the previous post, we are very close to finally playing with some machine learning algorithms for our road following car. But as always, first we need to prepare the playground before we dive deep into the machine learning problems, and by preparing I mean installing the ever famous CUDA toolkit, this tool will allow us to train and predict algorithms with GPU-acceleration by using the graphic card in our local machine. Given that I have a RTX 3060 6Gb graphics card in my laptop, it would be a total loss not to test it.]]></summary></entry></feed>
+<p>Simulating the same path were we saw the model fail in the previous week, we can see that the car follow the lane without doing some weird movements that take it out of its course. It is clear, that the model was going to fail in our case when no lane is detected in the image, but this was the expected behaviour, because the vehicle is also following the lane as the model was train to do.</p>]]></content><author><name>Enrique Shinohara</name><email>enriqueshino@gmail.com</email></author><category term="Weekly Log" /><category term="carla" /><category term="udacity" /><category term="machine learning" /><summary type="html"><![CDATA[For this week we have multiple work borders open that I am going to explain more in detail in this post. To have a better visual of it, the task were as follows:]]></summary></entry></feed>
