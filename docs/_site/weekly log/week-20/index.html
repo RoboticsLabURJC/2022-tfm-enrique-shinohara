@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Week 12 - Following the road - Robotics Lab URJC</title>
-<meta name="description" content="With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.">
+<!-- begin _includes/seo.html --><title>Week 20 -  - Robotics Lab URJC</title>
+<meta name="description" content="For this week, we are going to mainly focus on analyzing the behaviour of the model, and try to understand better the different things that made it work better than the other weeks. With this, we make a list of things that need to be check this week:">
 
 
   <meta name="author" content="Enrique Shinohara">
@@ -22,30 +22,30 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Week 12 - Following the road">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-12/">
+<meta property="og:title" content="Week 20 -">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-20/">
 
 
-  <meta property="og:description" content="With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2022-09-07T00:00:00+02:00">
+  <meta property="og:description" content="For this week, we are going to mainly focus on analyzing the behaviour of the model, and try to understand better the different things that made it work better than the other weeks. With this, we make a list of things that need to be check this week:">
 
 
 
 
 
-  
+
+
+  <meta property="article:published_time" content="2022-11-03T00:00:00+01:00">
+
+
+
+
 
   
 
+  
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-12/">
+
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-20/">
 
 
 
@@ -263,16 +263,16 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Week 12 - Following the road">
-    <meta itemprop="description" content="With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.">
-    <meta itemprop="datePublished" content="2022-09-07T00:00:00+02:00">
+    <meta itemprop="headline" content="Week 20 -">
+    <meta itemprop="description" content="For this week, we are going to mainly focus on analyzing the behaviour of the model, and try to understand better the different things that made it work better than the other weeks. With this, we make a list of things that need to be check this week:">
+    <meta itemprop="datePublished" content="2022-11-03T00:00:00+01:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-12/" class="u-url" itemprop="url">Week 12 - Following the road
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-20/" class="u-url" itemprop="url">Week 20 -
 </a>
           </h1>
           
@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          3 minute read
         
       </span>
     
@@ -301,51 +301,63 @@
 
       <section class="page__content e-content" itemprop="text">
         
-        <p>With this first week after the summer vacation, I return to the routine with a similar task to the one I had at hand on the summer. Instead of training the car to follow a line, we are going to put our focus on training a car to follow a lane, bringing it closer to a real life problem with the autonomous driving task.</p>
-
-<p>For this, we need to replicate the steps we took on the follow line problem so that we can continue improving the model and analyzing possible improvements. So, to recall, we have 3 major tasks to tackle:</p>
+        <p>For this week, we are going to mainly focus on analyzing the behaviour of the model, and try to understand better the different things that made it work better than the other weeks. With this, we make a list of things that need to be check this week:</p>
 
 <ul>
-  <li>Create an explicit brain for the follow lane problem</li>
-  <li>Create a dataset from the explicit brain algorithm</li>
-  <li>Train with our dataset, a PilotNet model</li>
+  <li>Create a new dataset that only covers the right lane of the road</li>
+  <li>Understand our PilotNet-like model</li>
+  <li>Show and analyze the throttle of the car to see if it is learning something</li>
 </ul>
 
-<h2 id="creating-the-explicit-follow-lane-brain">Creating the explicit follow-lane brain</h2>
+<h2 id="create-a-new-dataset">Create a new dataset</h2>
 
-<p>The follow lane brain was already made as seen on the Week 3 post, but building upon this algorithm, I have improve it to take better the curves and to oscillate less when the left lane dissapears for a moment in an intersection.</p>
+<p>This task was made mainly to solve the most basic problem at hand, make the car run in its corresponding lane. To do this, the principal idea was to change the whole dataset, and this was because the way we gathered data, was to make the car run a certain amount of time through different starting waypoints. This starting waypoints were selected at random, so if a road had multiple roads, it wouldn’t distinguish wether if he should be on one lane or other. So, by selecting precisely the starting waypoints that correspond to the left lane of each town, we hoped to solve the problem of the car going through the wrong lane.</p>
 
-<figure class="align-center">
-    <a href=""><iframe src="https://www.youtube.com/embed/P9wC4w6Jy8E"></iframe></a>
+<p>We balanced our data the best way possible, obtaining the next data distribution.</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town235_followroad_rightlane_big.png" alt="" />
+  <figcaption>Histogram of balanced steering data</figcaption>
 </figure>
 
-<h2 id="creating-the-dataset-for-the-follow-lane">Creating the dataset for the follow lane</h2>
+<p>And once we had the data, we were going to train and analyze the model configurations and its behaviour.</p>
 
-<p>The creation of the dataset follows the same lines as the one we took on the previous post. The dataset contains the images, the steering and the throttle values on the timestep where the image was taken. A total of 5Gb of data was collected giving us an overall of almost 25.000 images. Differences when compared to the dataset on the previous blog resides on the task which was to follow a line, the algorithm created this time to follow the road is more consistent, meaning that the car almost never oscilate, giving us most of the data when the steer is not moving or is moving a negligible amount, and little to none data when it is steering left or right.</p>
+<h2 id="understanding-the-model">Understanding the model</h2>
 
-<p>By getting the steering values on an histogram we can have a better view of the data from another perspective. In the next image, we can appreciate the imbalance of the data.</p>
+<p>To understand the model, we tried different configurations to a balanced dataset. The configurations went from seeing the effects of the normalization and dropout techniques on the learning process to testing wether to predict only the steering, or the steering and the throttle.</p>
 
-<figure style="width:80%" class="align-center">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_20.png" alt="" />
-  <figcaption>Histogram of the steering values in our dataset.</figcaption>
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/epoch_loss_model_study.png" alt="" />
+  <figcaption>Epoch loss of multiple model configurations</figcaption>
 </figure>
 
-<p>By doing some oversampling, we can try to use better the data, giving more weight to the “extreme” cases that are almost never considered when compared to the straight steering values.</p>
+<p>The worst learning cases from the epoch_loss graph belongs to the configurations in which we tried to make the model learn only the steering values, taking away the throttle. To add more to this graph, the orange line corresponds to the model we developed on week 19, a model that had a normalization layer between each convolutional layer. Now we know that this wasn’t strictly necessary, by bringing the model closer to the original concept of the PilotNet, we could obtain better results.</p>
 
-<figure style="width:80%" class="align-center">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_20_extreme.png" alt="" />
-  <figcaption>Histogram of the oversampled steering values in our dataset.</figcaption>
+<p>Now, on the good size of the graph, the lowest loss was given by a model that neither had normalization, nor dropout in it. Being the best for giving us a good loss value, it didn’t seem to perform well on extreme steering values. Now, trying to find the best possible configuration, the next good model was the one that had normalization on the input layer and dropout layers between the dense layer. This last model seemed to have a better correlation between the groundtruth and the prediction values even thought the loss was higher than the best model. Given this negligible difference between the losses, we decided to go on with the model that uses a normalization layer on the beginning and dropout layers between the dense layers.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/20221101-112924_plot_graph_epoch50.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/20221101-123609_plot_graph_epoch50.png" alt="" />
+  <figcaption>Groundtruth vs. prediction values of two different model configurations.</figcaption>
 </figure>
 
-<h2 id="training-the-pilotnet-model">Training the PilotNet model</h2>
+<p>A deeper understanding of why normalization worked when added on each layer or why the dropout is a good option in this case can be found on multiple articles and papers across the internet such as the BatchNormalization <a href="http://proceedings.mlr.press/v37/ioffe15.pdf">paper</a> where they used the same concept of adding normalization on each layer. But this is going to need more time if I want to grasp and correlate some concepts to our problem.</p>
 
-<p>The training of a PilotNet-based model is pretty straightforward. As explained in the previous posts, we are going to use the Tensorflow library to train the model. Bellow, you can see the video of the car behavior.</p>
+<h2 id="throttle-analysis">Throttle analysis</h2>
 
-<figure class="align-center">
-    <a href=""><iframe src="https://www.youtube.com/embed/llVOrcsoLvM"></iframe></a>
+<p>A good idea to analyze how the model is doing, would be to not only check how the steering is performing, but how the throttle is also doing on the training phases. To check the distribution of the throttle values, as we can see on the next figure, the throttle behaves by giving it higher values to accelerate, and decreasing it or making it zero to make the car go slower. By checking, we can see that the car accelerates and decelerate a lot, by following the speed signals set on the map. But how is our car going to know the speed limit if we crop the image to the point were the speed sign is not visible.</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town235_histogram_throttle.png" alt="" />
+  <figcaption>Histogram of throttle data</figcaption>
 </figure>
 
-<p>As we can check from the video, the car performs well on the straight road, correcting itself in order to stay on the center of the lane. But as soon as it gets to the curve, it doesn’t seems to find the correct way to turn itself. A further research is going to be needed for us to find why the car is not performing as we want it to on the curves, and how to correct it.</p>
+<p>This question is one that we don’t need to solve right now, given the fact that we can focus on the steering by setting the throttle to a constant value. But we can check wether it predicts according to the expected behaviour.</p>
+
+<iframe src="https://giphy.com/embed/0FjaVbQYUuu32Ns8wJ" width="600" height="400" frameborder="0" class="align-center" allowfullscreen=""></iframe>
+<p></p>
+
+<p>The previous plot shows us the groundtruth of the throttle against the predicted values, and as we can see, it oscilates a lot but we need to check if this translates to something meaningful on the simulator.</p>
 
         
       </section>
@@ -365,6 +377,8 @@
       <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
     
       <a href="/2022-tfm-enrique-shinohara/tags/#dataset" class="page__taxonomy-item p-category" rel="tag">dataset</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#normalization" class="page__taxonomy-item p-category" rel="tag">normalization</a><span class="sep">, </span>
     
       <a href="/2022-tfm-enrique-shinohara/tags/#pilotnet" class="page__taxonomy-item p-category" rel="tag">pilotnet</a>
     
@@ -391,30 +405,29 @@
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-09-07T00:00:00+02:00">September 7, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-11-03T00:00:00+01:00">November 3, 2022</time></p>
 
       </footer>
 
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+12+-+Following+the+road%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-12%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+20+-+%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-20%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-12%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-20%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-12%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-20%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-7-11/" class="pagination--pager" title="Week 7~11 - Slow but steady wins the race
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-19/" class="pagination--pager" title="Week 19 - Understanding the problem and untangling the knot
 ">Previous</a>
     
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-13/" class="pagination--pager" title="Week 13 - Handling the curve
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -428,45 +441,6 @@
     <div class="page__related">
       <h2 class="page__related-title">You May Also Enjoy</h2>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-20/" rel="permalink">Week 20 -
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          3 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">For this week, we are going to mainly focus on analyzing the behaviour of the model, and try to understand better the different things that made it work bett...</p>
-  </article>
-</div>
-
         
           
 
@@ -581,6 +555,45 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">As a continuation of our current task, we are going to keep trying to make our car follow straight roads and turn on the curves correctly. As a reminder, we ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-16/" rel="permalink">Week 16 - The solution of every problem is another problem
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          4 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">And just as the problem of turning was fixed, I stumble my self into another problem, but nothing to be afraid of (yet). The simple task of moving from the 0...</p>
   </article>
 </div>
 

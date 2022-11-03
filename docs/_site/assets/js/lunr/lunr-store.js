@@ -94,4 +94,10 @@ var store = [{
         "tags": ["carla","dataset","pilotnet","normalization"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-19/",
         "teaser": null
+      },{
+        "title": "Week 20 - ",
+        "excerpt":"For this week, we are going to mainly focus on analyzing the behaviour of the model, and try to understand better the different things that made it work better than the other weeks. With this, we make a list of things that need to be check this week: Create a...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset","pilotnet","normalization"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-20/",
+        "teaser": null
       }]
