@@ -1,0 +1,10 @@
+I"Å<p>This week, our task was to correct the car behaviour for it was steering towards the oncoming lane even thought this is not a desired quality. Many hours were spent on trying different configurations of the model or adding more data to the dataset. None of it seemed to fix this problem, so we dived deep inside the dataset, and found a possible explanation to why the car was veering to the other lanes.</p>
+
+<p>Our principal suspect was found in the third town, where we noticed a certain</p>
+
+<figure class="half">
+  <img style="width:65%" src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town03_complication.png" alt="" />
+  <img style="width:40%" src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town03_complication_visualmap.png" alt="" />
+  <figcaption>Groundtruth vs. prediction values of two different model configurations.</figcaption>
+</figure>
+:ET

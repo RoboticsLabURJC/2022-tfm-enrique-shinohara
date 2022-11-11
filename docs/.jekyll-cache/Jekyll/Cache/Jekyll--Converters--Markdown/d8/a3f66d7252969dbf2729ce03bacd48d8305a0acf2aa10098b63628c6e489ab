@@ -1,0 +1,15 @@
+I"�<p>This week, our task was to correct the car behaviour for it was steering towards the oncoming lane even thought this is not a desired quality. Many hours were spent on trying different configurations of the model or adding more data to the dataset. None of it seemed to fix this problem, so we dived deep inside the dataset, and found a possible explanation to why the car was veering to the other lanes.</p>
+
+<p>Our principal suspect was found in the third town, where we noticed a complex situation. If we look closer to the next figure, we can see that right before entering the tunel, the lane slightly shifts to the left, making the car turn slightly to the left if it doesn’t want to colision with part of the tunel. At first we could think that this would not be enough to mess with the way the car learns wether it should stay on the lane or if it should change to another one (at least randomly).</p>
+
+<figure class="half">
+  <img style="width:60%" src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town03_complication.png" alt="" />
+  <img style="width:40%" src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/town03_complication_visualmap.png" alt="" />
+  <figcaption></figcaption>
+</figure>
+
+<p>So to check wether this was the problem or not, we changed the whole dataset, by eliminating and recording only the wanted parts of the town 03. Once the data was collected and the trainining finished, the conclusion was that it worked! The car still needed to fix some behaviour towards harder turns or softer turns, but it wasn’t changing lanes randomly, it stayed or even veered to the rightest lane possible as we tried to teach it.</p>
+
+<p>I will save the idea to show a video for the next week, even though the car is behaving pretty good when compared to the previous weeks, it still needs a little more tweaking to achieve the expected behaviour. But that being said, with some more data balancing and model adjustement we could have a good model that follows its respective lane.</p>
+
+:ET

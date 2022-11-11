@@ -1,0 +1,2 @@
+I"œ<p>This week, our task was to correct the car behaviour for it was steering towards the oncoming lane even thought this is not a desired quality. Many hours were spent on trying different configurations of the model or adding more data to the dataset. None of it seemed to fix this problem, so we dived deep inside the dataset, and found a possible explanation to why the car was veering to the other lanes.</p>
+:ET

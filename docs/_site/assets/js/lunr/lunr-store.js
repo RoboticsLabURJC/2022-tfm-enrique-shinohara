@@ -95,9 +95,15 @@ var store = [{
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-19/",
         "teaser": null
       },{
-        "title": "Week 20 - ",
+        "title": "Week 20 - Model analysis so far",
         "excerpt":"For this week, we are going to mainly focus on analyzing the behaviour of the model, and try to understand better the different things that made it work better than the other weeks. With this, we make a list of things that need to be check this week: Create a...","categories": ["Weekly Log"],
         "tags": ["carla","dataset","pilotnet","normalization"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-20/",
+        "teaser": null
+      },{
+        "title": "Week 21 - Fixing the car behaviour",
+        "excerpt":"This week, our task was to correct the car behaviour for it was steering towards the oncoming lane even thought this is not a desired quality. Many hours were spent on trying different configurations of the model or adding more data to the dataset. None of it seemed to fix...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset","pilotnet","normalization"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-21/",
         "teaser": null
       }]
