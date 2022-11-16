@@ -1,0 +1,14 @@
+I"ç<p>This week we will try to wrap up some major tasks for the follow-lane vehicle we have been developing this past weeks:</p>
+
+<ul>
+  <li>First we will make some small improvements to the model to have a fairly good follow-lane car</li>
+  <li>Secondly we will record an illustrative video to show how the car behaves in different roads, whether it be good or bad</li>
+  <li>Thirdly, we are going to dig into the segmented images provided by the carla simulator</li>
+</ul>
+
+<h2 id="improving-little-by-little">Improving little by little</h2>
+
+<p>By improving the car, we aim to fix some minor behaviours that we thought it could be wise to deal with. One of them being that it veered to the right even though it had a continuous line separating the lanes. One of the possible explanations to why it was doing this, was that we trained it over some data</p>
+
+<h2 id="image-segmentation">Image segmentation</h2>
+:ET

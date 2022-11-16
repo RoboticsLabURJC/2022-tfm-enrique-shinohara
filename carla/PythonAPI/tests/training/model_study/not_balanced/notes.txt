@@ -1,0 +1,26 @@
+20221101-112924_pilotnet_model_3_121_cp
+	El modelo tiene dropout entre la convolucion y la densa. La normalizacion solo la ponemos al final.
+	
+20221101-120440_pilotnet_model_3_121_cp
+	El modelo no tiene ni dropout ni normalziacion. No es capaz de aprender correctamente dentro de su respectivo rango.
+	
+20221101-123609_pilotnet_model_3_51_cp
+	Intentando asemejar al pilotnet original, dropout en cada capa densa. Parece que aprende mas los rangos, como la normalizacion solo al final, entrena mejor los valores extremos.
+	
+20221101-163804_pilotnet_model_3_51_cp
+	Capa de normalizacion entre conv y flatt, mas el dropout entre las denses.
+	
+20221101-172853_pilotnet_model_3_51_cp
+	Capa de normalziacion entre todas las capas de convolucion, mas el dropout entre las denses.
+	
+20221102-095537_pilotnet_model_3_51_cp
+	Todos los dropout en la capa dense. Quitamos la velocidad dejando solo como prediccion el giro.
+	
+20221102-122411_pilotnet_model_3_51_cp
+	Todos los dropout en la capa dense. Quitamos la velocidad dejando solo como prediccion el giro. Añadimos batch normalization al principio como antes.
+	
+20221102-125516_pilotnet_model_3_51_cp
+	Todos los dropout en la capa dense. Quitamos la velocidad dejando solo como prediccion el giro. Añadimos batch normalization al principio y entre la convolucion y el dense.
+	
+20221102-134725_pilotnet_model_3_51_cp
+	Todos los dropout en la capa dense. Quitamos la velocidad dejando solo como prediccion el giro. Añadimos batch normalization al principio y en todas las convoluciones.

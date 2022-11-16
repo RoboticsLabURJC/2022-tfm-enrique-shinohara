@@ -22,8 +22,10 @@ import pandas
 import random
 import logging
 import weakref
+import schedule
 import argparse
 import datetime
+import threading
 import collections
 import cv2
 import csv
@@ -78,10 +80,15 @@ gpus = tf.config.experimental.list_physical_devices('GPU')
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
 
-# 10: Simply a left turn
-# 17: Right turn with an annoying barrier which hitbox hits the car
-SPAWNPOINT = 13
+# TOWN 02:
+# 12 - left turn at the gas station
+# 20 - right turn at the gas station
 
+
+# 17 - left turn at the gas station
+# 22 - right turn at the gas station
+global SPAWNPOINT
+SPAWNPOINT = 124
 
 # ==============================================================================
 # -- find carla module ---------------------------------------------------------
@@ -135,6 +142,7 @@ class World(object):
     def restart(self):
         # Keep same camera config if the camera manager exists.
         cam_index = self.camera_manager._index if self.camera_manager is not None else 0
+        cam_index = 5
         cam_pos_index = self.camera_manager._transform_index if self.camera_manager is not None else 0
 
         blueprint = self.world.get_blueprint_library().find('vehicle.tesla.model3')
@@ -158,10 +166,16 @@ class World(object):
         while self.vehicle is None:
             spawn_points = self.world.get_map().get_spawn_points()
             spawn_point = spawn_points[SPAWNPOINT]
-            # spawn_point.rotation.yaw += 20
-            spawn_point.rotation.yaw -= 20
-            # spawn_point.rotation.yaw += 15
-            # spawn_point.rotation.yaw -= 10
+            random_starting_point = bool(random.getrandbits(1))
+            """if random_starting_point:
+                random_value = random.randint(20, 50)
+                spawn_point.rotation.yaw += random_value
+                print(f"RIGHT: {random_value}")
+            else:
+                random_value = random.randint(20, 50)
+                spawn_point.rotation.yaw -= random_value
+                print(f"LEFT: {random_value}")"""
+                
             self.vehicle = self.world.spawn_actor(blueprint, spawn_point)
 
         # Set up the sensors.
@@ -169,6 +183,7 @@ class World(object):
         self.camera_manager = CameraManager(self.vehicle, self.hud)
         self.camera_manager._transform_index = cam_pos_index
         self.camera_manager.set_sensor(cam_index, notify=False)
+        # self.camera_manager.set_sensor_2(500, notify=False)
         actor_type = get_actor_display_name(self.vehicle)
         self.hud.notification(actor_type)
 
@@ -184,7 +199,7 @@ class World(object):
 
     def render(self, display):
         self.camera_manager.render(display)
-        # self.hud.render(display)
+        self.hud.render(display)
 
     def destroy(self):
         actors = [
@@ -226,11 +241,9 @@ class HUD(object):
         self.simulation_time = timestamp.elapsed_seconds
 
     def tick(self, world, clock):
-        if True:
-            return
         t = world.vehicle.get_transform()
         v = world.vehicle.get_velocity()
-        c = world.vehicle.get_vehicle_control()
+        c = world.vehicle.get_control()
         heading = 'N' if abs(t.rotation.yaw) < 89.5 else ''
         heading += 'S' if abs(t.rotation.yaw) > 90.5 else ''
         heading += 'E' if 179.5 > t.rotation.yaw > 0.5 else ''
@@ -241,24 +254,15 @@ class HUD(object):
         collision = [x / max_col for x in collision]
         vehicles = world.world.get_actors().filter('vehicle.*')
         self._info_text = [
-            'Server:  % 16d FPS' % self.server_fps,
-            '',
             'Vehicle: % 20s' % get_actor_display_name(world.vehicle, truncate=20),
-            'Map:     % 20s' % world.world.map_name,
             'Simulation time: % 12s' % datetime.timedelta(seconds=int(self.simulation_time)),
             '',
             'Speed:   % 15.0f km/h' % (3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)),
-            u'Heading:% 16.0f\N{DEGREE SIGN} % 2s' % (t.rotation.yaw, heading),
-            'Location:% 20s' % ('(% 5.1f, % 5.1f)' % (t.location.x, t.location.y)),
-            'Height:  % 18.0f m' % t.location.z,
             '',
+            'Throttle: %16.2f' % c.throttle,
             ('Throttle:', c.throttle, 0.0, 1.0),
+            'Steer: %19.2f' % c.steer,
             ('Steer:', c.steer, -1.0, 1.0),
-            ('Brake:', c.brake, 0.0, 1.0),
-            ('Reverse:', c.reverse),
-            ('Hand brake:', c.hand_brake),
-            ('Manual:', c.manual_gear_shift),
-            'Gear:        %s' % {-1: 'R', 0: 'N'}.get(c.gear, c.gear),
             '',
             'Collision:',
             collision,
@@ -274,6 +278,7 @@ class HUD(object):
                     break
                 vehicle_type = get_actor_display_name(vehicle, truncate=22)
                 self._info_text.append('% 4dm %s' % (d, vehicle_type))
+        
         self._notifications.tick(world, clock)
 
     def toggle_info(self):
@@ -293,7 +298,7 @@ class HUD(object):
             v_offset = 4
             bar_h_offset = 100
             bar_width = 106
-            """for item in self._info_text:
+            for item in self._info_text:
                 if v_offset + 18 > self.dim[1]:
                     break
                 if isinstance(item, list):
@@ -316,10 +321,10 @@ class HUD(object):
                             rect = pygame.Rect((bar_h_offset, v_offset + 8), (f * bar_width, 6))
                         pygame.draw.rect(display, (255, 255, 255), rect)
                     item = item[0]
-                if item: # At this point has to be a str.
+                if item:  # At this point has to be a str.
                     surface = self._font_mono.render(item, True, (255, 255, 255))
                     display.blit(surface, (8, v_offset))
-                v_offset += 18"""
+                v_offset += 18
         self._notifications.render(display)
         self.help.render(display)
 
@@ -424,12 +429,15 @@ class CollisionSensor(object):
 class CameraManager(object):
     def __init__(self, parent_actor, hud):
         self.sensor = None
+        self.sensor2 = None
         self._surface = None
+        self._second_surface = None
         self._parent = parent_actor
         self._hud = hud
         self._recording = False
         self._camera_transforms = [
-            carla.Transform(carla.Location(x=2.5, z=0.8))]
+            carla.Transform(carla.Location(x=2.5, z=0.8)),
+            carla.Transform(carla.Location(x=-6, z=3))]
         self._transform_index = 1
         self._sensors = [
             ['sensor.camera.rgb', cc.Raw, 'Camera RGB'],
@@ -450,6 +458,7 @@ class CameraManager(object):
             item.append(bp)
         self._index = None
         self.image = None
+        self.image2 = None
 
     def toggle_camera(self):
         self._transform_index = (self._transform_index + 1) % len(self._camera_transforms)
@@ -470,10 +479,25 @@ class CameraManager(object):
             # We need to pass the lambda a weak reference to self to avoid
             # circular reference.
             weak_self = weakref.ref(self)
+            print(self.sensor)
             self.sensor.listen(lambda image: CameraManager._parse_image(weak_self, image))
         if notify:
             self._hud.notification(self._sensors[index][2])
         self._index = 2
+
+    def set_sensor_2(self, index, notify=True):
+        index = index % len(self._sensors)
+        needs_respawn = True if self._index is None \
+            else self._sensors[index][0] != self._sensors[self._index][0]
+        self.sensor2 = self._parent.get_world().spawn_actor(
+            self._sensors[0][-1],
+            self._camera_transforms[1],
+            attach_to=self._parent)
+            # We need to pass the lambda a weak reference to self to avoid
+            # circular reference.
+        weak_self = weakref.ref(self)
+        self.sensor2.listen(lambda image: CameraManager._parse_image_2(weak_self, image))
+        self._index = 3
 
     def next_sensor(self):
         self.set_sensor(self._index + 1)
@@ -485,9 +509,25 @@ class CameraManager(object):
     def render(self, display):
         if self._surface is not None:
             display.blit(self._surface, (0, 0))
+            # display.blit(self._second_surface, (0, self._hud.dim[1]))
 
     @staticmethod
     def _parse_image(weak_self, data):
+        self = weak_self()
+        if not self:
+            return
+
+        img = np.reshape(np.copy(data.raw_data), (data.height, data.width, 4))
+        img = img[:,:,:3]
+        img = img[:, :, ::-1]
+
+        j = Image.fromarray(img)
+        j.save("output.png")
+
+        self.image = img
+
+    @staticmethod
+    def _parse_image_2(weak_self, data):
         self = weak_self()
         if not self:
             return
@@ -496,10 +536,19 @@ class CameraManager(object):
         img = img[:,:,:3]
         img = img[:, :, ::-1]
 
-        self.image = img
-        # print(self._parent.get_velocity())
+        self.image2 = img
 
-        # self._surface = pygame.surfarray.make_surface(croped_img.swapaxes(0, 1))
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    '''
+    alist.sort(key=natural_keys) sorts in human order
+    http://nedbatchelder.com/blog/200712/human_sorting.html
+    (See Toothy's implementation in the comments)
+    '''
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
 
 def append_list_as_row(file_name, list_of_elem):
@@ -512,31 +561,43 @@ def append_list_as_row(file_name, list_of_elem):
 
 
 def line_prepender(filename, line):
-    with open(filename, "r") as infile:
+    """with open(filename, "r") as infile:
         reader = list(csv.reader(infile))
         reader.insert(0, line)
 
     with open(filename, "w") as outfile:
         writer = csv.writer(outfile)
         for line in reader:
-            writer.writerow(line)
+            writer.writerow(line)"""
+    with open(filename, 'a+', newline='') as write_obj:
+        # Create a writer object from csv module
+        csv_writer = writer(write_obj)
+        # Add contents of list as last row in the csv file
+        csv_writer.writerow(line)
 
 
-def save_instance_to_dataset(world, image, image_counter, first_image_taken):
+def save_instance_to_dataset(world, image, image_counter, first_image_taken, prev_image_num):
     file_path = "_%d/" % (SPAWNPOINT)
-    file_name = "%d.png" % (image_counter) # / 10)
+    if (first_image_taken == 0) and (not os.path.exists('./_%d/data.csv' % SPAWNPOINT)):
+        line_prepender(file_path + 'data.csv', ['image', 'throttle', 'steer'])
+        first_image_taken = 1
+    if (first_image_taken == 0) and (os.path.exists('./_%d/data.csv' % SPAWNPOINT)):
+        files_list = glob.glob(file_path + '*.png')
+        files_list.sort(key=natural_keys)
+        first_image_taken = 1
+        prev_image_num = int(files_list[-1].split('/')[1].split('.')[0])
+
+    file_name = "%d.png" % (image_counter + prev_image_num)
     j = Image.fromarray(image)
     j.save(file_path + file_name, compress_level=1)
+
 
     row_contents = [file_name, world.vehicle.get_control().throttle, world.vehicle.get_control().steer]
     # Append a list as new line to an old csv file
     append_list_as_row(file_path + 'data.csv', row_contents)
 
-    if first_image_taken == 0:
-        line_prepender(file_path + 'data.csv', ['image', 'throttle', 'steer'])
-        first_image_taken = 1
+    return first_image_taken, prev_image_num
 
-    return first_image_taken
 
 
 # ==============================================================================
@@ -548,6 +609,7 @@ def game_loop(args):
     pygame.font.init()
     world = None
 
+    print(SPAWNPOINT)
     try:
         client = carla.Client(args.host, args.port)
         client.set_timeout(4.0)
@@ -557,7 +619,17 @@ def game_loop(args):
             pygame.HWSURFACE | pygame.DOUBLEBUF)
 
         hud = HUD(args.width, args.height)
-        world = World(client.load_world('Town02_Opt'), hud, args)
+        world = World(client.load_world('Town01_Opt'), hud, args)
+
+        # weather = world.world.get_weather()
+        # weather.sun_altitude_angle = -30
+        # weather.fog_density = 65
+        # weather.fog_distance = 10
+        # weather.wetness = 100
+        # world.world.set_weather(weather)
+        # vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
+        # world.vehicle.set_light_state(vehicle_light_state)
+
 
         if args.agent == "rl":
             agent = RLAgent(world.vehicle)
@@ -570,6 +642,14 @@ def game_loop(args):
         else:
             agent = None
             world.vehicle.set_autopilot(True)
+
+            traffic_manager = client.get_trafficmanager()
+            route = ["Straight"]*1000
+            traffic_manager.set_route(world.vehicle, route)
+            traffic_manager.ignore_lights_percentage(world.vehicle, 100)
+            traffic_manager.ignore_signs_percentage(world.vehicle, 100)
+            traffic_manager.keep_right_rule_percentage(world.vehicle, 0)
+            
 
         if args.rec != "":
             if not os.path.exists('./_%d/' % SPAWNPOINT):
@@ -589,45 +669,80 @@ def game_loop(args):
         image_counter = 0
         first_image_taken = 0
         recording = False
+        noise = False
+        noise_value = 0
+        prev_image_number = 0
         while True:
             # as soon as the server is ready continue!
             if not world.world.wait_for_tick(10.0):
                 continue
-
             step_start = time.time()
-            if type(world.camera_manager.image).__module__ == np.__name__:
+            if (type(world.camera_manager.image).__module__ == np.__name__):
                 # If we use autopilot of carla and no agent to control the car
                 if agent == None:
                     world.camera_manager._surface = pygame.surfarray.make_surface(world.camera_manager.image.swapaxes(0, 1))
-                    #Get the traffic light affecting a vehicle
+
+                    """#Get the traffic light affecting a vehicle
                     if world.vehicle.is_at_traffic_light():
                         traffic_light = world.vehicle.get_traffic_light()
                         if traffic_light.get_state() == carla.TrafficLightState.Red or traffic_light.get_state() == carla.TrafficLightState.Yellow:
                             traffic_light.set_state(carla.TrafficLightState.Green)
-                            traffic_light.set_green_time(4.0)
+                            # traffic_light.set_green_time(4.0)"""
 
                     image_counter = image_counter + 1
                 # The agent selected will be used to control the car
                 else:
                     steer, throttle, image = agent.run_step(world.camera_manager.image)
+                    j = Image.fromarray(world.camera_manager.image)
+                    j.save("output.png")
                     world.camera_manager._surface = pygame.surfarray.make_surface(image.swapaxes(0, 1))
+                    # world.camera_manager._second_surface = pygame.surfarray.make_surface(world.camera_manager.image2.swapaxes(0, 1))
                     world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer)))
 
                     image_counter = image_counter + 1
+
+                """if (noise == False) and (image_counter % 300 == 0):
+                    noise = True
+                elif (noise == True) and (image_counter % 17 == 0):
+                    noise = False
+                    noise_value = 0
+
+                # Apply noise if activated
+                control = world.vehicle.get_control()
+                location = world.vehicle.get_location()
+                if noise:
+                    noise_value = random.uniform(-0.05, 0.05)
+                    control.steer += noise_value
+                    world.vehicle.apply_control(control)"""
 
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         quit()
 
-                    elif event.type == pygame.KEYDOWN:
+                    """elif event.type == pygame.KEYDOWN:
                         if event.key == K_r and recording == False:
                             recording = True
                         elif event.key == K_r and recording == True:
-                            recording = False
+                            recording = False"""
+
+                """if (139 < location.x < 163) and (-194 < location.y < 193.5): # Map03 right turn
+                    continue"""
+                """if (134 < location.x < 170) and (-207.89 < location.y < -204): # Map03 left turn
+                    continue
+                else:"""
+                """if abs(control.steer) >= 0.3: # 0.09
+                    print(f"GIROOOOOOO - {image_counter}")
+                    recording = True
+                else:
+                    recording = False"""
 
                 # if (args.rec == True) and (image_counter % 10 == 0):
                 if recording and args.rec == "rgb":
-                    first_image_taken = save_instance_to_dataset(world, world.camera_manager.image, image_counter, first_image_taken)
+                    first_image_taken, prev_image_number = save_instance_to_dataset(world, world.camera_manager.image, 
+                    image_counter, first_image_taken, prev_image_number)
+
+                    if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 5000:
+                        break
 
                 elif recording and args.rec == "bird":
                     birdview = birdview_producer.produce(agent_vehicle=world.vehicle)
@@ -717,6 +832,14 @@ def main():
         logging.exception(error)
 
 
+
 if __name__ == '__main__':
+    """start = time.time()
+    spawnpoints = [8, 9]
+    for spawn in spawnpoints:
+        SPAWNPOINT = spawn
+        main()
+    end = time.time() - start
+    print(f"THE END: time -> {end}")"""
 
     main()

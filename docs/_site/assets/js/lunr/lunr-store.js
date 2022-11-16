@@ -103,7 +103,13 @@ var store = [{
       },{
         "title": "Week 21 - Fixing the car behaviour",
         "excerpt":"This week, our task was to correct the car behaviour for it was steering towards the oncoming lane even thought this is not a desired quality. Many hours were spent on trying different configurations of the model or adding more data to the dataset. None of it seemed to fix...","categories": ["Weekly Log"],
-        "tags": ["carla","dataset","pilotnet","normalization"],
+        "tags": ["carla","dataset","pilotnet"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-21/",
+        "teaser": null
+      },{
+        "title": "Week 22 - Subjective vision for a follow-lane task",
+        "excerpt":"This week we will try to wrap up some major tasks for the follow-lane vehicle we have been developing this past weeks: First we will make some small improvements to the model to have a fairly good follow-lane car Secondly we will record an illustrative video to show how the...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset","pilotnet"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-22/",
         "teaser": null
       }]

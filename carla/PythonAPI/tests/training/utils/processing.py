@@ -1,17 +1,19 @@
 import os
 import glob
 import cv2
+import sys
 import pandas
 import random
 
 import numpy as np
 from PIL import Image
+import tensorflow as tf
 import matplotlib.pyplot as plt
 
 from skimage.io import imread
+from sklearn import preprocessing
 from skimage.transform import resize
 from sklearn.model_selection import train_test_split
-
 
 
 def delete_ratio(annotations, images, value_min, value_max, x):
@@ -34,6 +36,31 @@ def delete_ratio(annotations, images, value_min, value_max, x):
     return new_annotations, new_images
 
 
+def delete_until(annotations, images, x, counter, bins):
+    new_annotations = []
+    new_images = []
+
+    annotations_steer = []
+    for annotation in annotations:
+        annotations_steer.append(annotation[1])
+
+    total_elimination = []
+    for index, counts in enumerate(counter):
+        if counts > x:
+            number_to_delete = counts - x
+            eliminate = random.sample([i for i, val in enumerate(annotations_steer) if ((val >= bins[index]) and (val <= bins[index+1]))], int(number_to_delete))
+            total_elimination.extend(eliminate)
+
+    for index, (annotations_val, images_val) in enumerate(zip(annotations, images)):
+        if index in total_elimination:
+            continue
+        else:
+            new_annotations.append(annotations_val)
+            new_images.append(images_val)
+
+    return new_annotations, new_images
+
+
 def get_images(list_images, type_image, image_shape):
     image_shape = (image_shape[0], image_shape[1])
     # Read the images
@@ -44,8 +71,10 @@ def get_images(list_images, type_image, image_shape):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if type_image == 'crop':
             img = img[240:-1, :]
-        img = cv2.resize(img, image_shape)
+        img = cv2.resize(img, image_shape)# /255.0 # Normalizar
         array_imgs.append(img)
+        j = Image.fromarray(img)
+        j.save("output.png")
 
     return array_imgs
 
@@ -75,101 +104,35 @@ def add_extreme_data(images, array_annotations):
     array_annotations = list(array_annotations)
     images = list(images)
     for i in range(0, len(array_annotations)):
-        if abs(array_annotations[i][1]) >= 0.88:
-            num_iter = 1
-        elif abs(array_annotations[i][1]) >= 0.7:
-            num_iter = 1
-        elif abs(array_annotations[i][1]) >= 0.6:
-            num_iter = 2
-        elif abs(array_annotations[i][1]) >= 0.56:
+        if abs(array_annotations[i][1]) >= 0.83015237:
             num_iter = 0
-        elif abs(array_annotations[i][1]) >= 0.48: # Casi 0 el steering
+        elif abs(array_annotations[i][1]) >= 0.8825381:
             num_iter = 0
-        elif abs(array_annotations[i][1]) >= 0.42:
-            num_iter = 0
-        elif abs(array_annotations[i][1]) >= 0.31:
-            num_iter = 0
-        elif abs(array_annotations[i][1]) >= 0.2:
-            num_iter = 2
-        else:
-            num_iter = 15
-        for j in range(0, num_iter):
-            array_annotations.append(array_annotations[i])
-            images.append(images[i])
-
-    return images, array_annotations
-
-
-def add_extreme_data_good(images, array_annotations):
-    array_annotations = list(array_annotations)
-    images = list(images)
-    for i in range(0, len(array_annotations)):
-        if abs(array_annotations[i][1]) >= 0.88:
-            num_iter = 5
-        elif abs(array_annotations[i][1]) >= 0.7:
-            num_iter = 6
-        elif abs(array_annotations[i][1]) >= 0.6:
-            num_iter = 7
-        elif abs(array_annotations[i][1]) >= 0.56:
+        elif abs(array_annotations[i][1]) >= 0.83015237:
             num_iter = 3
-        elif abs(array_annotations[i][1]) >= 0.48: # Casi 0 el steering
+        elif abs(array_annotations[i][1]) >= 0.6555333:
             num_iter = 0
-        elif abs(array_annotations[i][1]) >= 0.42:
+        elif abs(array_annotations[i][1]) >= 0.60314757:
             num_iter = 1
-        elif abs(array_annotations[i][1]) >= 0.31:
-            num_iter = 2
-        elif abs(array_annotations[i][1]) >= 0.2:
-            num_iter = 10
+        elif abs(array_annotations[i][1]) >= 0.58568566:
+            num_iter = 1
+        elif abs(array_annotations[i][1]) >= 0.439:
+            num_iter = 0
+        elif abs(array_annotations[i][1]) >= 0.341219:
+            num_iter = 0
+        elif abs(array_annotations[i][1]) >= 0.30629514:
+            num_iter = 0
+        elif abs(array_annotations[i][1]) >= 0.25390942:
+            num_iter = 5
+        elif abs(array_annotations[i][1]) >= 0.20152369:
+            num_iter = 25
+        elif abs(array_annotations[i][1]) >= 0.114216:
+            num_iter = 30
         else:
-            num_iter = 20
+            num_iter = 0
         for j in range(0, num_iter):
             array_annotations.append(array_annotations[i])
             images.append(images[i])
-
-    return images, array_annotations
-
-
-def add_extreme_data_flip(images, array_annotations):
-    array_annotations = list(array_annotations)
-    images = list(images)
-    for i in range(0, len(array_annotations)):
-        print(i)
-        if abs(np.interp(array_annotations[i][1], (0, 1), (-1, 1))) >= 0.1:
-            if abs(np.interp(array_annotations[i][1], (0, 1), (-1, 1))) >= 0.76:
-                num_iter = 3
-            elif abs(np.interp(array_annotations[i][1], (0, 1), (-1, 1))) >= 0.52:
-                num_iter = 2
-            elif abs(np.interp(array_annotations[i][1], (0, 1), (-1, 1))) >= 0.15:
-                num_iter = 1
-            else:
-                num_iter = 0
-            for j in range(0, num_iter):
-                array_annotations.append(array_annotations[i])
-                images.append(images[i])
-
-    return images, array_annotations
-
-
-def add_extreme_data_original(images, array_annotations):
-    for i in range(0, len(array_annotations)):
-        if abs(array_annotations[i][1]) >= 0.1:
-            if abs(array_annotations[i][1]) >= 0.4:
-                num_iter = 0
-            elif abs(array_annotations[i][1]) >= 0.3:
-                num_iter = 0
-            elif abs(array_annotations[i][1]) >= 0.21:
-                num_iter = 0
-            elif abs(array_annotations[i][1]) >= 0.15:
-                num_iter = 0
-            elif abs(array_annotations[i][1]) >= 0.1:  # Crece mucho
-                num_iter = 0
-            elif abs(array_annotations[i][1]) >= 0.04:
-                num_iter = 1000
-            else:
-                num_iter = 0
-            for j in range(0, num_iter):
-                array_annotations.append(array_annotations[i])
-                images.append(images[i])
 
     return images, array_annotations
 
@@ -188,6 +151,8 @@ def compute_image_annotations(id, path_to_data, type_image, img_shape, data_type
 
     print(path_to_data)
     if 'weird' in path_to_data:
+        images_paths = sorted(list_images, key=lambda x: int(x.split('/')[3].split('.png')[0]))
+    elif 'extreme' in path_to_data:
         images_paths = sorted(list_images, key=lambda x: int(x.split('/')[3].split('.png')[0]))
     else:
         images_paths = sorted(list_images, key=lambda x: int(x.split('/')[2].split('.png')[0]))
@@ -219,6 +184,7 @@ def compute_image_annotations(id, path_to_data, type_image, img_shape, data_type
     normalized_annotations = []
     for i in range(0, len(normalized_x)):
         normalized_annotations.append([normalized_x.item(i), normalized_y.item(i)])
+        # normalized_annotations.append(normalized_y.item(i))
 
     array_annotations = normalized_annotations
 
@@ -248,20 +214,24 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_annotations += annotations
         counter += 1
 
-    """list_town_curves = glob.glob(path_to_data + 'curves/*02')
-    for path_towns in list_town_curves:
-        list_curves = glob.glob(path_towns + '/*_*')
-        print(path_towns)
-        for data in list_curves:
-            id = data.split('_')[3]
-            images, annotations = compute_image_annotations(id, path_towns + '/', type_image, img_shape, data_type)
-            array_imgs += images
-            array_annotations += annotations"""
-
     list_weird_start = glob.glob(path_to_data + 'weird/*')
     for data in list_weird_start:
         id = data.split('_')[2]
         images, annotations = compute_image_annotations(id, path_to_data + 'weird/', type_image, img_shape, data_type)
+        array_imgs += images
+        array_annotations += annotations
+
+    list_weird_start = glob.glob(path_to_data + 'weird2/*')
+    for data in list_weird_start:
+        id = data.split('_')[2]
+        images, annotations = compute_image_annotations(id, path_to_data + 'weird2/', type_image, img_shape, data_type)
+        array_imgs += images
+        array_annotations += annotations
+
+    list_weird_start = glob.glob(path_to_data + 'extreme/*')
+    for data in list_weird_start:
+        id = data.split('_')[2]
+        images, annotations = compute_image_annotations(id, path_to_data + 'extreme/', type_image, img_shape, data_type)
         array_imgs += images
         array_annotations += annotations
 
@@ -300,23 +270,30 @@ def process_dataset(path_to_data, type_image, data_type, img_shape):
         array_annotations = np.load('array_annotations.npy', allow_pickle=True)
     else:
         array_imgs, array_annotations = get_images_and_annotations(path_to_data, type_image, img_shape, data_type)
+        # NORMALIZAMOS LAS IMAGENES
         np.save('array_imgs.npy', array_imgs, allow_pickle=True)
         np.save('array_annotations.npy', array_annotations, allow_pickle=True)
 
     # array_annotations = array_annotations.tolist()
     # array_imgs = array_imgs.tolist()
-    
+
     # Delete percentage of element with a given value
-    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.5, 0.516, 0.9)
-    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.48, 0.5, 0.78)
-    array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.5, 0.516, 0.7)
-    array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.48, 0.5, 0.5)
 
-    # array_imgs, array_annotations = add_extreme_data(array_imgs, array_annotations)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.507108, 0.550762, 0.37)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.463452, 0.507107, 0.5)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.419798, 0.463451, 0.28)
+    array_imgs, array_annotations = add_extreme_data(array_imgs, array_annotations)
 
-    print(len(array_imgs))
     print(len(array_annotations))
+    (n2, bins2, patches) = plt.hist(np.array(array_annotations)[:,1],bins=50)
+    print(bins2)
+    # Delete until reach a certain max value
+    array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 2000, n2, bins2)
 
+    # np.save('array_imgs.npy', array_imgs, allow_pickle=True)
+    # np.save('array_annotations.npy', array_annotations, allow_pickle=True)
+
+    print(len(array_annotations))
     plt.hist(np.array(array_annotations)[:,1],bins=50)
     plt.show()
 

@@ -1,13 +1,14 @@
 import os
-import argparse
-import datetime
+import sys
 import time
 import h5py
-import sys
+import argparse
+import datetime
 
 import numpy as np
-import matplotlib.pyplot as plt
+from PIL import Image
 import tensorflow as tf
+import matplotlib.pyplot as plt
 
 from utils.dataset import get_augmentations, DatasetSequence
 from utils.processing import process_dataset
@@ -68,6 +69,61 @@ class ScatterPlotCallback(tf.keras.callbacks.Callback):
 
 
 
+class PlotCallback(tf.keras.callbacks.Callback):
+    def __init__(self, annotations_val, images_val, model):
+        self.annotations_val = annotations_val
+        self.images_val = images_val
+        self.model = model
+        
+    def on_epoch_end(self, epoch, logs=None):
+        if epoch % 10 == 0:
+            print('Saving Plot...')
+            
+            # Scatter plot of the steering values
+            x_true = []
+            y_predicted = []
+
+            # Scatter plot of the throttle values
+            x_true_throttle = []
+            y_predicted_throttle = []
+
+            for x in progressbar(range(0, len(self.annotations_val), 50), "Computing: ", 40):
+                x_true.append(self.annotations_val[x][1])
+                x_true_throttle.append(self.annotations_val[x][0])
+
+                final_image = self.images_val[x] / 255.0
+
+                final_image = final_image[np.newaxis]
+                prediction = self.model.predict(final_image)
+
+                y_predicted.append(prediction[0][1])
+                y_predicted_throttle.append(prediction[0][0])
+                # y_predicted.append(prediction[0])
+                
+            # Steering values plot
+            fig1, ax1 = plt.subplots(figsize=(20, 10))
+            ax1.plot(x_true, c ="green")
+            ax1.plot(y_predicted, c ="red")
+        
+            plt.xlabel("instance")
+            plt.ylabel("steering")
+            name = 'plot_graph_steering_epoch' + str(epoch)
+            fig1.savefig(name, dpi = 100)
+            plt.close(fig1)
+
+            # Throttle values plot
+            fig1, ax1 = plt.subplots(figsize=(20, 10))
+            ax1.plot(x_true_throttle, c ="green")
+            ax1.plot(y_predicted_throttle, c ="red")
+        
+            plt.xlabel("instance")
+            plt.ylabel("throttle")
+            name = 'plot_graph_throttle_epoch' + str(epoch)
+            fig1.savefig(name, dpi = 100)
+            plt.close(fig1)
+
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
 
@@ -107,7 +163,7 @@ if __name__ == "__main__":
 
     images_train, annotations_train, images_val, annotations_val = process_dataset(path_to_data, type_image,
                                                                                                data_type, img_shape)
-
+        
     # Train
     timestr = time.strftime("%Y%m%d-%H%M%S")
     print(timestr)
@@ -122,7 +178,7 @@ if __name__ == "__main__":
 
     model_name = 'pilotnet_model'
     model = pilotnet_model(img_shape, learning_rate)
-    model_filename = timestr + '_pilotnet_model_3_albumentations_no_crop'
+    model_filename = timestr + '_pilotnet_model_3_' + str(num_epochs)
     model_file = model_filename + '.h5'
 
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)
@@ -142,7 +198,7 @@ if __name__ == "__main__":
     checkpoint_path = model_filename + '_cp.h5'
     cp_callback = ModelCheckpoint(filepath=checkpoint_path, monitor='mse', save_best_only=True, verbose=1)
     csv_logger = CSVLogger(model_filename + '.csv', append=True)
-    scatter_plot_callback = ScatterPlotCallback(annotations_val, images_val)
+    plot_callback = PlotCallback(annotations_val, images_val, model)
 
     # Print layers
     print(model)
@@ -156,7 +212,7 @@ if __name__ == "__main__":
         verbose=1,
         validation_data=valid_gen,
         # workers=2, use_multiprocessing=False,
-        callbacks=[tensorboard_callback, cp_callback, csv_logger, scatter_plot_callback])
+        callbacks=[tensorboard_callback, cp_callback, csv_logger, plot_callback])
 
     # Save model
     model.save(model_file)
