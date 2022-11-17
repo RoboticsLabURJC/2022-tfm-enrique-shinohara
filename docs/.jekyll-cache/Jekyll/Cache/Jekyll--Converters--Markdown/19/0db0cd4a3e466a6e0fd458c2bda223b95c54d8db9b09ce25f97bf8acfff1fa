@@ -1,0 +1,41 @@
+I"*<p>This week we will try to wrap up some major tasks for the follow-lane vehicle we have been developing this past weeks:</p>
+
+<ul>
+  <li>First we will make some small improvements to the model to have a fairly good follow-lane car</li>
+  <li>Secondly we will record an illustrative video to show how the car behaves in different roads, whether it be good or bad</li>
+  <li>Thirdly, we are going to dig into the segmented images provided by the carla simulator</li>
+</ul>
+
+<h2 id="improving-little-by-little">Improving little by little</h2>
+
+<p>By trying to improve the car, we aim to fix some minor behaviour problems that were somewhat bothersome. One interesting behaviour was that it veered to the right even though it had a continuous line separating the left lane from the right lane. A possible explanation to why it was doing this, was that we trained it over some data that we always recorded from the rightmost lane. This could be one of the main reasons to why the car will always change lanes to the farmost right lane (always asuming that there is enough space for the car to run over it).</p>
+
+<p>In order to fix this behaviour we did a more thoughtful balancing of our data, with more augmentations and training time. Having all this steps covered we found a pretty good model that was able to stay in the lane most of the time. Some curious behaviour was found when the car steered too much on sharp curves, but this kind of behaviour were only sighted when the car velocity exceeded the appropiate speed for the curve.</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_good.png" alt="" />
+  <figcaption>Histogram of the balanced dataset</figcaption>
+</figure>
+
+<p>By taking a look into the next figure, we can always assume that 300 epochs is quite a lot, evenmore if all the previous training sessions we set the epochs to 50. It is quite clear that above 50 epochs, we were able to achieve a better model that could maintain itself, most of the time, on the road without changing lanes randomly. But given that the graph shows us a stabilized validation loss we could conclude that it would seem to be a little overkill to put 300 epochs, so we might be able to establish the epochs to around 150 without losing any performance.</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/epoch_loss_300_good.png" alt="" />
+  <figcaption>Evolution of the loss along 300 epochs</figcaption>
+</figure>
+
+<p>Finally, we can take a look to the video created to see the</p>
+
+<p>https://www.youtube.com/watch?v=ZsXERVFRY4g</p>
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/v=ZsXERVFRY4g"></iframe></a>
+</figure>
+
+<h2 id="image-segmentation">Image segmentation</h2>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/segmentated_image.png" alt="" />
+  <figcaption>Segmentated image from the Carla Simulation</figcaption>
+</figure>
+
+:ET

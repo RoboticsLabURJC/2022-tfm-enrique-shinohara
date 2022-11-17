@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          2 minute read
         
       </span>
     
@@ -315,7 +315,33 @@
 
 <p>In order to fix this behaviour we did a more thoughtful balancing of our data, with more augmentations and training time. Having all this steps covered we found a pretty good model that was able to stay in the lane most of the time. Some curious behaviour was found when the car steered too much on sharp curves, but this kind of behaviour were only sighted when the car velocity exceeded the appropiate speed for the curve.</p>
 
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_good.png" alt="" />
+  <figcaption>Histogram of the balanced dataset</figcaption>
+</figure>
+
+<p>By taking a look into the next figure, we can always assume that 300 epochs is quite a lot, evenmore if all the previous training sessions we set the epochs to 50. It is quite clear that above 50 epochs, we were able to achieve a better model that could maintain itself, most of the time, on the road without changing lanes randomly. But given that the graph shows us a stabilized validation loss we could conclude that it would seem to be a little overkill to put 300 epochs, so we might be able to establish the epochs to around 150 without losing any performance.</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/epoch_loss_300_good.png" alt="" />
+  <figcaption>Evolution of the loss along 300 epochs</figcaption>
+</figure>
+
+<p>Finally, we can take a look to the car behaviour along the training and the test maps. We can see that the car performs pretty well, staying most of the time in its lane.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/ZsXERVFRY4g"></iframe></a>
+</figure>
+
+<p>Note: the car may oscillates in the video but this would be caused because we added a new sensor in order to have more visualizations to the car behaviour. But by adding a new sensor, the Carla Simulation is known to slow down the performance, needing a more powerful computer if we wanted to have this two or more sensors. This oscillation is not common when we use a single front camera sensor.</p>
+
 <h2 id="image-segmentation">Image segmentation</h2>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/segmentated_image.png" alt="" />
+  <figcaption>Segmentated image from the Carla Simulation</figcaption>
+</figure>
+
 
         
       </section>
