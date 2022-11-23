@@ -1,0 +1,36 @@
+I"Ä<p>Once we have established a solid base for the deep learning project we move on to other tasks. With that being said, we are going to make use of a segmentation sensor already implemented in the Carla Simulator. With this sensor we can segmentate an image like the one we showed the previous week. Starting the training process we needed to record a new dataset but with segmentated images, so we proceeded to extract a dataset similar to the one we had on the previous weeks were we will make the car run clockwise and anticlockwise in three different circuits, and then we gather more data, but this time focused on the turns, for the straight instances are much more larger and we need a balanced and rich dataset.</p>
+
+<p>While we were recolecting data we encounter a little problem exceptionally present in the Town05.</p>
+
+<video src="https://user-images.githubusercontent.com/47086664/203536462-8ac3b51a-40b0-4018-8aa2-29919a558e4a.mov" data-canonical-src="https://user-images.githubusercontent.com/47086664/203536462-8ac3b51a-40b0-4018-8aa2-29919a558e4a.mov" controls="controls" muted="muted" class="align-center" style="width:70%">
+</video>
+
+<p><br /></p>
+
+<p>As we can see from the previous video, we can observe that there is a black flickering on the images from using a hardcoded autopilot (from Carla). The reason to highlight this last part, is that this flickering can be seen when we use a neural network, or when we overload the code with tasks that slow the segmentation process. But this doensâ€™t happens in other towns as frequently as it happens in the town05. Until we sort this problem out, we decided to change the training maps, and instead of using the towns: 02, 03 and 05, we are going to use the 02, 03 and 07, where we can also try to teach the car multiple lane types on its left like the double solid yellow line.</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/balanced_237.png" alt="" />
+  <figcaption>Histogram of the balanced dataset from town 02, 03, 07</figcaption>
+</figure>
+
+<p>Once the data is set, we train the model, trying to check how far can we train it and if it is even worth it. From the looks of it, we can see some improvements along the 240 epochs that we make it train for.</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/epoch_loss_town237_segmentation.png" alt="" />
+  <figcaption>Epoch loss graph</figcaption>
+</figure>
+
+<p>Now, for the results we can easily see that the car has grown to be more robust, being able to keep itself in the lane in more situations given the fact that by having segmentated images, we can simplify the features learned and therefore making it robust to different types of roads.</p>
+
+<p>In the first video we take a look at how the car performs on a training town such as 07, where the curves are quite unique.</p>
+
+<video src="https://user-images.githubusercontent.com/47086664/203581646-f510ed09-5024-45fe-b434-5d13aaa74daa.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/203581646-f510ed09-5024-45fe-b434-5d13aaa74daa.mp4" controls="controls" muted="muted" class="align-center" style="width:70%">
+</video>
+<p><br />
+The next video shows us a run on town 01, similar to the town 02 with some differences such as the presence of puddles and different lighting.</p>
+
+<video src="https://user-images.githubusercontent.com/47086664/203581643-3bcd345c-b243-4d34-bfba-bf706f3652aa.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/203581643-3bcd345c-b243-4d34-bfba-bf706f3652aa.mp4" controls="controls" muted="muted" class="align-center" style="width:70%">
+</video>
+<p><br /></p>
+:ET

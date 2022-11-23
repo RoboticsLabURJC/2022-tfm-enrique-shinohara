@@ -112,4 +112,10 @@ var store = [{
         "tags": ["carla","dataset","pilotnet"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-22/",
         "teaser": null
+      },{
+        "title": "Week 23 - Semantic Segmentation",
+        "excerpt":"Once we have established a solid base for the deep learning project we move on to other tasks. With that being said, we are going to make use of a segmentation sensor already implemented in the Carla Simulator. With this sensor we can segmentate an image like the one we...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset","pilotnet","segmentation"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-23/",
+        "teaser": null
       }]
