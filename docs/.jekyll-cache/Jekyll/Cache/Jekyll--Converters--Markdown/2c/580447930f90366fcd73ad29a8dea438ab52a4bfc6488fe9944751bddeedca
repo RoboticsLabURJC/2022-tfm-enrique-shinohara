@@ -1,8 +1,0 @@
-I"ƒ<p>Once we have established a solid base for the deep learning project we move on to other tasks. With that being said, we are going to make use of a segmentation sensor already implemented in the Carla Simulator. With this sensor we can segmentate an image like the one we showed the previous week. Starting the training process we needed to record a new dataset but with segmentated images, so we proceeded to extract a dataset similar to the one we had on the previous weeks were we will make the car run clockwise and anticlockwise in three different circuits, and then we gather more data, but this time focused on the turns, for the straight instances are much more larger and we need a balanced and rich dataset.</p>
-
-<p>While we were recolecting data we encounter a little problem exceptionally present in the Town05.</p>
-
-<video src="https://user-images.githubusercontent.com/47086664/203536462-8ac3b51a-40b0-4018-8aa2-29919a558e4a.mov" data-canonical-src="https://user-images.githubusercontent.com/47086664/203536462-8ac3b51a-40b0-4018-8aa2-29919a558e4a.mov" controls="controls" muted="muted" class="align-center" style="width:70%">
-
-  </video>
-:ET
