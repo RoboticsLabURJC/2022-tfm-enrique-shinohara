@@ -32,7 +32,7 @@ class RLAgent(object):
         self._map = self._vehicle.get_world().get_map()
         self.w = 0
         self.v = 0
-        self.model = load_model('20221111-225504_pilotnet_model_3_301_cp.h5')
+        self.model = load_model('20221216-123540_pilotnet_model_3_101_cp.h5')
         self.first = 0
         # self.model = load_model('20221102-095537_pilotnet_model_3_51_cp.h5', custom_objects={'tf': tf})
 
@@ -51,7 +51,7 @@ class RLAgent(object):
         tensor_img = cropped
         tensor_img[frame_threshed>0]=(255,0,0)"""
         # cropped = cv2.cvtColor(cropped, cv2.COLOR_RGB2BGR)
-        tensor_img = cv2.resize(cropped, (200, 66), interpolation = cv2.INTER_AREA)/255.0
+        tensor_img = cv2.resize(cropped, (200, 66))/255.0
         final_image = tensor_img[np.newaxis]
         
         steer_val = self.w
@@ -60,15 +60,14 @@ class RLAgent(object):
         example_result = self.model.predict(final_image)
         # Follow lane steering values
         steer_val = np.interp(example_result[0][1], (0, 1), (-1, 1))
-        # steer_val = np.interp(example_result[0], (0, 1), (-1, 1))
         if self.first < 100:
             throttle_val = 0.2
             self.first += 1
         else:
-            throttle_val = 0.3
+            throttle_val = example_result[0][0]
         # print(f"THROTTLE: {throttle_val} - STEERING {steer_val}")
 
         self.v = throttle_val
         self.w = steer_val
 
-        return steer_val, throttle_val, img
+        return steer_val, throttle_val, img, tensor_img

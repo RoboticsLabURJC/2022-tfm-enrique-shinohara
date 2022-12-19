@@ -1,0 +1,52 @@
+En esta podemos cambiar y entrenar en el mapa Town02, Town05, Town07. El 7 porque al ser segmentado, tenemos mas tipos de curvas, puede ser interesante...
+
+Mas FPS procesados que con el RGB. No se si esto es un problema en cuanto a la calidad de datos, ya que antes con rgb podiamos tener mas variedad, pero ahora no se si tendremos mas de lo mismo por poder procesar mas imagenes.
+
+DATASET:
+	|-> _200 anticlockwise	5000
+	|-> _202 clockwise	5000
+	|-> _308 anticlockwise	5000
+	|-> _312 clockwise	5000
+	|-> _724 clockwise	5000
+	|-> _770 anticlockwise	5000
+				____
+			      30.000
+			      
+	|-> turns		
+		|-> _200 anticlockwise	5000
+		|-> _202 clockwise	5000
+		|-> _204 anticlockwise	5000
+		|-> _205 clockwise	5000
+		|-> _207 clockwise	5000
+		|-> _208 anticlockwise	5000
+
+		|-> _301 anticlockwise	5000
+		|-> _302 clockwise	5000
+		|-> _307 clockwise	5000
+		|-> _308 anticlockwise	5000
+		|-> _312 clockwise	5000
+		|-> _313 anticlockwise	5000
+		
+		|-> _724 clockwise	5000
+		|-> _746 clockwise	5000
+		|-> _757 anticlockwise	5000
+		|-> _770 anticlockwise	5000
+		|-> _771 clockwise	5000
+		|-> _797 anticlockwise	5000
+	    			      ______
+	    			      90.000
+	    			
+	|-> _extreme		
+		|-> _200 anticlockwise	5000
+		|-> _202 clockwise	5000
+		|-> _308 anticlockwise	5000
+		|-> _309 clockwise	5000
+		    		      ______
+		    		      20.000
+	    			
+	    			
+	    			
+python train.py --data_dir dataset_followlaneseg/ --preprocess crop --data_augs 2 --num_epochs 51 --learning_rate 0.0001 --batch_size 80 --img_shape "200,66,3"
+
+python train.py --data_dir dataset_followlanesegnpc/ --preprocess crop --data_augs 2 --num_epochs 301 --learning_rate 0.0001 --batch_size 80 --img_shape "200,66,3"
+

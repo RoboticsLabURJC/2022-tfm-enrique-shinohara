@@ -118,4 +118,10 @@ var store = [{
         "tags": ["carla","dataset","pilotnet","segmentation"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-23/",
         "teaser": null
+      },{
+        "title": "Week 24~25 - Adding some extras",
+        "excerpt":"This weeks we continue with the use of the RGB cameras, but this time, we are going to add a little bit more of spice, we will add more agents apart from our vehicle. The purpose of doing this, is to try to teach the car to learn how to...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-24-26/",
+        "teaser": null
       }]

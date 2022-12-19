@@ -1,0 +1,41 @@
+DATASET:
+	|-> _200 anticlockwise	5000
+	|-> _202 clockwise	5000
+	|-> _308 anticlockwise	5000
+	|-> _312 clockwise	5000
+	|-> _724 clockwise	5000
+	|-> _770 anticlockwise	5000
+				____
+			      30.000
+			      
+	|-> turns		
+		|-> _200 anticlockwise	5000
+		|-> _202 clockwise	5000
+		|-> _204 anticlockwise	5000
+		|-> _205 clockwise	5000
+		|-> _207 clockwise	5000
+		|-> _208 anticlockwise	5000
+
+		|-> _301 anticlockwise	5000
+		|-> _302 clockwise	5000
+		|-> _307 clockwise	5000
+		|-> _308 anticlockwise	5000
+		|-> _312 clockwise	5000
+		|-> _313 anticlockwise	5000
+		
+		|-> _724 clockwise	5000
+		|-> _746 clockwise	5000
+		|-> _757 anticlockwise	5000
+		|-> _770 anticlockwise	5000
+		|-> _771 clockwise	5000
+		|-> _797 anticlockwise	5000
+	    			      ______
+	    			      90.000
+	    			
+	|-> _extreme		
+		|-> _200 anticlockwise	5000
+		|-> _202 clockwise	5000
+		|-> _308 anticlockwise	5000
+		|-> _309 clockwise	5000
+		    		      ______
+		    		      20.000

@@ -23,3 +23,10 @@ carla/PythonAPI/tests/training/*.npy
 carla/PythonAPI/tests/training/*.h5
 carla/PythonAPI/tests/training/logs
 carla/PythonAPI/tests/training/array*
+
+carla/PythonAPI/tests/training_segmentation/dataset*
+carla/PythonAPI/tests/training_segmentation/*.png
+carla/PythonAPI/tests/training_segmentation/*.npy
+carla/PythonAPI/tests/training_segmentation/*.h5
+carla/PythonAPI/tests/training_segmentation/logs
+carla/PythonAPI/tests/training_segmentation/array*

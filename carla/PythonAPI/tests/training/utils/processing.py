@@ -73,8 +73,8 @@ def get_images(list_images, type_image, image_shape):
             img = img[240:-1, :]
         img = cv2.resize(img, image_shape)# /255.0 # Normalizar
         array_imgs.append(img)
-        j = Image.fromarray(img)
-        j.save("output.png")
+        # j = Image.fromarray(img)
+        # j.save("output.png")
 
     return array_imgs
 
@@ -154,6 +154,8 @@ def compute_image_annotations(id, path_to_data, type_image, img_shape, data_type
         images_paths = sorted(list_images, key=lambda x: int(x.split('/')[3].split('.png')[0]))
     elif 'extreme' in path_to_data:
         images_paths = sorted(list_images, key=lambda x: int(x.split('/')[3].split('.png')[0]))
+    elif 'stops' in path_to_data:
+        images_paths = sorted(list_images, key=lambda x: int(x.split('/')[3].split('.png')[0]))
     else:
         images_paths = sorted(list_images, key=lambda x: int(x.split('/')[2].split('.png')[0]))
 
@@ -221,17 +223,17 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_imgs += images
         array_annotations += annotations
 
-    list_weird_start = glob.glob(path_to_data + 'weird2/*')
-    for data in list_weird_start:
-        id = data.split('_')[2]
-        images, annotations = compute_image_annotations(id, path_to_data + 'weird2/', type_image, img_shape, data_type)
-        array_imgs += images
-        array_annotations += annotations
-
     list_weird_start = glob.glob(path_to_data + 'extreme/*')
     for data in list_weird_start:
         id = data.split('_')[2]
         images, annotations = compute_image_annotations(id, path_to_data + 'extreme/', type_image, img_shape, data_type)
+        array_imgs += images
+        array_annotations += annotations
+
+    list_weird_start = glob.glob(path_to_data + 'stops/*')
+    for data in list_weird_start:
+        id = data.split('_')[2]
+        images, annotations = compute_image_annotations(id, path_to_data + 'stops/', type_image, img_shape, data_type)
         array_imgs += images
         array_annotations += annotations
 
@@ -281,14 +283,14 @@ def process_dataset(path_to_data, type_image, data_type, img_shape):
 
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.507108, 0.550762, 0.37)
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.463452, 0.507107, 0.5)
-    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.419798, 0.463451, 0.28)
-    array_imgs, array_annotations = add_extreme_data(array_imgs, array_annotations)
+    array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.09023031, 0.10772521, 0.9)
+    # array_imgs, array_annotations = add_extreme_data(array_imgs, array_annotations)
 
-    print(len(array_annotations))
-    (n2, bins2, patches) = plt.hist(np.array(array_annotations)[:,1],bins=50)
-    print(bins2)
-    # Delete until reach a certain max value
-    array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 2000, n2, bins2)
+    # # print(len(array_annotations))
+    # (n2, bins2, patches) = plt.hist(np.array(array_annotations)[:,1],bins=50)
+    # print(bins2)
+    # # Delete until reach a certain max value
+    # array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 12000, n2, bins2)
 
     # np.save('array_imgs.npy', array_imgs, allow_pickle=True)
     # np.save('array_annotations.npy', array_annotations, allow_pickle=True)

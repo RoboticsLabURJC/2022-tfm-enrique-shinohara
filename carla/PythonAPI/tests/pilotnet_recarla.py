@@ -88,7 +88,10 @@ for gpu in gpus:
 # 17 - left turn at the gas station
 # 22 - right turn at the gas station
 global SPAWNPOINT
-SPAWNPOINT = 124
+SPAWNPOINT = 122
+LEFT = False
+RIGHT = False
+CHECK07 = -1
 
 # ==============================================================================
 # -- find carla module ---------------------------------------------------------
@@ -142,7 +145,7 @@ class World(object):
     def restart(self):
         # Keep same camera config if the camera manager exists.
         cam_index = self.camera_manager._index if self.camera_manager is not None else 0
-        cam_index = 5
+        # cam_index = 5
         cam_pos_index = self.camera_manager._transform_index if self.camera_manager is not None else 0
 
         blueprint = self.world.get_blueprint_library().find('vehicle.tesla.model3')
@@ -263,6 +266,8 @@ class HUD(object):
             ('Throttle:', c.throttle, 0.0, 1.0),
             'Steer: %19.2f' % c.steer,
             ('Steer:', c.steer, -1.0, 1.0),
+            'Brake: %19.2f' % c.brake,
+            ('Brake:', c.brake, 0.0, 1.0),
             '',
             'Collision:',
             collision,
@@ -447,6 +452,7 @@ class CameraManager(object):
             ['sensor.camera.semantic_segmentation', cc.Raw, 'Camera Semantic Segmentation (Raw)'],
             ['sensor.camera.semantic_segmentation', cc.CityScapesPalette,
              'Camera Semantic Segmentation (CityScapes Palette)'],
+            ['sensor.camera.instance_segmentation', cc.Raw, 'Camera Instance Segmentation (Raw)', {}],
             ['sensor.lidar.ray_cast', None, 'Lidar (Ray-Cast)']]
         world = self._parent.get_world()
         bp_library = world.get_blueprint_library()
@@ -483,7 +489,7 @@ class CameraManager(object):
             self.sensor.listen(lambda image: CameraManager._parse_image(weak_self, image))
         if notify:
             self._hud.notification(self._sensors[index][2])
-        self._index = 2
+        self._index = index
 
     def set_sensor_2(self, index, notify=True):
         index = index % len(self._sensors)
@@ -517,14 +523,22 @@ class CameraManager(object):
         if not self:
             return
 
-        img = np.reshape(np.copy(data.raw_data), (data.height, data.width, 4))
+        """img = np.reshape(np.copy(data.raw_data), (data.height, data.width, 4))
         img = img[:,:,:3]
         img = img[:, :, ::-1]
 
-        j = Image.fromarray(img)
-        j.save("output.png")
+        # j = Image.fromarray(img)
+        # j.save("output.png")
 
-        self.image = img
+        self.image = img"""
+
+        data.convert(self._sensors[self._index][1])
+        # array = np.frombuffer(data.raw_data, dtype=np.dtype("uint8"))
+        array = np.reshape(data.raw_data, (data.height, data.width, 4))
+        array = array[:, :, :3]
+        array = array[:, :, ::-1]
+
+        self.image = array
 
     @staticmethod
     def _parse_image_2(weak_self, data):
@@ -599,6 +613,57 @@ def save_instance_to_dataset(world, image, image_counter, first_image_taken, pre
     return first_image_taken, prev_image_num
 
 
+def try_spawn_random_vehicles(world, num, spawnpoint, client):
+    actor_list = []
+
+    spawn_points = world.get_map().get_spawn_points()
+
+    if spawnpoint == None:
+        random_waypoints = []
+        while True:
+            random_waypoints = random.choices(spawn_points, k=num)
+            if spawn_points[SPAWNPOINT] in random_waypoints:
+                continue
+            else:
+                break
+        print(len(random_waypoints))
+        for spawn_point in random_waypoints:
+            blueprints = world.get_blueprint_library().filter('vehicle.*')
+            blueprints = [x for x in blueprints if int(x.get_attribute('number_of_wheels')) == 4]
+            blueprint = random.choice(blueprints)
+            if blueprint.has_attribute('color'):
+                color = random.choice(blueprint.get_attribute('color').recommended_values)
+                blueprint.set_attribute('color', color)
+            blueprint.set_attribute('role_name', 'autopilot')
+        
+            vehicle = world.try_spawn_actor(blueprint, spawn_point)
+            if vehicle is not None:
+                actor_list.append(vehicle)
+                vehicle.set_autopilot()
+                print('spawned %r at %s' % (vehicle.type_id, spawn_point.location))
+            else:
+                return False
+            time.sleep(0.5)
+        return True
+    else:
+        blueprint = world.get_blueprint_library().find('vehicle.carlamotors.carlacola')
+        blueprint.set_attribute('role_name', 'cola')
+        spawn_point = spawn_points[spawnpoint]
+        vehicle = world.try_spawn_actor(blueprint, spawn_point)
+
+        traffic_manager = client.get_trafficmanager()
+        route = ["Straight"]*1000
+        traffic_manager.set_route(vehicle, route)
+        traffic_manager.ignore_lights_percentage(vehicle, 50)
+
+        if vehicle is not None:
+                actor_list.append(vehicle)
+                vehicle.set_autopilot()
+                print('spawned %r at %s' % (vehicle.type_id, spawn_point.location))
+        else:
+            return False
+        return True
+
 
 # ==============================================================================
 # -- game_loop() ---------------------------------------------------------
@@ -608,8 +673,6 @@ def game_loop(args):
     pygame.init()
     pygame.font.init()
     world = None
-
-    print(SPAWNPOINT)
     try:
         client = carla.Client(args.host, args.port)
         client.set_timeout(4.0)
@@ -619,7 +682,8 @@ def game_loop(args):
             pygame.HWSURFACE | pygame.DOUBLEBUF)
 
         hud = HUD(args.width, args.height)
-        world = World(client.load_world('Town01_Opt'), hud, args)
+        world = World(client.load_world('Town04_Opt'), hud, args)
+        # try_spawn_random_vehicles(world.world, 10, 21, client)
 
         # weather = world.world.get_weather()
         # weather.sun_altitude_angle = -30
@@ -629,7 +693,6 @@ def game_loop(args):
         # world.world.set_weather(weather)
         # vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
         # world.vehicle.set_light_state(vehicle_light_state)
-
 
         if args.agent == "rl":
             agent = RLAgent(world.vehicle)
@@ -645,27 +708,31 @@ def game_loop(args):
 
             traffic_manager = client.get_trafficmanager()
             route = ["Straight"]*1000
+            # route = ["Right", "Straight", "Straight", "Straight", "Straight", "Straight", "Right"]*500 # Town 07 left WAYPOINT: 57
+            # route = ["Right", "Right", "Straight", "Straight", "Straight", "Straight", "Straight"]*500 # Town 07 left WAYPOINT: 70
+            # route = ["Straight", "Straight", "Straight", "Straight", "Right", "Right", "Straight"]*500 # Town 07 left WAYPOINT: 97
+            # if CHECK07 == 0:
+            #     route = ["Straight", "Left", "Left", "Straight", "Straight", "Straight", "Straight"]*500 # Town 07 right WAYPOINT: 24
+            # elif CHECK07 == 1:
+            #     route = ["Straight", "Straight", "Straight", "Straight", "Straight", "Left", "Left"]*500 # Town 07 right WAYPOINT: 46
+            # elif CHECK07 == 2:
+            #     route = ["Straight", "Straight", "Straight", "Straight", "Left", "Left", "Straight"]*500 # Town 07 right WAYPOINT: 71
             traffic_manager.set_route(world.vehicle, route)
             traffic_manager.ignore_lights_percentage(world.vehicle, 100)
             traffic_manager.ignore_signs_percentage(world.vehicle, 100)
-            traffic_manager.keep_right_rule_percentage(world.vehicle, 0)
+            traffic_manager.distance_to_leading_vehicle(world.vehicle, 15)
+            traffic_manager.auto_lane_change(world.vehicle, False)
+            # traffic_manager.keep_right_rule_percentage(world.vehicle, 100)
             
 
         if args.rec != "":
             if not os.path.exists('./_%d/' % SPAWNPOINT):
                 os.makedirs('./_%d/' % SPAWNPOINT)
 
-        birdview_producer = BirdViewProducer(
-            client,
-            target_size=PixelDimensions(width=150, height=336),
-            pixels_per_meter=4,
-            crop_type=BirdViewCropType.FRONT_AREA_ONLY
-        )
-
 
         clock = pygame.time.Clock()
         fps = deque(maxlen=60)
-        # media = deque(maxlen=1000)
+        media = deque(maxlen=1000)
         image_counter = 0
         first_image_taken = 0
         recording = False
@@ -682,34 +749,29 @@ def game_loop(args):
                 if agent == None:
                     world.camera_manager._surface = pygame.surfarray.make_surface(world.camera_manager.image.swapaxes(0, 1))
 
-                    """#Get the traffic light affecting a vehicle
                     if world.vehicle.is_at_traffic_light():
                         traffic_light = world.vehicle.get_traffic_light()
-                        if traffic_light.get_state() == carla.TrafficLightState.Red or traffic_light.get_state() == carla.TrafficLightState.Yellow:
-                            traffic_light.set_state(carla.TrafficLightState.Green)
-                            # traffic_light.set_green_time(4.0)"""
+                        traffic_light.set_red_time(5)
 
                     image_counter = image_counter + 1
                 # The agent selected will be used to control the car
                 else:
-                    steer, throttle, image = agent.run_step(world.camera_manager.image)
-                    j = Image.fromarray(world.camera_manager.image)
-                    j.save("output.png")
-                    world.camera_manager._surface = pygame.surfarray.make_surface(image.swapaxes(0, 1))
+                    world.camera_manager._surface = pygame.surfarray.make_surface(world.camera_manager.image.swapaxes(0, 1))
+                    steer, throttle, image, network_image = agent.run_step(world.camera_manager.image)
                     # world.camera_manager._second_surface = pygame.surfarray.make_surface(world.camera_manager.image2.swapaxes(0, 1))
                     world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer)))
 
                     image_counter = image_counter + 1
 
-                """if (noise == False) and (image_counter % 300 == 0):
+                control = world.vehicle.get_control()
+                location = world.vehicle.get_location()
+                """if (noise == False) and (image_counter % 250 == 0):
                     noise = True
-                elif (noise == True) and (image_counter % 17 == 0):
+                elif (noise == True) and (image_counter % 15 == 0):
                     noise = False
                     noise_value = 0
 
                 # Apply noise if activated
-                control = world.vehicle.get_control()
-                location = world.vehicle.get_location()
                 if noise:
                     noise_value = random.uniform(-0.05, 0.05)
                     control.steer += noise_value
@@ -719,42 +781,41 @@ def game_loop(args):
                     if event.type == pygame.QUIT:
                         quit()
 
-                    """elif event.type == pygame.KEYDOWN:
+                    elif event.type == pygame.KEYDOWN:
                         if event.key == K_r and recording == False:
                             recording = True
                         elif event.key == K_r and recording == True:
-                            recording = False"""
-
-                """if (139 < location.x < 163) and (-194 < location.y < 193.5): # Map03 right turn
-                    continue"""
-                """if (134 < location.x < 170) and (-207.89 < location.y < -204): # Map03 left turn
+                            recording = False
+                            
+                """if ((139 < location.x < 163) and (-194 < location.y < 193.5)) and RIGHT: # Map03 right turn
                     continue
-                else:"""
-                """if abs(control.steer) >= 0.3: # 0.09
+                if (134 < location.x < 170) and (-207.89 < location.y < -204) and LEFT: # Map03 left turn
+                    continue"""
+                """if ((70 < location.x < 75.4) and (-17 < location.y < 8.5)) or ((68 < location.x < 77) and (47 < location.y < 75)) and RIGHT: # Map07 right turn
+                    continue
+                if ((68 < location.x < 74) and (-27 < location.y < 7)) or ((68 < location.x < 78) and (47 < location.y < 68)) and LEFT: # Map07 left turn
+                    continue"""
+                    
+                """if abs(control.steer) >= 0.09: # 0.3
                     print(f"GIROOOOOOO - {image_counter}")
                     recording = True
                 else:
                     recording = False"""
 
                 # if (args.rec == True) and (image_counter % 10 == 0):
-                if recording and args.rec == "rgb":
+                if args.rec == "rgb" and recording:
                     first_image_taken, prev_image_number = save_instance_to_dataset(world, world.camera_manager.image, 
                     image_counter, first_image_taken, prev_image_number)
 
                     if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 5000:
                         break
-
-                elif recording and args.rec == "bird":
-                    birdview = birdview_producer.produce(agent_vehicle=world.vehicle)
-                    rgb = BirdViewProducer.as_rgb(birdview)
-                    first_image_taken = save_instance_to_dataset(world, rgb, image_counter, first_image_taken)
             
             frame_time = time.time() - step_start
             fps.append(frame_time)
 
-            #media.append(hud.server_fps)
-            # if len(media) == 1000:
-            #     print(f"MEDIA DE FPS DE SERVIDOR -----------------------------------------> {sum(media) / len(media)}")
+            """media.append(hud.server_fps)
+            if len(media) == 1000:
+                print(f"MEDIA DE FPS DE SERVIDOR -----------------------------------------> {sum(media) / len(media)}")"""
             
             world.tick(clock)
             if args.debug == True:
@@ -762,6 +823,7 @@ def game_loop(args):
                 print(f"Client: {len(fps)/sum(fps):>4.1f} FPS | {frame_time*1000} ms")
 
             world.render(display)
+            display.blit(pygame.surfarray.make_surface((network_image*255).swapaxes(0, 1)), (args.width - 200, 0))
             pygame.display.flip()
 
 
@@ -805,7 +867,7 @@ def main():
     argparser.add_argument("-r", "--rec",
                            choices=["rgb", "bird"],
                            help="select which view to record",
-                           default="rgb")
+                           default="")
 
     argparser.add_argument("-a", "--agent", type=str,
                            choices=["rl", "basic", "fl", "fr"],
@@ -835,7 +897,25 @@ def main():
 
 if __name__ == '__main__':
     """start = time.time()
-    spawnpoints = [8, 9]
+    spawnpoints_left = []
+    spawnpoints_right = [70]
+    LEFT = True
+    for spawn in spawnpoints_left:
+        SPAWNPOINT = spawn
+        main()
+    LEFT = False
+    RIGHT = True
+    for index, spawn in enumerate(spawnpoints_right):
+        CHECK07 = index
+        print(CHECK07)
+        SPAWNPOINT = spawn
+        main()
+    RIGHT = False
+    end = time.time() - start
+    print(f"THE END: time -> {end}")"""
+
+    """start = time.time()
+    spawnpoints = [0, 2, 4, 5, 7, 8]
     for spawn in spawnpoints:
         SPAWNPOINT = spawn
         main()
