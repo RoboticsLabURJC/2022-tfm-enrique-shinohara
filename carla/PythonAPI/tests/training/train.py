@@ -92,6 +92,8 @@ class PlotCallback(tf.keras.callbacks.Callback):
                 x_true_throttle.append(self.annotations_val[x][0])
 
                 final_image = self.images_val[x] / 255.0
+                velocity_dim = np.full((66, 200), self.annotations_val[x][2])
+                final_image = np.dstack((final_image, velocity_dim))
 
                 final_image = final_image[np.newaxis]
                 prediction = self.model.predict(final_image)
@@ -163,7 +165,7 @@ if __name__ == "__main__":
 
     images_train, annotations_train, images_val, annotations_val = process_dataset(path_to_data, type_image,
                                                                                                data_type, img_shape)
-        
+
     # Train
     timestr = time.strftime("%Y%m%d-%H%M%S")
     print(timestr)

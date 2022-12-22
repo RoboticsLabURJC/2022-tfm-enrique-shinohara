@@ -28,7 +28,7 @@ def pilotnet_model(img_shape, learning_rate):
     model.add(Dropout(0.1))
     model.add(Dense(10, activation="relu"))
     model.add(Dropout(0.1))
-    model.add(Dense(2))
+    model.add(Dense(3))
     adam = Adam(learning_rate=learning_rate)
     model.compile(optimizer=adam, loss="mse", metrics=['mse', 'mae'])
     return model

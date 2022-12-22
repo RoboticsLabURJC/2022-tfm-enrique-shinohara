@@ -61,17 +61,21 @@ def delete_until(annotations, images, x, counter, bins):
     return new_annotations, new_images
 
 
-def get_images(list_images, type_image, image_shape):
+def get_images(list_images, type_image, image_shape, array_annotations):
     image_shape = (image_shape[0], image_shape[1])
     # Read the images
     array_imgs = []
-    for name in list_images:
+    for index, name in enumerate(list_images):
         print(name)
         img = cv2.imread(name)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if type_image == 'crop':
             img = img[240:-1, :]
         img = cv2.resize(img, image_shape)# /255.0 # Normalizar
+        """new_channel = (np.ones(image_shape)*array_annotations[index][3]).T
+        new_channel = tf.expand_dims(new_channel, axis=-1)
+        img = np.array(tf.concat([img, new_channel], axis=-1)).astype(img.dtype)"""
+        # img = cv2.merge([img, (np.ones(image_shape)*array_annotations[index][3]).astype(img.dtype).T])
         array_imgs.append(img)
         # j = Image.fromarray(img)
         # j.save("output.png")
@@ -83,8 +87,10 @@ def parse_csv(csv_data):
     array = []
     linear_speeds = csv_data['throttle'].tolist()
     angular_speeds = csv_data['steer'].tolist()
+    brake = csv_data['brake'].tolist()
+    prevelocity = csv_data['prevelocity'].tolist()
     for x, linear_speed in enumerate(linear_speeds):
-        array.append((float(linear_speed), float(angular_speeds[x])))
+        array.append((float(linear_speed), float(angular_speeds[x]), float(brake[x]), float(prevelocity[x])))
     return array
 
 
@@ -162,39 +168,45 @@ def compute_image_annotations(id, path_to_data, type_image, img_shape, data_type
     array_annotations = pandas.read_csv(name_file)
     array_annotations = parse_csv(array_annotations)
 
-    images = get_images(images_paths, type_image, img_shape)
+    images = get_images(images_paths, type_image, img_shape, array_annotations)
     # images, array_annotations = flip_images(images, array_annotations)
     if data_type == 'extreme':
         images, array_annotations = add_extreme_data(images, array_annotations)
 
     array_annotations_throttle = []
     array_annotations_steer = []
+    array_annotations_brake = []
+    array_annotations_throttle_brake = []
+    array_annotations_prevelocity = []
     for annotation in array_annotations:
+        print(annotation)
         array_annotations_throttle.append(annotation[0])
         array_annotations_steer.append(annotation[1])
+        array_annotations_brake.append(annotation[2])
+        array_annotations_prevelocity.append(annotation[3])
+
+    array_annotations_throttle_brake = [x if x != 0.0 else -y for x, y in zip(array_annotations_throttle, array_annotations_brake)]
 
     # START NORMALIZE DATA
-    array_annotations_throttle = np.stack(array_annotations_throttle, axis=0)
-    array_annotations_throttle = array_annotations_throttle.reshape(-1, 1)
+    array_annotations_throttle_brake = np.stack(array_annotations_throttle_brake, axis=0)
+    array_annotations_throttle_brake = array_annotations_throttle_brake.reshape(-1, 1)
 
     array_annotations_steer = np.stack(array_annotations_steer, axis=0)
     array_annotations_steer = array_annotations_steer.reshape(-1, 1)
 
-    normalized_x = np.interp(array_annotations_throttle, (0, 1), (0, 1))
+    array_annotations_prevelocity = np.stack(array_annotations_prevelocity, axis=0)
+    array_annotations_prevelocity = array_annotations_prevelocity.reshape(-1, 1)
+
+    normalized_x = np.interp(array_annotations_throttle_brake, (-1, 1), (0, 1))
     normalized_y = np.interp(array_annotations_steer, (-1, 1), (0, 1))
+    normalized_z = np.interp(array_annotations_prevelocity, (0, 100), (0, 1))
 
     normalized_annotations = []
     for i in range(0, len(normalized_x)):
-        normalized_annotations.append([normalized_x.item(i), normalized_y.item(i)])
+        normalized_annotations.append([normalized_x.item(i), normalized_y.item(i), normalized_z.item(i)])
         # normalized_annotations.append(normalized_y.item(i))
 
     array_annotations = normalized_annotations
-
-    """for idx, image in enumerate(images):
-        image_path = 'out/'
-        file_name = '%d.png' % (idx)
-        j = Image.fromarray(image)
-        j.save(image_path + file_name)"""
 
     return images, array_annotations
 
@@ -283,7 +295,7 @@ def process_dataset(path_to_data, type_image, data_type, img_shape):
 
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.507108, 0.550762, 0.37)
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.463452, 0.507107, 0.5)
-    array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.09023031, 0.10772521, 0.9)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.09023031, 0.10772521, 0.9)
     # array_imgs, array_annotations = add_extreme_data(array_imgs, array_annotations)
 
     # # print(len(array_annotations))
@@ -295,9 +307,13 @@ def process_dataset(path_to_data, type_image, data_type, img_shape):
     # np.save('array_imgs.npy', array_imgs, allow_pickle=True)
     # np.save('array_annotations.npy', array_annotations, allow_pickle=True)
 
+    """print(len(array_annotations))
+    plt.hist(np.array(array_annotations)[:,0],bins=50)
+    plt.show()
+
     print(len(array_annotations))
     plt.hist(np.array(array_annotations)[:,1],bins=50)
-    plt.show()
+    plt.show()"""
 
     images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
         array_imgs, array_annotations)

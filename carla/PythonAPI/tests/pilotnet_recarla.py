@@ -88,7 +88,9 @@ for gpu in gpus:
 # 17 - left turn at the gas station
 # 22 - right turn at the gas station
 global SPAWNPOINT
-SPAWNPOINT = 122
+global NPC_SPAWNPOINT
+SPAWNPOINT = 18
+NPC_SPAWNPOINT = 16
 LEFT = False
 RIGHT = False
 CHECK07 = -1
@@ -268,6 +270,7 @@ class HUD(object):
             ('Steer:', c.steer, -1.0, 1.0),
             'Brake: %19.2f' % c.brake,
             ('Brake:', c.brake, 0.0, 1.0),
+            'Brake: %19.2f' % c.brake,
             '',
             'Collision:',
             collision,
@@ -590,27 +593,39 @@ def line_prepender(filename, line):
         csv_writer.writerow(line)
 
 
-def save_instance_to_dataset(world, image, image_counter, first_image_taken, prev_image_num):
+def read_last_line(filename, column):
+    f1 = open(filename, "r")
+    last_line = f1.readlines()[-1]
+    f1.close()
+    return last_line.split(',')[column]
+
+
+def save_instance_to_dataset(world, image, image_counter, first_image_taken, prev_image_num, prev_velocity):
     file_path = "_%d/" % (SPAWNPOINT)
     if (first_image_taken == 0) and (not os.path.exists('./_%d/data.csv' % SPAWNPOINT)):
-        line_prepender(file_path + 'data.csv', ['image', 'throttle', 'steer'])
+        line_prepender(file_path + 'data.csv', ['image', 'throttle', 'steer', 'brake', 'prevelocity'])
         first_image_taken = 1
+        prev_velocity = 0
     if (first_image_taken == 0) and (os.path.exists('./_%d/data.csv' % SPAWNPOINT)):
         files_list = glob.glob(file_path + '*.png')
         files_list.sort(key=natural_keys)
         first_image_taken = 1
         prev_image_num = int(files_list[-1].split('/')[1].split('.')[0])
+        prev_velocity = 0
 
     file_name = "%d.png" % (image_counter + prev_image_num)
     j = Image.fromarray(image)
     j.save(file_path + file_name, compress_level=1)
 
+    c = world.vehicle.get_control()
+    v = world.vehicle.get_velocity()
+    row_contents = [file_name, c.throttle, c.steer, c.brake, prev_velocity]
 
-    row_contents = [file_name, world.vehicle.get_control().throttle, world.vehicle.get_control().steer]
+    prev_velocity = 3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)
     # Append a list as new line to an old csv file
     append_list_as_row(file_path + 'data.csv', row_contents)
 
-    return first_image_taken, prev_image_num
+    return first_image_taken, prev_image_num, prev_velocity
 
 
 def try_spawn_random_vehicles(world, num, spawnpoint, client):
@@ -682,8 +697,8 @@ def game_loop(args):
             pygame.HWSURFACE | pygame.DOUBLEBUF)
 
         hud = HUD(args.width, args.height)
-        world = World(client.load_world('Town04_Opt'), hud, args)
-        # try_spawn_random_vehicles(world.world, 10, 21, client)
+        world = World(client.load_world('Town02_Opt'), hud, args)
+        try_spawn_random_vehicles(world.world, 10, NPC_SPAWNPOINT, client)
 
         # weather = world.world.get_weather()
         # weather.sun_altitude_angle = -30
@@ -739,6 +754,9 @@ def game_loop(args):
         noise = False
         noise_value = 0
         prev_image_number = 0
+        prev_velocity = 0
+        control = world.vehicle.get_control()
+        location = world.vehicle.get_location()
         while True:
             # as soon as the server is ready continue!
             if not world.world.wait_for_tick(10.0):
@@ -757,14 +775,14 @@ def game_loop(args):
                 # The agent selected will be used to control the car
                 else:
                     world.camera_manager._surface = pygame.surfarray.make_surface(world.camera_manager.image.swapaxes(0, 1))
-                    steer, throttle, image, network_image = agent.run_step(world.camera_manager.image)
+                    v = world.vehicle.get_velocity()
+                    current_velocity = 3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)
+                    steer, throttle, brake, image, network_image = agent.run_step(world.camera_manager.image)# , current_velocity)
                     # world.camera_manager._second_surface = pygame.surfarray.make_surface(world.camera_manager.image2.swapaxes(0, 1))
-                    world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer)))
+                    world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer), brake=float(brake)))
 
                     image_counter = image_counter + 1
 
-                control = world.vehicle.get_control()
-                location = world.vehicle.get_location()
                 """if (noise == False) and (image_counter % 250 == 0):
                     noise = True
                 elif (noise == True) and (image_counter % 15 == 0):
@@ -777,7 +795,7 @@ def game_loop(args):
                     control.steer += noise_value
                     world.vehicle.apply_control(control)"""
 
-                for event in pygame.event.get():
+                """for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         quit()
 
@@ -785,7 +803,7 @@ def game_loop(args):
                         if event.key == K_r and recording == False:
                             recording = True
                         elif event.key == K_r and recording == True:
-                            recording = False
+                            recording = False"""
                             
                 """if ((139 < location.x < 163) and (-194 < location.y < 193.5)) and RIGHT: # Map03 right turn
                     continue
@@ -796,7 +814,7 @@ def game_loop(args):
                 if ((68 < location.x < 74) and (-27 < location.y < 7)) or ((68 < location.x < 78) and (47 < location.y < 68)) and LEFT: # Map07 left turn
                     continue"""
                     
-                """if abs(control.steer) >= 0.09: # 0.3
+                """if abs(control.steer) >= 0.3: # 0.09
                     print(f"GIROOOOOOO - {image_counter}")
                     recording = True
                 else:
@@ -804,8 +822,8 @@ def game_loop(args):
 
                 # if (args.rec == True) and (image_counter % 10 == 0):
                 if args.rec == "rgb" and recording:
-                    first_image_taken, prev_image_number = save_instance_to_dataset(world, world.camera_manager.image, 
-                    image_counter, first_image_taken, prev_image_number)
+                    first_image_taken, prev_image_number, prev_velocity = save_instance_to_dataset(world, world.camera_manager.image, 
+                    image_counter, first_image_taken, prev_image_number, prev_velocity)
 
                     if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 5000:
                         break
@@ -915,7 +933,17 @@ if __name__ == '__main__':
     print(f"THE END: time -> {end}")"""
 
     """start = time.time()
-    spawnpoints = [0, 2, 4, 5, 7, 8]
+    spawnpoints = [0, 2, 8, 9]
+    npc_spawnpoints = [78, 45, 6, 34]
+    for spawn, npcs in zip(spawnpoints, npc_spawnpoints):
+        SPAWNPOINT = spawn
+        NPC_SPAWNPOINT = npcs
+        main()
+    end = time.time() - start
+    print(f"THE END: time -> {end}")"""
+
+    """start = time.time()
+    spawnpoints = [0, 2, 8, 9]
     for spawn in spawnpoints:
         SPAWNPOINT = spawn
         main()

@@ -26,10 +26,30 @@ class DatasetSequence(Sequence):
         self.batch_size]
         batch_y = self.y[idx * self.batch_size:(idx + 1) *
         self.batch_size]
+        
+        new_img_batch = []  
+        for x, img in enumerate(batch_x):
+            aug = self.augment(image=img)["image"]
+            velocity_dim = np.full((66, 200), batch_y[x][2])
+            new_img_vel = np.dstack((aug, velocity_dim))
+            new_img_batch.append(new_img_vel)
+            
+        new_ann_batch = []
+        for x, ann in enumerate(batch_y):
+            new_ann_batch.append(np.array((ann[0], ann[1], ann[2])))
+        
+        a, b = np.stack(new_img_batch, axis=0), np.array(new_ann_batch)
+        return a, b
+
+    """def __getitem__(self, idx):
+        batch_x = self.x[idx * self.batch_size:(idx + 1) *
+        self.batch_size]
+        batch_y = self.y[idx * self.batch_size:(idx + 1) *
+        self.batch_size]
 
         return np.stack([
             self.augment(image=x)["image"] for x in batch_x
-        ], axis=0), np.array(batch_y)
+        ], axis=0), np.array(batch_y)"""
     
     
 def get_augmentations(data_augs):
@@ -37,7 +57,7 @@ def get_augmentations(data_augs):
         AUGMENTATIONS_TRAIN = ReplayCompose([
             RandomBrightnessContrast(),
             HueSaturationValue(),
-            FancyPCA(),
+            # FancyPCA(),
             RandomGamma(),
             GaussianBlur(),
             Normalize()
@@ -46,7 +66,7 @@ def get_augmentations(data_augs):
         AUGMENTATIONS_TRAIN = ReplayCompose([
             RandomBrightnessContrast(),
             HueSaturationValue(),
-            FancyPCA(),
+            # FancyPCA(),
             RandomGamma(),
             GaussianBlur(),
             OneOf([
