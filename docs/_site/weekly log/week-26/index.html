@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Week 24~25 - Adding some extras - Robotics Lab URJC</title>
-<meta name="description" content="This weeks we continue with the use of the RGB cameras, but this time, we are going to add a little bit more of spice, we will add more agents apart from our vehicle. The purpose of doing this, is to try to teach the car to learn how to control the speed in cases where a car is in front of it for example.">
+<!-- begin _includes/seo.html --><title>Week 26 - Braking and stopping - Robotics Lab URJC</title>
+<meta name="description" content="The task for this week is going to revolve around trying to make the car stop when another car stops in front of it, then accelerating again when the car is no longer near it. In order to achieve this, we are revisiting the actuators, which are going to need to start using the braking system.">
 
 
   <meta name="author" content="Enrique Shinohara">
@@ -22,11 +22,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Week 24~25 - Adding some extras">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-24-26/">
+<meta property="og:title" content="Week 26 - Braking and stopping">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-26/">
 
 
-  <meta property="og:description" content="This weeks we continue with the use of the RGB cameras, but this time, we are going to add a little bit more of spice, we will add more agents apart from our vehicle. The purpose of doing this, is to try to teach the car to learn how to control the speed in cases where a car is in front of it for example.">
+  <meta property="og:description" content="The task for this week is going to revolve around trying to make the car stop when another car stops in front of it, then accelerating again when the car is no longer near it. In order to achieve this, we are revisiting the actuators, which are going to need to start using the braking system.">
 
 
 
@@ -45,7 +45,7 @@
   
 
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-24-26/">
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-26/">
 
 
 
@@ -263,8 +263,8 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Week 24~25 - Adding some extras">
-    <meta itemprop="description" content="This weeks we continue with the use of the RGB cameras, but this time, we are going to add a little bit more of spice, we will add more agents apart from our vehicle. The purpose of doing this, is to try to teach the car to learn how to control the speed in cases where a car is in front of it for example.">
+    <meta itemprop="headline" content="Week 26 - Braking and stopping">
+    <meta itemprop="description" content="The task for this week is going to revolve around trying to make the car stop when another car stops in front of it, then accelerating again when the car is no longer near it. In order to achieve this, we are revisiting the actuators, which are going to need to start using the braking system.">
     <meta itemprop="datePublished" content="2022-12-03T00:00:00+01:00">
     
 
@@ -272,7 +272,7 @@
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-24-26/" class="u-url" itemprop="url">Week 24~25 - Adding some extras
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-26/" class="u-url" itemprop="url">Week 26 - Braking and stopping
 </a>
           </h1>
           
@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          2 minute read
+          1 minute read
         
       </span>
     
@@ -301,28 +301,21 @@
 
       <section class="page__content e-content" itemprop="text">
         
-        <p>This weeks we continue with the use of the RGB cameras, but this time, we are going to add a little bit more of spice, we will add more agents apart from our vehicle. The purpose of doing this, is to try to teach the car to learn how to control the speed in cases where a car is in front of it for example.</p>
+        <p>The task for this week is going to revolve around trying to make the car stop when another car stops in front of it, then accelerating again when the car is no longer near it. In order to achieve this, we are revisiting the actuators, which are going to need to start using the braking system.</p>
 
-<p>As of now, we have achieved a good model and training process to solve a follow lane task, either be it with an RGB camera image or a segmentated image. Now, if we think about it, the only thing that we can do to accomplish the same performance plus stopping when a car is in front of it, is to add this information through the recolected dataset, so we are going to have to think along this line. To do this, we are going to simplify once again the task at hand by trying to replicate the expected behaviour only on the Town02, in doing so we also reduce the dataset size getting faster results sooner.</p>
+<p>So, first thing first, we need to recollect the whole data again, this time adding more information such as the brakes and just in case, extra information such as the previous velocity and the car position. For the purpose of testing the quality of the data and the way we process it, we test this with only a single map: Town02.</p>
 
-<h2 id="spawning-npcs">Spawning npcs</h2>
+<p>Once we have trained the model, it is time to test it! But in doing so, we find out that the car is not moving… the only way to know why is to keep on experimenting with configurations. Doing a little tweak here and there, we found out that the car needed a little push for it to start moving. Once the car moves, it seems to do everything as expected, following the road without problems, stopping right when it encounters a car in front of it and continuing moving when the car in front resumes its course.</p>
 
-<p>First thing first, we are going to learn how to spawn other agents to the world for we need to teach the car how to behave in case another one is in front of it. To do this, Carla pretty much gives us example codes to try and spawn other vehicles in the simulation.</p>
-
-<h2 id="recolection-of-data">Recolection of data</h2>
-
-<p>To recolect data, we spawn a set of vehicles and simply record as we did on the previous cases. Given that turning data is not probable to happend at the same time that we have a car in front of us, we are going to use the same data from previous dataset, without having to generate a new one for now. We will see if the car is able to perform good, or if we need to collect data with cars in front of it on turning points.</p>
-
-<video src="https://user-images.githubusercontent.com/47086664/207923674-7bde2eb2-3b43-4944-970c-a18275049708.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/207923674-7bde2eb2-3b43-4944-970c-a18275049708.mp4" controls="controls" muted="muted" class="align-center" style="width:70%">
+<video src="https://user-images.githubusercontent.com/47086664/209232132-3a447d11-463f-4293-b418-144c0f96aa91.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/209232132-3a447d11-463f-4293-b418-144c0f96aa91.mp4" controls="controls" muted="muted" class="align-center" style="width:70%">
 </video>
-<p><br />
-Trying to make sense of the video, we see that the car is obviously failing at its intended purpose. Even though we are injecting more data related to the car slowing down when it encounters another car in front of it, it is not learning how to stop behind it. But looking on the bright side, we can see that it is slowing down before it even comes close. A simple way of trying to fix this could be to add more data regarding this behaviour, but the fact that we are increasing the dataset size we expect to encounter challenges in the future regarding this problem.</p>
+<p><br /></p>
 
-<p>Finally, in order to improve the visualization of the videos, I added the braking values (which right now are nonexistent) and the input image passed on to the neural network. This will help us to debug better possible encounters with problems in the future.</p>
+<p>Now that we are on a good track ;) we need to keep working along this lines. To do this, I was proposed the idea of adding to the training input the previous velocity. By doing so,</p>
 
-<figure class="align-center">
-    <a href=""><iframe src="https://www.youtube.com/embed/FbxWyy3VIgg"></iframe></a>
-</figure>
+<p>Training…</p>
+
+<p>Test video and conclusions….</p>
 
         
       </section>
@@ -373,18 +366,18 @@ Trying to make sense of the video, we see that the car is obviously failing at i
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+24~25+-+Adding+some+extras%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-24-26%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+26+-+Braking+and+stopping%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-26%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-24-26%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-26%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-24-26%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-26%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-23/" class="pagination--pager" title="Week 23 - Semantic Segmentation
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-24-25/" class="pagination--pager" title="Week 24~25 - Adding some extras
 ">Previous</a>
     
     
@@ -402,6 +395,45 @@ Trying to make sense of the video, we see that the car is obviously failing at i
     <div class="page__related">
       <h2 class="page__related-title">You May Also Enjoy</h2>
       <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-24-25/" rel="permalink">Week 24~25 - Adding some extras
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">This weeks we continue with the use of the RGB cameras, but this time, we are going to add a little bit more of spice, we will add more agents apart from our...</p>
+  </article>
+</div>
+
         
           
 
@@ -517,45 +549,6 @@ Trying to make sense of the video, we see that the car is obviously failing at i
 
 
     <p class="archive__item-excerpt" itemprop="description">This week, our task was to correct the car behaviour for it was steering towards the oncoming lane even thought this is not a desired quality. Many hours wer...</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-20/" rel="permalink">Week 20 - Model analysis so far
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          3 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">For this week, we are going to mainly focus on analyzing the behaviour of the model, and try to understand better the different things that made it work bett...</p>
   </article>
 </div>
 
