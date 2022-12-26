@@ -2,4 +2,4 @@ python train.py --data_dir datasetsimple_followlanenpc/ --preprocess crop --data
 
 TOWN 02
 spawnpoints = [0, 2, 4, 5, 7, 8, 9, 18, 19]
-npc_spawnpoints = [78, 45, 31, 0, 95, 6, 16, 23]
+npc_spawnpoints = [78, 45, 31, 0, 95, 6, 34, 16, 23]

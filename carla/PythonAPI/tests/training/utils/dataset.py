@@ -36,7 +36,7 @@ class DatasetSequence(Sequence):
             
         new_ann_batch = []
         for x, ann in enumerate(batch_y):
-            new_ann_batch.append(np.array((ann[0], ann[1], ann[2])))
+            new_ann_batch.append(np.array((ann[0], ann[1])))
         
         a, b = np.stack(new_img_batch, axis=0), np.array(new_ann_batch)
         return a, b

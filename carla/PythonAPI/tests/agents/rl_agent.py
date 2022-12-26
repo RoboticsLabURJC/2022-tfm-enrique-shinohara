@@ -34,17 +34,17 @@ class RLAgent(object):
         self.v = 0
         self.b = 0
         self.velocity = 0
-        self.model = load_model('20221221-101945_pilotnet_model_3_101_cp.h5')
+        self.model = load_model('20221225-232824_pilotnet_model_3_151_cp.h5')
         self.first = 0
         # self.model = load_model('20221102-095537_pilotnet_model_3_51_cp.h5', custom_objects={'tf': tf})
 
 
-    def run_step_new(self, img, current_velocity):
+    def run_step(self, img, current_velocity):
         """
         Execute one step of navigation.
         :return: control
         """
-        cropped = img[240:-1,:] # 280
+        cropped = img[230:-1,:] # 280
 
         """hsv = cv2.cvtColor(cropped, cv2.COLOR_RGB2HSV)
         YELLOW_MIN = np.array([15, 80, 80],np.uint8)
@@ -55,7 +55,6 @@ class RLAgent(object):
         # cropped = cv2.cvtColor(cropped, cv2.COLOR_RGB2BGR)
         tensor_img = cv2.resize(cropped, (200, 66))/255.0
 
-        print(self.velocity)
         velocity_normalize = np.interp(self.velocity, (0, 100), (0, 1))
         velocity_dim = np.full((66, 200), velocity_normalize)
         velocity_tensor_image = np.dstack((tensor_img, velocity_dim))
@@ -79,6 +78,7 @@ class RLAgent(object):
 
         if self.first < 100:
             throttle_val = 0.5
+            brake_val = 0.0
             self.first += 1
 
         self.v = throttle_val
@@ -87,7 +87,7 @@ class RLAgent(object):
         return steer_val, throttle_val, brake_val, img, tensor_img
 
 
-    def run_step(self, img):
+    def run_step_old(self, img):
         """
         Execute one step of navigation.
         :return: control

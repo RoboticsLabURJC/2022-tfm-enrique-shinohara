@@ -89,8 +89,10 @@ for gpu in gpus:
 # 22 - right turn at the gas station
 global SPAWNPOINT
 global NPC_SPAWNPOINT
-SPAWNPOINT = 18
-NPC_SPAWNPOINT = 16
+global NPC_NAME
+SPAWNPOINT = 20
+NPC_SPAWNPOINT = 97
+NPC_NAME = 'vehicle.harley-davidson.low_rider'
 LEFT = False
 RIGHT = False
 CHECK07 = -1
@@ -628,7 +630,7 @@ def save_instance_to_dataset(world, image, image_counter, first_image_taken, pre
     return first_image_taken, prev_image_num, prev_velocity
 
 
-def try_spawn_random_vehicles(world, num, spawnpoint, client):
+def try_spawn_random_vehicles(world, client, num, spawnpoint, npc_name):
     actor_list = []
 
     spawn_points = world.get_map().get_spawn_points()
@@ -661,8 +663,7 @@ def try_spawn_random_vehicles(world, num, spawnpoint, client):
             time.sleep(0.5)
         return True
     else:
-        blueprint = world.get_blueprint_library().find('vehicle.carlamotors.carlacola')
-        blueprint.set_attribute('role_name', 'cola')
+        blueprint = world.get_blueprint_library().find(npc_name)
         spawn_point = spawn_points[spawnpoint]
         vehicle = world.try_spawn_actor(blueprint, spawn_point)
 
@@ -698,7 +699,7 @@ def game_loop(args):
 
         hud = HUD(args.width, args.height)
         world = World(client.load_world('Town02_Opt'), hud, args)
-        try_spawn_random_vehicles(world.world, 10, NPC_SPAWNPOINT, client)
+        try_spawn_random_vehicles(world.world, client, 0, NPC_SPAWNPOINT, NPC_NAME)
 
         # weather = world.world.get_weather()
         # weather.sun_altitude_angle = -30
@@ -712,7 +713,7 @@ def game_loop(args):
         if args.agent == "rl":
             agent = RLAgent(world.vehicle)
             agent.model.summary()
-            agent.model.predict(np.ones((1, 66, 200, 3)))
+            agent.model.predict(np.ones((1, 66, 200, 4)))
         elif args.agent == "fl":
             agent = FLAgent(world.vehicle)
         elif args.agent == "fr":
@@ -755,13 +756,13 @@ def game_loop(args):
         noise_value = 0
         prev_image_number = 0
         prev_velocity = 0
-        control = world.vehicle.get_control()
-        location = world.vehicle.get_location()
         while True:
             # as soon as the server is ready continue!
             if not world.world.wait_for_tick(10.0):
                 continue
             step_start = time.time()
+            control = world.vehicle.get_control()
+            location = world.vehicle.get_location()
             if (type(world.camera_manager.image).__module__ == np.__name__):
                 # If we use autopilot of carla and no agent to control the car
                 if agent == None:
@@ -777,7 +778,7 @@ def game_loop(args):
                     world.camera_manager._surface = pygame.surfarray.make_surface(world.camera_manager.image.swapaxes(0, 1))
                     v = world.vehicle.get_velocity()
                     current_velocity = 3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)
-                    steer, throttle, brake, image, network_image = agent.run_step(world.camera_manager.image)# , current_velocity)
+                    steer, throttle, brake, image, network_image = agent.run_step(world.camera_manager.image, current_velocity)
                     # world.camera_manager._second_surface = pygame.surfarray.make_surface(world.camera_manager.image2.swapaxes(0, 1))
                     world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer), brake=float(brake)))
 
@@ -813,8 +814,7 @@ def game_loop(args):
                     continue
                 if ((68 < location.x < 74) and (-27 < location.y < 7)) or ((68 < location.x < 78) and (47 < location.y < 68)) and LEFT: # Map07 left turn
                     continue"""
-                    
-                """if abs(control.steer) >= 0.3: # 0.09
+                """if abs(control.steer) >= 0.09: # 0.3
                     print(f"GIROOOOOOO - {image_counter}")
                     recording = True
                 else:
@@ -841,7 +841,7 @@ def game_loop(args):
                 print(f"Client: {len(fps)/sum(fps):>4.1f} FPS | {frame_time*1000} ms")
 
             world.render(display)
-            display.blit(pygame.surfarray.make_surface((network_image*255).swapaxes(0, 1)), (args.width - 200, 0))
+            # display.blit(pygame.surfarray.make_surface((network_image*255).swapaxes(0, 1)), (args.width - 200, 0))
             pygame.display.flip()
 
 
@@ -933,11 +933,13 @@ if __name__ == '__main__':
     print(f"THE END: time -> {end}")"""
 
     """start = time.time()
-    spawnpoints = [0, 2, 8, 9]
-    npc_spawnpoints = [78, 45, 6, 34]
-    for spawn, npcs in zip(spawnpoints, npc_spawnpoints):
+    spawnpoints = [2, 4, 5, 7, 8]
+    npc_spawnpoints = [45, 31, 0, 95, 6]
+    npc_names = ['vehicle.yamaha.yzf', 'vehicle.ford.mustang', 'vehicle.tesla.cybertruck', 'vehicle.ford.mustang', 'vehicle.tesla.cybertruck']
+    for spawn, npcs, names in zip(spawnpoints, npc_spawnpoints, npc_names):
         SPAWNPOINT = spawn
         NPC_SPAWNPOINT = npcs
+        NPC_NAME = names
         main()
     end = time.time() - start
     print(f"THE END: time -> {end}")"""

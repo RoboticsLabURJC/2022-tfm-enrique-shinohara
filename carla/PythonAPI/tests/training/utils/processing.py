@@ -70,12 +70,8 @@ def get_images(list_images, type_image, image_shape, array_annotations):
         img = cv2.imread(name)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if type_image == 'crop':
-            img = img[240:-1, :]
+            img = img[230:-1, :] # SIempre ha sido 240
         img = cv2.resize(img, image_shape)# /255.0 # Normalizar
-        """new_channel = (np.ones(image_shape)*array_annotations[index][3]).T
-        new_channel = tf.expand_dims(new_channel, axis=-1)
-        img = np.array(tf.concat([img, new_channel], axis=-1)).astype(img.dtype)"""
-        # img = cv2.merge([img, (np.ones(image_shape)*array_annotations[index][3]).astype(img.dtype).T])
         array_imgs.append(img)
         # j = Image.fromarray(img)
         # j.save("output.png")
