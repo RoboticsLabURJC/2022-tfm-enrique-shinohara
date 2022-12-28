@@ -130,4 +130,10 @@ var store = [{
         "tags": ["carla","dataset"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-26/",
         "teaser": null
+      },{
+        "title": "Week 27 - Training the Brake",
+        "excerpt":"This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to solve this new input that we decided to add to the machine learning model. Prevelocity This new input consist on...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset","brakes","training"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-27/",
+        "teaser": null
       }]

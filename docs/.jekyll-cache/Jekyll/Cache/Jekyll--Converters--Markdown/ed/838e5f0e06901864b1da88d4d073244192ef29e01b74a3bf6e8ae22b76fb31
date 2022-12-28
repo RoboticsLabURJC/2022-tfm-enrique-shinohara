@@ -1,4 +1,4 @@
-I"Î<p>The task for this week is going to revolve around trying to make the car stop when another car stops in front of it, then accelerating again when the car is no longer near it. In order to achieve this, we are revisiting the actuators, which are going to need to start using the braking system.</p>
+I"º<p>The task for this week is going to revolve around trying to make the car stop when another car stops in front of it, then accelerating again when the car is no longer near it. In order to achieve this, we are revisiting the actuators, which are going to need to start using the braking system.</p>
 
 <p>So, first thing first, we need to recollect the whole data again, this time adding more information such as the brakes and just in case, extra information such as the previous velocity and the car position. For the purpose of testing the quality of the data and the way we process it, we test this with only a single map: Town02.</p>
 
@@ -8,9 +8,5 @@
 </video>
 <p><br /></p>
 
-<p>Now that we are on a good track ;) we need to keep working along this lines. To do this, I was proposed the idea of adding to the training input the previous velocity. By doing so,</p>
-
-<p>Trainingâ€¦</p>
-
-<p>Test video and conclusionsâ€¦.</p>
+<p>Now that we are on a good track ;) we need to keep working along this lines. To do this, I was proposed the idea of adding to the training input the previous velocity, but this will be a story to tell for the next week.</p>
 :ET

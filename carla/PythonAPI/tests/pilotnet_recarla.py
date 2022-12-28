@@ -90,9 +90,9 @@ for gpu in gpus:
 global SPAWNPOINT
 global NPC_SPAWNPOINT
 global NPC_NAME
-SPAWNPOINT = 20
-NPC_SPAWNPOINT = 97
-NPC_NAME = 'vehicle.harley-davidson.low_rider'
+SPAWNPOINT = 94
+NPC_SPAWNPOINT = 33
+NPC_NAME = 'vehicle.dodge.charger_police'
 LEFT = False
 RIGHT = False
 CHECK07 = -1
@@ -841,7 +841,7 @@ def game_loop(args):
                 print(f"Client: {len(fps)/sum(fps):>4.1f} FPS | {frame_time*1000} ms")
 
             world.render(display)
-            # display.blit(pygame.surfarray.make_surface((network_image*255).swapaxes(0, 1)), (args.width - 200, 0))
+            display.blit(pygame.surfarray.make_surface((network_image*255).swapaxes(0, 1)), (args.width - 200, 0))
             pygame.display.flip()
 
 
@@ -945,7 +945,7 @@ if __name__ == '__main__':
     print(f"THE END: time -> {end}")"""
 
     """start = time.time()
-    spawnpoints = [0, 2, 8, 9]
+    spawnpoints = [8, 9]
     for spawn in spawnpoints:
         SPAWNPOINT = spawn
         main()

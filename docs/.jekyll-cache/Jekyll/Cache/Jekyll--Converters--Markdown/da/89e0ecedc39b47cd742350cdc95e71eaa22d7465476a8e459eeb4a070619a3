@@ -1,0 +1,28 @@
+I"W<p>This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to solve this new input that we decided to add to the machine learning model.</p>
+
+<h3 id="prevelocity">Prevelocity</h3>
+
+<p>This new input consist on the previous velocity. The idea to recolect all the data and have the model be able to know the previous velocity is that it brings a much more robust behaviour onto our vehicle, once it has an “idea” of the current velocity in what situation, it should be able to brake and accelerate accordingly to each situation. Knowing that we have to do some augmentations on the image, adding the new input right before reading them was a problem that took a while to be resolved. Ultimately, simply by adding the previous velocity once the augmentations were done was enought to keep the machine from further errors.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/prevelocity_no.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/prevelocity_yes.png" alt="" />
+  <figcaption>Training and validation loss before adding the new input and after adding it.</figcaption>
+</figure>
+
+<p>This results in a significant improvement. As we can see from the loss value of the training and validation, it appears to turn a much lower value when we add the previous velocity than when we didn’t have it.</p>
+
+<p>As the dataset, we have gathered the same quantity of 80.000 images changing the spawned npc vehicle in order to achieve a better generalization, giving our car the capability of stopping whenever a vehicle is in front of it. The list of car chosen fow now is:</p>
+<ul>
+  <li>vehicle.carlamotors.carlacola: a red van from that is quite visible and distinguible from the distance.</li>
+  <li>vehicle.ford.mustang: standard sport car</li>
+  <li>vehicle.tesla.cybertruck: a truck chosen for the height of the wheels compared to the rest. By sitting higher in position, it may be interesting to introduce to have more variety in features.</li>
+  <li>vehicle.yamaha.yzf: the only motorcycle introduced in our dataset, the idea is to generalize not only by distinguish a wide car in front of our vehicle, but also with a more hardly visible vehicle such as the motorcycle.</li>
+</ul>
+
+<p>As we have done along this week, the training process stays pretty much the same, where we make use of a slightly modified PilotNet network, and with our own dataset train the network for around 100 epochs. In the next video, we can see the behaviour of the car on 4 different vehicles, from big cars to motorcycles either be it clockwise or anti-clockwise in order to cover multiple scenarios.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/vsrjQ27QDYc"></iframe></a>
+</figure>
+:ET

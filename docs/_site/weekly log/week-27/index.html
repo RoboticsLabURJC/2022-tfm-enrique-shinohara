@@ -9,28 +9,32 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Robotics Lab URJC</title>
-<meta name="description" content="Programming Robot Intelligence">
+<!-- begin _includes/seo.html --><title>Week 27 - Training the Brake - Robotics Lab URJC</title>
+<meta name="description" content="This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to solve this new input that we decided to add to the machine learning model.">
 
 
   <meta name="author" content="Enrique Shinohara">
   
+  <meta property="article:author" content="Enrique Shinohara">
+  
 
 
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Robotics Lab URJC">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/">
+<meta property="og:title" content="Week 27 - Training the Brake">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-27/">
 
 
-  <meta property="og:description" content="Programming Robot Intelligence">
-
-
-
+  <meta property="og:description" content="This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to solve this new input that we decided to add to the machine learning model.">
 
 
 
+
+
+
+
+  <meta property="article:published_time" content="2022-12-26T00:00:00+01:00">
 
 
 
@@ -41,11 +45,9 @@
   
 
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/">
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-27/">
 
 
-
-  <link rel="next" href="http://localhost:4000/2022-tfm-enrique-shinohara/page2/">
 
 
 <script type="application/ld+json">
@@ -94,7 +96,7 @@
 
   </head>
 
-  <body class="layout--home">
+  <body class="layout--single">
     <nav class="skip-links">
   <ul>
     <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
@@ -135,6 +137,8 @@
 
     <div class="initial-content">
       
+
+
 
 
 
@@ -258,33 +262,20 @@
 
 
 
-  <div class="archive">
-    
-      <h1 id="page-title" class="page__title"></h1>
-    
-    
-
-<h3 class="archive__subtitle">Recent Posts</h3>
-
-
-
-
-<div class="entries-list">
-  
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Week 27 - Training the Brake">
+    <meta itemprop="description" content="This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to solve this new input that we decided to add to the machine learning model.">
+    <meta itemprop="datePublished" content="2022-12-26T00:00:00+01:00">
     
 
-
-
-<div class="list__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
+    <div class="page__inner-wrap">
       
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-27/" rel="permalink">Week 27 - Training the Brake
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-27/" class="u-url" itemprop="url">Week 27 - Training the Brake
 </a>
-      
-    </h2>
-    
+          </h1>
+          
 
   <p class="page__meta">
     
@@ -305,16 +296,128 @@
   </p>
 
 
-    <p class="archive__item-excerpt" itemprop="description">This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to so...</p>
-  </article>
-</div>
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to solve this new input that we decided to add to the machine learning model.</p>
+
+<h3 id="prevelocity">Prevelocity</h3>
+
+<p>This new input consist on the previous velocity. The idea to recolect all the data and have the model be able to know the previous velocity is that it brings a much more robust behaviour onto our vehicle, once it has an “idea” of the current velocity in what situation, it should be able to brake and accelerate accordingly to each situation. Knowing that we have to do some augmentations on the image, adding the new input right before reading them was a problem that took a while to be resolved. Ultimately, simply by adding the previous velocity once the augmentations were done was enought to keep the machine from further errors.</p>
+
+<figure class="half">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/prevelocity_no.png" alt="" />
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/prevelocity_yes.png" alt="" />
+  <figcaption>Training and validation loss before adding the new input and after adding it.</figcaption>
+</figure>
+
+<p>This results in a significant improvement. As we can see from the loss value of the training and validation, it appears to turn a much lower value when we add the previous velocity than when we didn’t have it.</p>
+
+<p>As the dataset, we have gathered the same quantity of 80.000 images changing the spawned npc vehicle in order to achieve a better generalization, giving our car the capability of stopping whenever a vehicle is in front of it. The list of car chosen fow now is:</p>
+<ul>
+  <li>vehicle.carlamotors.carlacola: a red van from that is quite visible and distinguible from the distance.</li>
+  <li>vehicle.ford.mustang: standard sport car</li>
+  <li>vehicle.tesla.cybertruck: a truck chosen for the height of the wheels compared to the rest. By sitting higher in position, it may be interesting to introduce to have more variety in features.</li>
+  <li>vehicle.yamaha.yzf: the only motorcycle introduced in our dataset, the idea is to generalize not only by distinguish a wide car in front of our vehicle, but also with a more hardly visible vehicle such as the motorcycle.</li>
+</ul>
+
+<p>As we have done along this week, the training process stays pretty much the same, where we make use of a slightly modified PilotNet network, and with our own dataset train the network for around 100 epochs. In the next video, we can see the behaviour of the car on 4 different vehicles, from big cars to motorcycles either be it clockwise or anti-clockwise in order to cover multiple scenarios.</p>
+
+<figure class="align-center">
+    <a href=""><iframe src="https://www.youtube.com/embed/vsrjQ27QDYc"></iframe></a>
+</figure>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
 
   
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
     
+      <a href="/2022-tfm-enrique-shinohara/tags/#brakes" class="page__taxonomy-item p-category" rel="tag">brakes</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#dataset" class="page__taxonomy-item p-category" rel="tag">dataset</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#training" class="page__taxonomy-item p-category" rel="tag">training</a>
+    
+    </span>
+  </p>
 
 
 
-<div class="list__item">
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/2022-tfm-enrique-shinohara/categories/#weekly-log" class="page__taxonomy-item p-category" rel="tag">Weekly Log</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-12-26T00:00:00+01:00">December 26, 2022</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Week+27+-+Training+the+Brake%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-27%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-27%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-27%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-26/" class="pagination--pager" title="Week 26 - Braking and stopping
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -348,12 +451,12 @@
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -387,12 +490,12 @@
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -426,12 +529,12 @@
   </article>
 </div>
 
-  
-    
+        
+          
 
 
 
-<div class="list__item">
+<div class="grid__item">
   <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
@@ -466,73 +569,13 @@
   </article>
 </div>
 
+        
+      </div>
+    </div>
+  
   
 </div>
 
-
-<nav class="pagination">
-  
-  <ul>
-    
-    
-    <li><a href="#" class="disabled"><span aria-hidden="true">Previous</span></a></li>
-    
-
-    
-    
-      <li><a href="#" class="disabled current">1</a></li>
-    
-
-    
-    
-
-    
-    
-    
-
-    
-      
-        
-        
-        
-        <li><a href="/2022-tfm-enrique-shinohara/page2/">2</a></li>
-      
-    
-      
-        
-        
-        
-        <li><a href="/2022-tfm-enrique-shinohara/page3/">3</a></li>
-      
-    
-      
-        
-        
-        
-        <li><a href="/2022-tfm-enrique-shinohara/page4/">4</a></li>
-      
-    
-
-    
-    
-      <li><a href="#" class="disabled">&hellip;</a></li>
-    
-
-    
-      <li><a href="/2022-tfm-enrique-shinohara/page5/">5</a></li>
-    
-
-    
-    
-      <li><a href="/2022-tfm-enrique-shinohara/page2/">Next</a></li>
-    
-  </ul>
-</nav>
-
-
-
-  </div>
-</div>
     </div>
 
     
