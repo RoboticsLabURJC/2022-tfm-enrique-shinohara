@@ -29,7 +29,6 @@ import threading
 import collections
 import cv2
 import csv
-from PIL import Image
 from csv import writer
 import tensorflow as tf
 from collections import deque
@@ -37,6 +36,7 @@ from agents.rl_agent import *
 from agents.vision_agent import *
 from agents.followline_agent import *
 from carla_birdeye_view import BirdViewProducer, BirdViewCropType, PixelDimensions
+import PIL
 
 try:
     import pygame
@@ -90,9 +90,9 @@ for gpu in gpus:
 global SPAWNPOINT
 global NPC_SPAWNPOINT
 global NPC_NAME
-SPAWNPOINT = 94
-NPC_SPAWNPOINT = 33
-NPC_NAME = 'vehicle.dodge.charger_police'
+SPAWNPOINT = 16
+NPC_SPAWNPOINT = 14
+NPC_NAME = 'vehicle.chevrolet.impala'
 LEFT = False
 RIGHT = False
 CHECK07 = -1
@@ -138,6 +138,7 @@ class World(object):
         self.world = carla_world
         self.hud = hud
         self.vehicle = None
+        self.npc_vehicle = None
         self.collision_sensor = None
         self.camera_manager = None
         self._weather_presets = find_weather_presets()
@@ -616,7 +617,7 @@ def save_instance_to_dataset(world, image, image_counter, first_image_taken, pre
         prev_velocity = 0
 
     file_name = "%d.png" % (image_counter + prev_image_num)
-    j = Image.fromarray(image)
+    j = PIL.Image.fromarray(image)
     j.save(file_path + file_name, compress_level=1)
 
     c = world.vehicle.get_control()
@@ -632,8 +633,8 @@ def save_instance_to_dataset(world, image, image_counter, first_image_taken, pre
 
 def try_spawn_random_vehicles(world, client, num, spawnpoint, npc_name):
     actor_list = []
-
-    spawn_points = world.get_map().get_spawn_points()
+    
+    spawn_points = world.world.get_map().get_spawn_points()
 
     if spawnpoint == None:
         random_waypoints = []
@@ -645,7 +646,7 @@ def try_spawn_random_vehicles(world, client, num, spawnpoint, npc_name):
                 break
         print(len(random_waypoints))
         for spawn_point in random_waypoints:
-            blueprints = world.get_blueprint_library().filter('vehicle.*')
+            blueprints = world.world.get_blueprint_library().filter('vehicle.*')
             blueprints = [x for x in blueprints if int(x.get_attribute('number_of_wheels')) == 4]
             blueprint = random.choice(blueprints)
             if blueprint.has_attribute('color'):
@@ -653,29 +654,31 @@ def try_spawn_random_vehicles(world, client, num, spawnpoint, npc_name):
                 blueprint.set_attribute('color', color)
             blueprint.set_attribute('role_name', 'autopilot')
         
-            vehicle = world.try_spawn_actor(blueprint, spawn_point)
+            vehicle = world.world.try_spawn_actor(blueprint, spawn_point)
             if vehicle is not None:
                 actor_list.append(vehicle)
                 vehicle.set_autopilot()
                 print('spawned %r at %s' % (vehicle.type_id, spawn_point.location))
+                world.npc_vehicle = vehicle
             else:
                 return False
             time.sleep(0.5)
         return True
     else:
-        blueprint = world.get_blueprint_library().find(npc_name)
+        blueprint = world.world.get_blueprint_library().find(npc_name)
         spawn_point = spawn_points[spawnpoint]
-        vehicle = world.try_spawn_actor(blueprint, spawn_point)
+        vehicle = world.world.try_spawn_actor(blueprint, spawn_point)
 
         traffic_manager = client.get_trafficmanager()
         route = ["Straight"]*1000
         traffic_manager.set_route(vehicle, route)
-        traffic_manager.ignore_lights_percentage(vehicle, 50)
+        traffic_manager.ignore_lights_percentage(vehicle, 0)
 
         if vehicle is not None:
                 actor_list.append(vehicle)
                 vehicle.set_autopilot()
                 print('spawned %r at %s' % (vehicle.type_id, spawn_point.location))
+                world.npc_vehicle = vehicle
         else:
             return False
         return True
@@ -699,16 +702,17 @@ def game_loop(args):
 
         hud = HUD(args.width, args.height)
         world = World(client.load_world('Town02_Opt'), hud, args)
-        try_spawn_random_vehicles(world.world, client, 0, NPC_SPAWNPOINT, NPC_NAME)
+        try_spawn_random_vehicles(world, client, 0, NPC_SPAWNPOINT, NPC_NAME)
 
-        # weather = world.world.get_weather()
+        weather = world.world.get_weather()
         # weather.sun_altitude_angle = -30
         # weather.fog_density = 65
+        weather.precipitation=100
         # weather.fog_distance = 10
         # weather.wetness = 100
-        # world.world.set_weather(weather)
-        # vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
-        # world.vehicle.set_light_state(vehicle_light_state)
+        world.world.set_weather(weather)
+        vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
+        world.vehicle.set_light_state(vehicle_light_state)
 
         if args.agent == "rl":
             agent = RLAgent(world.vehicle)
@@ -756,12 +760,16 @@ def game_loop(args):
         noise_value = 0
         prev_image_number = 0
         prev_velocity = 0
+        stop_condition = False
+        stop_counter = 0
+        route = ["Straight"]*1000
         while True:
             # as soon as the server is ready continue!
             if not world.world.wait_for_tick(10.0):
                 continue
             step_start = time.time()
             control = world.vehicle.get_control()
+            npc_control = world.npc_vehicle.get_control()
             location = world.vehicle.get_location()
             if (type(world.camera_manager.image).__module__ == np.__name__):
                 # If we use autopilot of carla and no agent to control the car
@@ -783,6 +791,25 @@ def game_loop(args):
                     world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer), brake=float(brake)))
 
                     image_counter = image_counter + 1
+
+                """if world.npc_vehicle != None:
+                    # Stop the spawned car at random times
+                    if random.random() < 0.005 and (stop_condition == False):
+                        print("Stopping....")
+                        stop_condition = True
+                    if stop_condition:
+                        if stop_counter < 350:
+                            npc_control.throttle = 0
+                            npc_control.brake = 1
+                            world.npc_vehicle.apply_control(npc_control)
+                            stop_counter += 1
+                        else:
+                            print("Run!")
+                            stop_condition = False
+                            stop_counter = 0
+                            npc_control.throttle = 0
+                            npc_control.brake = 0
+                            world.npc_vehicle.apply_control(npc_control)"""
 
                 """if (noise == False) and (image_counter % 250 == 0):
                     noise = True
@@ -821,11 +848,11 @@ def game_loop(args):
                     recording = False"""
 
                 # if (args.rec == True) and (image_counter % 10 == 0):
-                if args.rec == "rgb" and recording:
+                if args.rec == "rgb":
                     first_image_taken, prev_image_number, prev_velocity = save_instance_to_dataset(world, world.camera_manager.image, 
                     image_counter, first_image_taken, prev_image_number, prev_velocity)
 
-                    if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 5000:
+                    if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 2500:
                         break
             
             frame_time = time.time() - step_start
@@ -840,8 +867,9 @@ def game_loop(args):
                 print(f"Server: {hud.server_fps}")
                 print(f"Client: {len(fps)/sum(fps):>4.1f} FPS | {frame_time*1000} ms")
 
+
             world.render(display)
-            display.blit(pygame.surfarray.make_surface((network_image*255).swapaxes(0, 1)), (args.width - 200, 0))
+            display.blit(pygame.surfarray.make_surface(network_image), (args.width - 200, 0))
             pygame.display.flip()
 
 
@@ -891,6 +919,10 @@ def main():
                            choices=["rl", "basic", "fl", "fr"],
                            help="select which agent to run",
                            default="basic")
+
+    argparser.add_argument("-c", "--choice", type=int,
+                           help="select which main option to run",
+                           default=3)
     args = argparser.parse_args()
 
     args.width, args.height = [int(x) for x in args.res.split('x')]
@@ -914,42 +946,46 @@ def main():
 
 
 if __name__ == '__main__':
-    """start = time.time()
-    spawnpoints_left = []
-    spawnpoints_right = [70]
-    LEFT = True
-    for spawn in spawnpoints_left:
-        SPAWNPOINT = spawn
+    choice = int(sys.argv[2])
+    if choice == 0:  # Run clockwise and anticlockwise circuits with deletable traces
+        start = time.time()
+        spawnpoints_left = []
+        spawnpoints_right = [70]
+        LEFT = True
+        for spawn in spawnpoints_left:
+            SPAWNPOINT = spawn
+            main()
+        LEFT = False
+        RIGHT = True
+        for index, spawn in enumerate(spawnpoints_right):
+            CHECK07 = index
+            print(CHECK07)
+            SPAWNPOINT = spawn
+            main()
+        RIGHT = False
+        end = time.time() - start
+        print(f"THE END: time -> {end}")
+    elif choice == 1:  # Run circuits with no deletable traces
+        start = time.time()
+        spawnpoints = [8, 9]
+        for spawn in spawnpoints:
+            SPAWNPOINT = spawn
+            main()
+        end = time.time() - start
+        print(f"THE END: time -> {end}")
+    elif choice == 2:  # Run circuits with a variety of npcs
+        start = time.time()
+        spawnpoints = [2, 94]
+        npc_spawnpoints = [45, 33]
+        npc_names = ['vehicle.harley-davidson.low_rider', 'vehicle.chevrolet.impala']
+        for spawn, npcs, names in zip(spawnpoints, npc_spawnpoints, npc_names):
+            SPAWNPOINT = spawn
+            NPC_SPAWNPOINT = npcs
+            NPC_NAME = names
+            main()
+        end = time.time() - start
+        print(f"THE END: time -> {end}")
+    elif choice == 3:  # A simple code
         main()
-    LEFT = False
-    RIGHT = True
-    for index, spawn in enumerate(spawnpoints_right):
-        CHECK07 = index
-        print(CHECK07)
-        SPAWNPOINT = spawn
-        main()
-    RIGHT = False
-    end = time.time() - start
-    print(f"THE END: time -> {end}")"""
-
-    """start = time.time()
-    spawnpoints = [2, 4, 5, 7, 8]
-    npc_spawnpoints = [45, 31, 0, 95, 6]
-    npc_names = ['vehicle.yamaha.yzf', 'vehicle.ford.mustang', 'vehicle.tesla.cybertruck', 'vehicle.ford.mustang', 'vehicle.tesla.cybertruck']
-    for spawn, npcs, names in zip(spawnpoints, npc_spawnpoints, npc_names):
-        SPAWNPOINT = spawn
-        NPC_SPAWNPOINT = npcs
-        NPC_NAME = names
-        main()
-    end = time.time() - start
-    print(f"THE END: time -> {end}")"""
-
-    """start = time.time()
-    spawnpoints = [8, 9]
-    for spawn in spawnpoints:
-        SPAWNPOINT = spawn
-        main()
-    end = time.time() - start
-    print(f"THE END: time -> {end}")"""
-
-    main()
+    else:
+        print("Invalid choice. Please enter a number between 0 and 3.")

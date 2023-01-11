@@ -136,4 +136,10 @@ var store = [{
         "tags": ["carla","dataset","brakes","training"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-27/",
         "teaser": null
+      },{
+        "title": "Week 28~29 - From good to great: improving the basic model",
+        "excerpt":"With each week, we try to expand the functionality of our model by making it more robust and efficient. And is all this the basis for all the work we have been doing this weeks: retrieving more data to have all the needed information to train, to lighten it up...","categories": ["Weekly Log"],
+        "tags": ["carla","dataset","convolution"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-28-29/",
+        "teaser": null
       }]

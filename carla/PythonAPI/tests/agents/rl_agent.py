@@ -14,6 +14,8 @@ import math
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 
+from gradcam import GradCAM
+
 import cv2
 
 
@@ -34,7 +36,7 @@ class RLAgent(object):
         self.v = 0
         self.b = 0
         self.velocity = 0
-        self.model = load_model('20221225-232824_rgb_brakingsimple_151.h5')
+        self.model = load_model('20230107-205705_rgb_brakingsimple_71_58k.h5')
         self.first = 0
         # self.model = load_model('20221102-095537_pilotnet_model_3_51_cp.h5', custom_objects={'tf': tf})
 
@@ -59,6 +61,12 @@ class RLAgent(object):
         velocity_dim = np.full((66, 200), velocity_normalize)
         velocity_tensor_image = np.dstack((tensor_img, velocity_dim))
         final_image = velocity_tensor_image[np.newaxis]
+
+        # GradCAM from image
+        cam = GradCAM(self.model, 0)
+        heatmap = cam.compute_heatmap(np.swapaxes(final_image, 1, 2))
+        heatmap = cv2.resize(heatmap, (heatmap.shape[1], heatmap.shape[0]))
+        (heatmap, output) = cam.overlay_heatmap(heatmap, tensor_img, alpha=0.5)
         
         steer_val = self.w
         throttle_val = self.v
@@ -84,7 +92,7 @@ class RLAgent(object):
         self.v = throttle_val
         self.w = steer_val
 
-        return steer_val, throttle_val, brake_val, img, tensor_img
+        return steer_val, throttle_val, brake_val, img, output
 
 
     def run_step_old(self, img):

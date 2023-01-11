@@ -1,0 +1,650 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Week 28~29 - From good to great: improving the basic model - Robotics Lab URJC</title>
+<meta name="description" content="With each week, we try to expand the functionality of our model by making it more robust and efficient. And is all this the basis for all the work we have been doing this weeks: retrieving more data to have all the needed information to train, to lighten it up so that we can have a smaller and more efficient dataset, improving the behaviour on the road or improving the breaks performance when it encounters a multiple variety of vehicles, and on and on…">
+
+
+  <meta name="author" content="Enrique Shinohara">
+  
+  <meta property="article:author" content="Enrique Shinohara">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Robotics Lab URJC">
+<meta property="og:title" content="Week 28~29 - From good to great: improving the basic model">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-28-29/">
+
+
+  <meta property="og:description" content="With each week, we try to expand the functionality of our model by making it more robust and efficient. And is all this the basis for all the work we have been doing this weeks: retrieving more data to have all the needed information to train, to lighten it up so that we can have a smaller and more efficient dataset, improving the behaviour on the road or improving the breaks performance when it encounters a multiple variety of vehicles, and on and on…">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-01-08T00:00:00+01:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-28-29/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "JdeRobot",
+      "url": "http://localhost:4000/2022-tfm-enrique-shinohara/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/2022-tfm-enrique-shinohara/feed.xml" type="application/atom+xml" rel="alternate" title="Robotics Lab URJC Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/2022-tfm-enrique-shinohara/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/2022-tfm-enrique-shinohara/"><img src="/2022-tfm-enrique-shinohara/assets/images/logo.png" alt="Robotics Lab URJC"></a>
+        
+        <a class="site-title" href="/2022-tfm-enrique-shinohara/">
+          Robotics Lab URJC
+          <span class="site-subtitle">Programming Robot Intelligence</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/2022-tfm-enrique-shinohara/year-archive/">Logbook</a>
+            </li><li class="masthead__menu-item">
+              <a href="/2022-tfm-enrique-shinohara/about/">About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+    <div class="author__avatar">
+      <a href="http://localhost:4000/2022-tfm-enrique-shinohara/">
+        <img src="/2022-tfm-enrique-shinohara/assets/images/Enrique-Yujiro-white2.jpg" alt="Enrique Shinohara" itemprop="image" class="u-photo">
+      </a>
+    </div>
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/2022-tfm-enrique-shinohara/" itemprop="url">Enrique Shinohara</a>
+    </h3>
+    
+      <div class="author__bio p-note" itemprop="description">
+        <p>Master’s thesis blog</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name" class="p-locality">Madrid, Spain</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/RoboticsLabURJC/2022-tfm-enrique-shinohara" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="https://www.linkedin.com/in/enrique-yujiro-shinohara-soto" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:enriqueshino@gmail.com" rel="me" class="u-email">
+            <meta itemprop="email" content="enriqueshino@gmail.com" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span>
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Week 28~29 - From good to great: improving the basic model">
+    <meta itemprop="description" content="With each week, we try to expand the functionality of our model by making it more robust and efficient. And is all this the basis for all the work we have been doing this weeks: retrieving more data to have all the needed information to train, to lighten it up so that we can have a smaller and more efficient dataset, improving the behaviour on the road or improving the breaks performance when it encounters a multiple variety of vehicles, and on and on…">
+    <meta itemprop="datePublished" content="2023-01-08T00:00:00+01:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-28-29/" class="u-url" itemprop="url">Week 28~29 - From good to great: improving the basic model
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+        <p>With each week, we try to expand the functionality of our model by making it more robust and efficient. And is all this the basis for all the work we have been doing this weeks: retrieving more data to have all the needed information to train, to lighten it up so that we can have a smaller and more efficient dataset, improving the behaviour on the road or improving the breaks performance when it encounters a multiple variety of vehicles, and on and on…</p>
+
+<p>Now, arriving to this two weeks we have been focused on this next points:</p>
+<ul>
+  <li>Try with a smaller dataset</li>
+  <li>Make a more robust dataset having the npc stop more randomly (instead of having it stops on the traffic lights)</li>
+  <li>Check what the convolutional layer is watching</li>
+  <li>Train and test in multiple weather conditions</li>
+</ul>
+
+<h2 id="the-dataset">The dataset</h2>
+
+<p>So, first of all, the dataset we had consisted of roughly 80.000 images making it a total of 36.8 Gb. Now the idea was to test how much could we shrink this for we are currently just dealing with Town02 and if we want to generalize this to all the available Towns, we are going to increment this dataset a lot.</p>
+
+<p>THe first thing was cutting it all to half, being careful to not cut relevant information, keeping it as balanced as possible. So we tried training the 40.000 images dataset and it was not bad! But (yes there is a but) we were noticing weird behaviour like the car wasn’t able to stay sometimes on the lane or that sometimes it stopped when a car was in front of it and once the car in front of it started running, our car was not able to get out of this stop state. Now, the first thought was pretty straight forward, we had cut too much valuable information and in top of that, there was a thought: what if the “staying in a stop situation” was because the war was always stopping in the same spots, the traffic lights. So we needed not to only know how much to increase the dataset information, but to add random stops on the spawned vehicle so that it would not make the mistake to stop on designated areas only because the spawned car always stopped on the traffic lights areas.</p>
+
+<p>In conclusion, we have added the functionality to make the spawned car stop randomly and recollected the necessary dataset that finally added up to 58.000 images.</p>
+
+<figure class="align-center" style="width:60%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/epoch_loss_58k.png" alt="" />
+  <figcaption>Training and validation loss of the new 58k dataset.</figcaption>
+</figure>
+
+<p>From the loss graph we saw in the previous few weeks, we pretty much gathered the information needed and tested it, it seemed as if leaving it at 70 epochs we ended up with a pretty stable model.</p>
+
+<h2 id="convolutional-layer">Convolutional layer</h2>
+
+<p>One of the methods proposed to check if we could see the features map from the convolutional layer was the <a href="https://arxiv.org/pdf/1610.02391.pdf">Grad-CAM</a>, a method that produces a heatmap from the gradients of the objective class from the final convolutional layer. The thing is, that by simply using the final layer we weren’t being able to “see” in a more explanatory way what the car was seeing from its surroundings.</p>
+
+<figure class="align-center" style="width:60%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/model_summary.png" alt="" />
+  <figcaption>PilotNet-based model summary.</figcaption>
+</figure>
+
+<p>In the next four videos we can visualize on the top right corner what the car feed to the model and what the model is seeing. We have extracted as we can see from the summary all the four convolutional layers. On the top left we have the first layer, top right the second layer, bottom left the third layer and finally bottom right the fourth layer.</p>
+
+<video src="https://user-images.githubusercontent.com/47086664/211213147-ae09d6cb-642e-4e28-89e6-cc5b02477379.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/211213147-ae09d6cb-642e-4e28-89e6-cc5b02477379.mp4" controls="controls" muted="muted" class="half" style="width:49%">
+</video>
+<video src="https://user-images.githubusercontent.com/47086664/211213160-23aeb5c6-b98b-4819-b6ba-10ee97972679.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/211213160-23aeb5c6-b98b-4819-b6ba-10ee97972679.mp4" controls="controls" muted="muted" class="half" style="width:49%">
+</video>
+<video src="https://user-images.githubusercontent.com/47086664/211213167-5eda3657-a38c-464b-b240-102d831ef39c.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/211213167-5eda3657-a38c-464b-b240-102d831ef39c.mp4" controls="controls" muted="muted" class="half" style="width:49%">
+</video>
+<video src="https://user-images.githubusercontent.com/47086664/211213178-3ae6b407-37c8-4dbc-83f8-ac01c6b2efb8.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/211213178-3ae6b407-37c8-4dbc-83f8-ac01c6b2efb8.mp4" controls="controls" muted="muted" class="half" style="width:49%">
+</video>
+<p><br /></p>
+
+<p>From the videos we have that the four layer is more easy to understand for the model but we can understand pretty little from it. So in order to see if the other layers were more visually attractive we had to check and it seems to be more understandable than the final layer, that as we saw from the summary it was 18 by 1, basically a straigh line features.</p>
+
+<h2 id="weather-variety">Weather variety</h2>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#convolution" class="page__taxonomy-item p-category" rel="tag">convolution</a><span class="sep">, </span>
+    
+      <a href="/2022-tfm-enrique-shinohara/tags/#dataset" class="page__taxonomy-item p-category" rel="tag">dataset</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/2022-tfm-enrique-shinohara/categories/#weekly-log" class="page__taxonomy-item p-category" rel="tag">Weekly Log</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2023-01-08T00:00:00+01:00">January 8, 2023</time></p>
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Week+28~29+-+From+good+to+great%3A+improving+the+basic+model%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-28-29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-28-29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-28-29%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-27/" class="pagination--pager" title="Week 27 - Training the Brake
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h2 class="page__related-title">You May Also Enjoy</h2>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-27/" rel="permalink">Week 27 - Training the Brake
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to so...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-26/" rel="permalink">Week 26 - Braking and stopping
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">The task for this week is going to revolve around trying to make the car stop when another car stops in front of it, then accelerating again when the car is ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-24-25/" rel="permalink">Week 24~25 - Adding some extras
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">This weeks we continue with the use of the RGB cameras, but this time, we are going to add a little bit more of spice, we will add more agents apart from our...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-23/" rel="permalink">Week 23 - Semantic Segmentation
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">Once we have established a solid base for the deep learning project we move on to other tasks. With that being said, we are going to make use of a segmentati...</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/roboticslaburjc" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/RoboticsLabURJC" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://www.youtube.com/channel/UCgmUgpircYAv_QhLQziHJOQ" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-youtube" aria-hidden="true"></i> Youtube</a></li>
+        
+      
+    
+
+    
+      <li><a href="/2022-tfm-enrique-shinohara/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 JdeRobot. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/2022-tfm-enrique-shinohara/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
