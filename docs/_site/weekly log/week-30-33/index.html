@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Week 14 - Why is it not turning? - Robotics Lab URJC</title>
-<meta name="description" content="Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?">
+<!-- begin _includes/seo.html --><title>Week 30~33 - Installing BehaviourMetrics - Robotics Lab URJC</title>
+<meta name="description" content="For this past few weeks I have been trying to install and configurate the BehaviourMetrics repository on my local computer. With this repository the main objective was to be able to have some quantifiable metrics in order to check with data how good is the follow-lane model.">
 
 
   <meta name="author" content="Enrique Shinohara">
@@ -22,30 +22,30 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Week 14 - Why is it not turning?">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/">
+<meta property="og:title" content="Week 30~33 - Installing BehaviourMetrics">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-30-33/">
 
 
-  <meta property="og:description" content="Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2022-09-17T00:00:00+02:00">
+  <meta property="og:description" content="For this past few weeks I have been trying to install and configurate the BehaviourMetrics repository on my local computer. With this repository the main objective was to be able to have some quantifiable metrics in order to check with data how good is the follow-lane model.">
 
 
 
 
 
-  
+
+
+  <meta property="article:published_time" content="2023-02-14T00:00:00+01:00">
+
+
+
+
 
   
 
+  
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/">
+
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-30-33/">
 
 
 
@@ -263,16 +263,16 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Week 14 - Why is it not turning?">
-    <meta itemprop="description" content="Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?">
-    <meta itemprop="datePublished" content="2022-09-17T00:00:00+02:00">
+    <meta itemprop="headline" content="Week 30~33 - Installing BehaviourMetrics">
+    <meta itemprop="description" content="For this past few weeks I have been trying to install and configurate the BehaviourMetrics repository on my local computer. With this repository the main objective was to be able to have some quantifiable metrics in order to check with data how good is the follow-lane model.">
+    <meta itemprop="datePublished" content="2023-02-14T00:00:00+01:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-14/" class="u-url" itemprop="url">Week 14 - Why is it not turning?
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-30-33/" class="u-url" itemprop="url">Week 30~33 - Installing BehaviourMetrics
 </a>
           </h1>
           
@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          3 minute read
+          1 minute read
         
       </span>
     
@@ -301,47 +301,19 @@
 
       <section class="page__content e-content" itemprop="text">
         
-        <p>Carry on with the task at hand, we still need to figure out why the car is not turning when we increased the dataset with more turning situations. Wasn’t the quantity of increased data enough? More tweaking on the augmentation to see which turning value needs more weight? Even more variability on the dataset?</p>
+        <p>For this past few weeks I have been trying to install and configurate the <a href="https://github.com/JdeRobot/BehaviorMetrics">BehaviourMetrics</a> repository on my local computer. With this repository the main objective was to be able to have some quantifiable metrics in order to check with data how good is the follow-lane model.</p>
 
-<p>To tackle this questions and find the solution, an enumeration of where proposed for me by my tutor and advisor. The lines to keep on track right now are:</p>
+<p>Now, this all seemed like a nice step-forward on our project, but in reality the installation was a nightmare to handle. The main issue for me was that the BehaviourMetrics project was builded using the noetic distribution of ROS. And this distribution is only maintained until the 20.04 Ubuntu version and I had the 22.04. I was given three solutions:</p>
 
 <ul>
-  <li>Introduce more variety onto the dataset</li>
-  <li>Measure the behaviour of the network</li>
-  <li>Explore other works along the side of a car following a road using neural networks</li>
+  <li>Install using Docker. <a href="https://jderobot.github.io/BehaviorMetrics/install">BehaviourMetrics Installation Page</a></li>
+  <li>Installing from source. I came across a guy named <a href="https://answers.ros.org/question/399664/will-ros-noetic-support-ubuntu-2204/">lucasw</a> who had some good results building the distribution from source in a 22.04 Ubuntu computer.</li>
+  <li>Create a new partition on my local computer with a 20.04 distribution of Ubuntu.</li>
 </ul>
 
-<p>To conclude the exploration part of this week, it is possible to find blogs of people who have tried this problem before with success. As expected, this is just the base when we see the bigger picture (given that we have also in mind to experiment with reinforcement learning), but is a base that we need to “conquer”. Given that this problem is being draged on since the previous week, we need to establish the next route to find the problem, and as one of the tasks at hand, we are going to need to search and measure the neural network and its training process (where the problem will be more likely to be found).</p>
+<p>What I thought was the easiest way resulted to be quite a knot to untangle. Building the project from Docker resulted in multiple errors that were almost too much of a hassle to deal with. So, having “wasted” a lot of time trying to go this way I went with the building from source which also didn’t turn out to be as fruitful as we thought. Having done a lot of dependencies and environment work, the errors were also too much to handle so finally went with installing the whole new Ubuntu system in a new partition.</p>
 
-<h2 id="measuring-the-behaviour-of-the-training-process-and-increasing-the-dataset">Measuring the behaviour of the training process and increasing the dataset</h2>
-
-<p>As an experiment, the training was made with 45 epochs, to show us the behaviour of the training with our dataset and see how many epochs would be necessary for our model to not overfit. With this little experiment we simply visualize better that the training stabilize around 10 epochs.</p>
-
-<figure style="width:80%" class="align-center">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/loss_45.png" alt="" />
-  <figcaption>Evolution of the error along 45 epochs.</figcaption>
-</figure>
-
-<p>One of the possible explanation of why is the car not turning, could be that the car is overfitting on straights, meaning that it is not extracting good, or enough information from the curves. To solve this, we have tried to increase the data, one by adding more curve cases to our dataset, and second by adding weird start cases. This last one has the purpose of giving the car more context of what to do in this strange situations. To do this, we simply rotate the yaw of the car along different points of the road for it to adjust itself and continue on the road as the follow-road algorithm intend it to.</p>
-
-<iframe src="https://giphy.com/embed/VUcpEtOCDNYeebZLcO" width="480" height="360" frameborder="0" class="align-center" allowfullscreen=""></iframe>
-<p></p>
-
-<p>By making a scatter plot of the groundtruth and the predicted values of the steering angle, we can have a good understanding of what is happening with the neural network. One of the first thing we can notice, is a certain correlation between this two, meaning that it is certainly learning something. On the bad side, we can comment on two things: one, the visible vertical line in the middle, meaning that the car still oscillates to maintain itself inside the road, otherwise it would learn to follow the road more smoothly, and second, the Y-axis of the plot. This last part is quite tricky, because it means that the network is doing some predictions that don’t correspond to the range of values from which it was trained.</p>
-
-<p>To better understand this, the dataset saved for the training has two values, the steering and the throttle. And while the throttle range from 0 to 1 in the Carla Simulation, the steering range from -1 to 1. This was the way the dataset was saved, but one solution that helped to understand this better is the normalization of the neural network. Normally, the neural networks train better when the data is normalized between 0 and 1, so by changig this step we only need to denormalize the values predicted from the model.</p>
-
-<p>The normalization of the data gives us faster and probably an overall better training of our model, but this doesn’t takes the fact that the output values that the model is giving us doesn’t correspond with the range of values from the input. One solution that helped to improve the results were to try to interpret better how the ouput of the network correlates with the -1 to 1 range of the Carla simulation steering. Once this is tuned correctly, the car shows us a better take on how it handle the curve.</p>
-
-<p>The two videos below shows us how the car performs on two different curves. They both approach it a little differently but both of them show us more improvement on the overall car behaviour.</p>
-
-<figure class="align-center">
-    <a href=""><iframe src="https://www.youtube.com/embed/ItRGSR-uukg"></iframe></a>
-</figure>
-
-<figure class="align-center">
-    <a href=""><iframe src="https://www.youtube.com/embed/mY9dlCyR_os"></iframe></a>
-</figure>
+<p>Finally being able to have a 20.04 operating system on our local machine, the installation of ROS noetic was pretty much a stroll in the park, which was a relieve having dealt with this problem for three weeks.</p>
 
         
       </section>
@@ -358,11 +330,9 @@
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#augmentation" class="page__taxonomy-item p-category" rel="tag">augmentation</a><span class="sep">, </span>
+      <a href="/2022-tfm-enrique-shinohara/tags/#ros" class="page__taxonomy-item p-category" rel="tag">ros</a><span class="sep">, </span>
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
-    
-      <a href="/2022-tfm-enrique-shinohara/tags/#scatter-plot" class="page__taxonomy-item p-category" rel="tag">scatter plot</a>
+      <a href="/2022-tfm-enrique-shinohara/tags/#ubuntu" class="page__taxonomy-item p-category" rel="tag">ubuntu</a>
     
     </span>
   </p>
@@ -387,30 +357,29 @@
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-09-17T00:00:00+02:00">September 17, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2023-02-14T00:00:00+01:00">February 14, 2023</time></p>
 
       </footer>
 
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+14+-+Why+is+it+not+turning%3F%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+30~33+-+Installing+BehaviourMetrics%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-30-33%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-30-33%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-14%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-30-33%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-13/" class="pagination--pager" title="Week 13 - Handling the curve
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-28-29/" class="pagination--pager" title="Week 28~29 - From good to great: improving the basic model
 ">Previous</a>
     
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-15/" class="pagination--pager" title="Week 15 - Building momentum
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -424,45 +393,6 @@
     <div class="page__related">
       <h2 class="page__related-title">You May Also Enjoy</h2>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-30-33/" rel="permalink">Week 30~33 - Installing BehaviourMetrics
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">For this past few weeks I have been trying to install and configurate the BehaviourMetrics repository on my local computer. With this repository the main obj...</p>
-  </article>
-</div>
-
         
           
 
@@ -577,6 +507,45 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">The task for this week is going to revolve around trying to make the car stop when another car stops in front of it, then accelerating again when the car is ...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-24-25/" rel="permalink">Week 24~25 - Adding some extras
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">This weeks we continue with the use of the RGB cameras, but this time, we are going to add a little bit more of spice, we will add more agents apart from our...</p>
   </article>
 </div>
 

@@ -142,4 +142,10 @@ var store = [{
         "tags": ["carla","dataset","convolution"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-28-29/",
         "teaser": null
+      },{
+        "title": "Week 30~33 - Installing BehaviourMetrics",
+        "excerpt":"For this past few weeks I have been trying to install and configurate the BehaviourMetrics repository on my local computer. With this repository the main objective was to be able to have some quantifiable metrics in order to check with data how good is the follow-lane model. Now, this all...","categories": ["Weekly Log"],
+        "tags": ["ubuntu","ros"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-30-33/",
+        "teaser": null
       }]

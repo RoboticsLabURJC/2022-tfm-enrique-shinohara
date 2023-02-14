@@ -1,0 +1,14 @@
+I"�<p>For this past few weeks I have been trying to install and configurate the <a href="https://github.com/JdeRobot/BehaviorMetrics">BehaviourMetrics</a> repository on my local computer. With this repository the main objective was to be able to have some quantifiable metrics in order to check with data how good is the follow-lane model.</p>
+
+<p>Now, this all seemed like a nice step-forward on our project, but in reality the installation was a nightmare to handle. The main issue for me was that the BehaviourMetrics project was builded using the noetic distribution of ROS. And this distribution is only maintained until the 20.04 Ubuntu version and I had the 22.04. I was given three solutions:</p>
+
+<ul>
+  <li>Install using Docker. <a href="https://jderobot.github.io/BehaviorMetrics/install">BehaviourMetrics Installation Page</a></li>
+  <li>Installing from source. I came across a guy named <a href="https://answers.ros.org/question/399664/will-ros-noetic-support-ubuntu-2204/">lucasw</a> who had some good results building the distribution from source in a 22.04 Ubuntu computer.</li>
+  <li>Create a new partition on my local computer with a 20.04 distribution of Ubuntu.</li>
+</ul>
+
+<p>What I thought was the easiest way resulted to be quite a knot to untangle. Building the project from Docker resulted in multiple errors that were almost too much of a hassle to deal with. So, having “wasted” a lot of time trying to go this way I went with the building from source which also didn’t turn out to be as fruitful as we thought. Having done a lot of dependencies and environment work, the errors were also too much to handle so finally went with installing the whole new Ubuntu system in a new partition.</p>
+
+<p>Finally being able to have a 20.04 operating system on our local machine, the installation of ROS noetic was pretty much a stroll in the park, which was a relieve having dealt with this problem for three weeks.</p>
+:ET
