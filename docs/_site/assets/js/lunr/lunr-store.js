@@ -148,4 +148,10 @@ var store = [{
         "tags": ["ubuntu","ros"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-30-33/",
         "teaser": null
+      },{
+        "title": "Week 34~35 - Final adjustments on the BehaviourMetrics",
+        "excerpt":"This past two weeks we had to focus on two main tasks: To further understand and add our own deep learning models on the BehaviourMetrics project To learn and if possible implement more metrics on Carla for BehaviourMetrics The first task was supposed to be an easy one but it...","categories": ["Weekly Log"],
+        "tags": ["carla","ubuntu","tensorflow","opencv"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-34-35/",
+        "teaser": null
       }]
