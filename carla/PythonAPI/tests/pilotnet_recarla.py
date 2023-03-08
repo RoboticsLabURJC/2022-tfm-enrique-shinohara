@@ -75,9 +75,11 @@ except ImportError:
     raise RuntimeError(
         'cannot import numpy, make sure numpy package is installed')
 
-gpus = tf.config.experimental.list_physical_devices('GPU')
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
+"""gpus = tf.config.experimental.list_physical_devices('GPU')
 for gpu in gpus:
-    tf.config.experimental.set_memory_growth(gpu, True)
+    tf.config.experimental.set_memory_growth(gpu, True)"""
 
 # TOWN 02:
 # 12 - left turn at the gas station
@@ -89,8 +91,8 @@ for gpu in gpus:
 global SPAWNPOINT
 global NPC_SPAWNPOINT
 global NPC_NAME
-SPAWNPOINT = 88
-NPC_SPAWNPOINT = 15
+SPAWNPOINT = 34
+NPC_SPAWNPOINT = 32
 NPC_NAME = 'vehicle.tesla.model3'
 LEFT = False
 RIGHT = False
@@ -671,7 +673,7 @@ def try_spawn_random_vehicles(world, client, num, spawnpoint, npc_name):
         traffic_manager = client.get_trafficmanager()
         route = ["Straight"]*1000
         traffic_manager.set_route(vehicle, route)
-        traffic_manager.ignore_lights_percentage(vehicle, 0)
+        # traffic_manager.ignore_lights_percentage(vehicle, 0)
 
         if vehicle is not None:
                 actor_list.append(vehicle)
@@ -701,17 +703,19 @@ def game_loop(args):
 
         hud = HUD(args.width, args.height)
         world = World(client.load_world('Town02_Opt'), hud, args)
+        world.world.unload_map_layer(carla.MapLayer.Particles)
+        # world.world.unload_map_layer(carla.MapLayer.Buildings)
         try_spawn_random_vehicles(world, client, 0, NPC_SPAWNPOINT, NPC_NAME)
 
-        weather = world.world.get_weather()
-        # weather.sun_altitude_angle = -30
-        # weather.fog_density = 65
-        weather.precipitation=100
-        # weather.fog_distance = 10
-        # weather.wetness = 100
-        world.world.set_weather(weather)
-        vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
-        world.vehicle.set_light_state(vehicle_light_state)
+        # weather = world.world.get_weather()
+        # weather.sun_altitude_angle = 0
+        # # weather.fog_density = 100
+        # # weather.precipitation = 100
+        # # weather.fog_distance = 10
+        # # weather.wetness = 100
+        # world.world.set_weather(weather)
+        # vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
+        # world.vehicle.set_light_state(vehicle_light_state)
 
         if args.agent == "rl":
             agent = RLAgent(world.vehicle)
@@ -786,6 +790,7 @@ def game_loop(args):
                     v = world.vehicle.get_velocity()
                     current_velocity = 3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)
                     steer, throttle, brake, image, network_image = agent.run_step(world.camera_manager.image, current_velocity)
+                    # steer, throttle, brake, image = agent.run_step(world.camera_manager.image, current_velocity)
                     # world.camera_manager._second_surface = pygame.surfarray.make_surface(world.camera_manager.image2.swapaxes(0, 1))
                     world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer), brake=float(brake)))
 
@@ -793,11 +798,11 @@ def game_loop(args):
 
                 """if world.npc_vehicle != None:
                     # Stop the spawned car at random times
-                    if random.random() < 0.005 and (stop_condition == False):
+                    if random.random() < 0.002 and (stop_condition == False):
                         print("Stopping....")
                         stop_condition = True
                     if stop_condition:
-                        if stop_counter < 350:
+                        if stop_counter < 250:
                             npc_control.throttle = 0
                             npc_control.brake = 1
                             world.npc_vehicle.apply_control(npc_control)
@@ -840,18 +845,19 @@ def game_loop(args):
                     continue
                 if ((68 < location.x < 74) and (-27 < location.y < 7)) or ((68 < location.x < 78) and (47 < location.y < 68)) and LEFT: # Map07 left turn
                     continue"""
-                """if abs(control.steer) >= 0.09: # 0.3
+                
+                """if abs(control.steer) >= 0.3: # 0.09
                     print(f"GIROOOOOOO - {image_counter}")
                     recording = True
                 else:
                     recording = False"""
 
                 # if (args.rec == True) and (image_counter % 10 == 0):
-                if args.rec == "rgb":
+                if args.rec == "rgb" and recording:
                     first_image_taken, prev_image_number, prev_velocity = save_instance_to_dataset(world, world.camera_manager.image, 
                     image_counter, first_image_taken, prev_image_number, prev_velocity)
 
-                    if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 2500:
+                    if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 5000:
                         break
             
             frame_time = time.time() - step_start
@@ -868,7 +874,7 @@ def game_loop(args):
 
 
             world.render(display)
-            display.blit(pygame.surfarray.make_surface(network_image), (args.width - 200, 0))
+            # display.blit(pygame.surfarray.make_surface(network_image), (args.width - 200, 0))
             pygame.display.flip()
 
 
@@ -966,7 +972,7 @@ if __name__ == '__main__':
         print(f"THE END: time -> {end}")
     elif choice == 1:  # Run circuits with no deletable traces
         start = time.time()
-        spawnpoints = [8, 9]
+        spawnpoints = [34, 36]
         for spawn in spawnpoints:
             SPAWNPOINT = spawn
             main()
