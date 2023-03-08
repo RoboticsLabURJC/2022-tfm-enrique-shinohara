@@ -35,7 +35,6 @@ from collections import deque
 from agents.rl_agent import *
 from agents.vision_agent import *
 from agents.followline_agent import *
-from carla_birdeye_view import BirdViewProducer, BirdViewCropType, PixelDimensions
 import PIL
 
 try:
