@@ -36,7 +36,7 @@ class RLAgent(object):
         self.v = 0
         self.b = 0
         self.velocity = 0
-        self.model = load_model('20230107-205705_rgb_brakingsimple_71_58k.h5')
+        self.model = load_model('20230307-215213_pilotnet_model_3_151_cp.h5')
         self.first = 0
         # self.model = load_model('20221102-095537_pilotnet_model_3_51_cp.h5', custom_objects={'tf': tf})
 

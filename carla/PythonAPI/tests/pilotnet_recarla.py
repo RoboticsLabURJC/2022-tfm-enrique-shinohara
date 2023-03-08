@@ -35,7 +35,6 @@ from collections import deque
 from agents.rl_agent import *
 from agents.vision_agent import *
 from agents.followline_agent import *
-from carla_birdeye_view import BirdViewProducer, BirdViewCropType, PixelDimensions
 import PIL
 
 try:
@@ -90,9 +89,9 @@ for gpu in gpus:
 global SPAWNPOINT
 global NPC_SPAWNPOINT
 global NPC_NAME
-SPAWNPOINT = 16
-NPC_SPAWNPOINT = 14
-NPC_NAME = 'vehicle.chevrolet.impala'
+SPAWNPOINT = 88
+NPC_SPAWNPOINT = 15
+NPC_NAME = 'vehicle.tesla.model3'
 LEFT = False
 RIGHT = False
 CHECK07 = -1
