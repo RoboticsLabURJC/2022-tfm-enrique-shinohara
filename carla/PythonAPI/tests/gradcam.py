@@ -26,7 +26,7 @@ class GradCAM:
             #if i > 6 and len(layer.output_shape) == 4:
             if len(layer.output_shape) == 4 and type(layer) == Conv2D:
                 # return layer.name
-                return 'conv2d_4'
+                return 'conv2d_2'
         # otherwise, we could not find a 4D layer so the GradCAM
         # algorithm cannot be applied
         raise ValueError("Could not find 4D layer. Cannot apply GradCAM.")

@@ -158,6 +158,8 @@ def compute_image_annotations(id, path_to_data, type_image, img_shape, data_type
         images_paths = sorted(list_images, key=lambda x: int(x.split('/')[3].split('.png')[0]))
     elif 'stops' in path_to_data:
         images_paths = sorted(list_images, key=lambda x: int(x.split('/')[3].split('.png')[0]))
+    elif 'weather' in path_to_data:
+        images_paths = sorted(list_images, key=lambda x: int(x.split('/')[3].split('.png')[0]))
     else:
         images_paths = sorted(list_images, key=lambda x: int(x.split('/')[2].split('.png')[0]))
 
@@ -245,6 +247,13 @@ def get_images_and_annotations(path_to_data, type_image, img_shape, data_type):
         array_imgs += images
         array_annotations += annotations
 
+    list_weird_start = glob.glob(path_to_data + 'weather/*')
+    for data in list_weird_start:
+        id = data.split('_')[2]
+        images, annotations = compute_image_annotations(id, path_to_data + 'weather/', type_image, img_shape, data_type)
+        array_imgs += images
+        array_annotations += annotations
+
     return array_imgs, array_annotations
 
 
@@ -291,25 +300,26 @@ def process_dataset(path_to_data, type_image, data_type, img_shape):
 
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.507108, 0.550762, 0.37)
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.463452, 0.507107, 0.5)
-    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.09023031, 0.10772521, 0.9)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.324, 0.372, 0.2)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.34, 0.356, 0.3)
     # array_imgs, array_annotations = add_extreme_data(array_imgs, array_annotations)
 
     # # print(len(array_annotations))
     # (n2, bins2, patches) = plt.hist(np.array(array_annotations)[:,1],bins=50)
     # print(bins2)
     # # Delete until reach a certain max value
-    # array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 12000, n2, bins2)
+    # array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 17000, n2, bins2)
 
     # np.save('array_imgs.npy', array_imgs, allow_pickle=True)
     # np.save('array_annotations.npy', array_annotations, allow_pickle=True)
 
     """print(len(array_annotations))
     plt.hist(np.array(array_annotations)[:,0],bins=50)
-    plt.show()
+    plt.show()"""
 
     print(len(array_annotations))
     plt.hist(np.array(array_annotations)[:,1],bins=50)
-    plt.show()"""
+    plt.show()
 
     images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
         array_imgs, array_annotations)

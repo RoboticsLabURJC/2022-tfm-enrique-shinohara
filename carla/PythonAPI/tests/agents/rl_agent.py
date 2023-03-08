@@ -13,6 +13,7 @@ import numpy as np
 import math
 import tensorflow as tf
 from tensorflow.keras.models import load_model
+from PIL import Image
 
 from gradcam import GradCAM
 
@@ -36,7 +37,7 @@ class RLAgent(object):
         self.v = 0
         self.b = 0
         self.velocity = 0
-        self.model = load_model('20230107-205705_rgb_brakingsimple_71_58k.h5')
+        self.model = load_model('20230307-215213_pilotnet_model_3_151_cp.h5')
         self.first = 0
         # self.model = load_model('20221102-095537_pilotnet_model_3_51_cp.h5', custom_objects={'tf': tf})
 
@@ -47,7 +48,7 @@ class RLAgent(object):
         :return: control
         """
         cropped = img[230:-1,:] # 280
-
+        
         """hsv = cv2.cvtColor(cropped, cv2.COLOR_RGB2HSV)
         YELLOW_MIN = np.array([15, 80, 80],np.uint8)
         YELLOW_MAX = np.array([35, 255, 255],np.uint8)
@@ -72,9 +73,10 @@ class RLAgent(object):
         throttle_val = self.v
         brake_val = self.b
         self.velocity = current_velocity
-        # if data.frame_number % 10 == 0:
+        # if data.frame_number % 10 == 0:7
+        
         example_result = self.model.predict(final_image)
-        # Follow lane steering values
+        # Follow lane steering valuesexpected shape changed but input image is the same as expected
         steer_val = np.interp(example_result[0][1], (0, 1), (-1, 1))
         throttle_brake_val = np.interp(example_result[0][0], (0, 1), (-1, 1))
         if throttle_brake_val >= 0: # throttle

@@ -1,0 +1,11 @@
+python train.py --data_dir datasetsimple_followlanenpc/ --preprocess crop --data_augs 2 --num_epochs 71 --learning_rate 0.0001 --batch_size 80 --img_shape "200,66,3"
+
+TOWN 02
+spawnpoints = [0, 1, 2, 4, 5, 7, 8, 9, 18, 19]
+npc_spawnpoints = [78, 35, 45, 31, 0, 95, 6, 34, 16, 23]
+
+
+
+export PYTHONPATH=/home/yujiro/git/2022-tfm-enrique-shinohara/carla/venv36/lib/python3.6/site-packages/
+
+python pilotnet_recarla.py -c 3 -a rl

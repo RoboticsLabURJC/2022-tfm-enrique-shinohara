@@ -73,7 +73,8 @@ def get_augmentations(data_augs):
                 RandomRain(),
                 RandomSnow(),
                 RandomFog(),
-                RandomSunFlare()
+                RandomSunFlare(),
+                RandomShadow()
             ]),
             Normalize()
         ])
