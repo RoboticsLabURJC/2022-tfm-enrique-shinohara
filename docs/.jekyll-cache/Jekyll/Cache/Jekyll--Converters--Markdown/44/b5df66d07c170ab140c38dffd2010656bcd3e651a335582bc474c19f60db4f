@@ -1,0 +1,2 @@
+I"ý<p>For now, we are going to keep working with BehaviourMetrics. First we needed to add a new vehicle that has the function of being an obstacle for our principal vehicle. Also, by adding this new possible situations we need to implement a new metric for to show for this situations. The idea is pretty simple, to be able to get the distance ONLY to the front car, and to show how many times our principal car has encountered some closecalls, meaning, some dangerously close distance to the secondary car.</p>
+:ET
