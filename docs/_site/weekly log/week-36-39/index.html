@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Week 13 - Handling the curve - Robotics Lab URJC</title>
-<meta name="description" content="Stumbling myself with an obstacle, in this week, the work was mainly focused on improving the dataset to handle better the curves. We already had a car that was able to follow the road when it was straight, but as soon as a curve was in front of it, it began to fail. The solution for this problem was discused in the previous post, having a dataset mainly composed of straight roads, the car didn’t have much information on how to handle other cases like curves. So, the solution we took was to increase it, by “recording” only the cases where the car was on a curve we are going to have more data for this cases.">
+<!-- begin _includes/seo.html --><title>Week 36~39 -  - Robotics Lab URJC</title>
+<meta name="description" content="For now, we are going to keep working with BehaviourMetrics. First we needed to add a new vehicle that has the function of being an obstacle for our principal vehicle. Also, by adding this new possible situations we need to implement a new metric for to show for this situations. The idea is pretty simple, to be able to get the distance ONLY to the front car, and to show how many times our principal car has encountered some closecalls, meaning, some dangerously close distance to the secondary car.">
 
 
   <meta name="author" content="Enrique Shinohara">
@@ -22,30 +22,30 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Robotics Lab URJC">
-<meta property="og:title" content="Week 13 - Handling the curve">
-<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-13/">
+<meta property="og:title" content="Week 36~39 -">
+<meta property="og:url" content="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-36-39/">
 
 
-  <meta property="og:description" content="Stumbling myself with an obstacle, in this week, the work was mainly focused on improving the dataset to handle better the curves. We already had a car that was able to follow the road when it was straight, but as soon as a curve was in front of it, it began to fail. The solution for this problem was discused in the previous post, having a dataset mainly composed of straight roads, the car didn’t have much information on how to handle other cases like curves. So, the solution we took was to increase it, by “recording” only the cases where the car was on a curve we are going to have more data for this cases.">
-
-
-
-
-
-
-
-  <meta property="article:published_time" content="2022-09-14T00:00:00+02:00">
+  <meta property="og:description" content="For now, we are going to keep working with BehaviourMetrics. First we needed to add a new vehicle that has the function of being an obstacle for our principal vehicle. Also, by adding this new possible situations we need to implement a new metric for to show for this situations. The idea is pretty simple, to be able to get the distance ONLY to the front car, and to show how many times our principal car has encountered some closecalls, meaning, some dangerously close distance to the secondary car.">
 
 
 
 
 
-  
+
+
+  <meta property="article:published_time" content="2023-02-16T00:00:00+01:00">
+
+
+
+
 
   
 
+  
 
-<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-13/">
+
+<link rel="canonical" href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-36-39/">
 
 
 
@@ -263,16 +263,16 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Week 13 - Handling the curve">
-    <meta itemprop="description" content="Stumbling myself with an obstacle, in this week, the work was mainly focused on improving the dataset to handle better the curves. We already had a car that was able to follow the road when it was straight, but as soon as a curve was in front of it, it began to fail. The solution for this problem was discused in the previous post, having a dataset mainly composed of straight roads, the car didn’t have much information on how to handle other cases like curves. So, the solution we took was to increase it, by “recording” only the cases where the car was on a curve we are going to have more data for this cases.">
-    <meta itemprop="datePublished" content="2022-09-14T00:00:00+02:00">
+    <meta itemprop="headline" content="Week 36~39 -">
+    <meta itemprop="description" content="For now, we are going to keep working with BehaviourMetrics. First we needed to add a new vehicle that has the function of being an obstacle for our principal vehicle. Also, by adding this new possible situations we need to implement a new metric for to show for this situations. The idea is pretty simple, to be able to get the distance ONLY to the front car, and to show how many times our principal car has encountered some closecalls, meaning, some dangerously close distance to the secondary car.">
+    <meta itemprop="datePublished" content="2023-02-16T00:00:00+01:00">
     
 
     <div class="page__inner-wrap">
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-13/" class="u-url" itemprop="url">Week 13 - Handling the curve
+            <a href="http://localhost:4000/2022-tfm-enrique-shinohara/weekly%20log/week-36-39/" class="u-url" itemprop="url">Week 36~39 -
 </a>
           </h1>
           
@@ -289,7 +289,7 @@
       <span class="page__meta-readtime">
         <i class="far fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          2 minute read
         
       </span>
     
@@ -301,23 +301,30 @@
 
       <section class="page__content e-content" itemprop="text">
         
-        <p>Stumbling myself with an obstacle, in this week, the work was mainly focused on improving the dataset to handle better the curves. We already had a car that was able to follow the road when it was straight, but as soon as a curve was in front of it, it began to fail. The solution for this problem was discused in the previous post, having a dataset mainly composed of straight roads, the car didn’t have much information on how to handle other cases like curves. So, the solution we took was to increase it, by “recording” only the cases where the car was on a curve we are going to have more data for this cases.</p>
+        <p>For now, we are going to keep working with BehaviourMetrics. First we needed to add a new vehicle that has the function of being an obstacle for our principal vehicle. Also, by adding this new possible situations we need to implement a new metric for to show for this situations. The idea is pretty simple, to be able to get the distance ONLY to the front car, and to show how many times our principal car has encountered some closecalls, meaning, some dangerously close distance to the secondary car.</p>
 
-<figure class="half">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_13+curves.png" alt="" />
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/histogram_13+curves_extreme.png" alt="" />
-  <figcaption>Histogram of the original dataset (left) and the oversampled dataset (right) of the steering values.</figcaption>
+<p>But as we have been experiencing sometimes before, it wouldn’t be an usual week if we didn’t encounter some problems. This time we had a very specific problem in the simulation, especially on the clockwise routes: the simulation always stalls on the same curve!</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/clockwise_stalling.png" alt="" />
+  <figcaption>Map of the route taken by our simulated vehicle</figcaption>
 </figure>
 
-<p>The training was increased to 10 epochs. The next image shows us better, the stabilization of the error on the validation dataset.</p>
+<p>As we can see from the previous image, the simulation always stalled at the red point of the map (lower right zone). The output as we saw from the logs always showed the error “Signal 11 caught” and the “LargeMemoryPoolOffset” messages. This mean that somehow the application was eating all of our memory. So we needed to fix that if we wanted to continue with our main task.</p>
 
-<figure style="width:80%" class="align-center">
-  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/epoch_loss_1.png" alt="" />
-  <figcaption>Evolution of the error along 10 epochs.</figcaption>
-</figure>
+<p>First thing I was sugested was to try to delete all the buildings. Knowing that Carla provides a layered map version of all its maps, we could easily delete all the buildings from the simulatin to lower the resources load. But the whole view from the RGB camera changes enough to make some of our models to malfunction. This gave us an idea that our models where leaning not only on the road to follow the road, but also they were heavily relying on the buildings surrounding them. So we needed to change our training dataset, to make our models focus more on the road, we needed to train them not only on a single town but this time on a town without buildings (in the future, this could be solved by creating a dataset with different towns).</p>
 
-<p>The model obtained from this configuration, gives us a car that is able to follow the straight line pretty smoothly without the oscilation we had on the previous model, but it still not capable of taking the curve correctly.</p>
+<p>So now we had a “more focused” model that was trained on a normal town and a building-less town. But we found out that unloading a certain layer, it gaves us the same town without sacrificing the original “looks” of it: the Particles layer. Unloading this layer, we had solved the problem of stalling our simulation. Now we can go ahead and continue with the task of adding a new vehicle!</p>
 
+<h2 id="adding-new-vehicles">Adding new vehicles</h2>
+
+<p>To add new vehicle we needed to first dive and understand some of the underlying structures of the BehaviourMetric code. This is usually a tedious and complicated task given that the code is also a pretty long and complex one, but with the help of my supervisors it simplify the process.</p>
+
+<p>Right know we have a new vehicle that we can spawn in any “legal” positin on our map. We are going to need to add the autopilot functionality to this secondary car in order for it to move, right now it is as close as a rock on the road. But we are able to test if the metric that we talked about earlier is working and if it stops as expected when it encounters this second vehicle on the road ahead.</p>
+
+<video src="https://user-images.githubusercontent.com/47086664/226439047-78fd52a1-b674-436c-bd90-4f6cb850b1c9.mp4" data-canonical-src="https://user-images.githubusercontent.com/47086664/226439047-78fd52a1-b674-436c-bd90-4f6cb850b1c9.mp4" controls="controls" muted="muted" class="align-center" style="width:70%">
+</video>
+<p><br /></p>
 
         
       </section>
@@ -334,11 +341,7 @@
     <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
     <span itemprop="keywords">
     
-      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a><span class="sep">, </span>
-    
-      <a href="/2022-tfm-enrique-shinohara/tags/#dataset" class="page__taxonomy-item p-category" rel="tag">dataset</a><span class="sep">, </span>
-    
-      <a href="/2022-tfm-enrique-shinohara/tags/#pilotnet" class="page__taxonomy-item p-category" rel="tag">pilotnet</a>
+      <a href="/2022-tfm-enrique-shinohara/tags/#carla" class="page__taxonomy-item p-category" rel="tag">carla</a>
     
     </span>
   </p>
@@ -363,30 +366,29 @@
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-09-14T00:00:00+02:00">September 14, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2023-02-16T00:00:00+01:00">February 16, 2023</time></p>
 
       </footer>
 
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Week+13+-+Handling+the+curve%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-13%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Week+36~39+-+%20http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-36-39%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-13%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-36-39%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-13%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2F2022-tfm-enrique-shinohara%2Fweekly%2520log%2Fweek-36-39%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
       
   <nav class="pagination">
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-12/" class="pagination--pager" title="Week 12 - Following the road
+      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-34-35/" class="pagination--pager" title="Week 34~35 - Final adjustments on the BehaviourMetrics
 ">Previous</a>
     
     
-      <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-14/" class="pagination--pager" title="Week 14 - Why is it not turning?
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -400,45 +402,6 @@
     <div class="page__related">
       <h2 class="page__related-title">You May Also Enjoy</h2>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-36-39/" rel="permalink">Week 36~39 -
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-
-    
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-clock" aria-hidden="true"></i>
-        
-          2 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">For now, we are going to keep working with BehaviourMetrics. First we needed to add a new vehicle that has the function of being an obstacle for our principa...</p>
-  </article>
-</div>
-
         
           
 
@@ -556,6 +519,45 @@
 
 
     <p class="archive__item-excerpt" itemprop="description">With each week, we try to expand the functionality of our model by making it more robust and efficient. And is all this the basis for all the work we have be...</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/2022-tfm-enrique-shinohara/weekly%20log/week-27/" rel="permalink">Week 27 - Training the Brake
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+
+    
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">This week main dish is going to revolve around teaching the car how to correctly brake when another vehicle is in front of it. But first, we better try to so...</p>
   </article>
 </div>
 

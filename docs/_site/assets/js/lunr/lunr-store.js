@@ -154,4 +154,10 @@ var store = [{
         "tags": ["carla","ubuntu","tensorflow","opencv"],
         "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-34-35/",
         "teaser": null
+      },{
+        "title": "Week 36~39 - ",
+        "excerpt":"For now, we are going to keep working with BehaviourMetrics. First we needed to add a new vehicle that has the function of being an obstacle for our principal vehicle. Also, by adding this new possible situations we need to implement a new metric for to show for this situations....","categories": ["Weekly Log"],
+        "tags": ["carla"],
+        "url": "/2022-tfm-enrique-shinohara/weekly%20log/week-36-39/",
+        "teaser": null
       }]

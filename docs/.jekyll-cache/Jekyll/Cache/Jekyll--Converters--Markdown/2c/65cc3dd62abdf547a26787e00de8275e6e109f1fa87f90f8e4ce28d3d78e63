@@ -1,0 +1,20 @@
+I"b
+<p>For now, we are going to keep working with BehaviourMetrics. First we needed to add a new vehicle that has the function of being an obstacle for our principal vehicle. Also, by adding this new possible situations we need to implement a new metric for to show for this situations. The idea is pretty simple, to be able to get the distance ONLY to the front car, and to show how many times our principal car has encountered some closecalls, meaning, some dangerously close distance to the secondary car.</p>
+
+<p>But as we have been experiencing sometimes before, it wouldn’t be an usual week if we didn’t encounter some problems. This time we had a very specific problem in the simulation, especially on the clockwise routes: the simulation always stalls on the same curve!</p>
+
+<figure class="align-center" style="width:70%">
+  <img src="http://localhost:4000/2022-tfm-enrique-shinohara/assets/images/clockwise_stalling.png" alt="" />
+  <figcaption>Map of the route taken by our simulated vehicle</figcaption>
+</figure>
+
+<p>As we can see from the previous image, the simulation always stalled at the red point of the map (lower right zone). The output as we saw from the logs always showed the error “Signal 11 caught” and the “LargeMemoryPoolOffset” messages. This mean that somehow the application was eating all of our memory. So we needed to fix that if we wanted to continue with our main task.</p>
+
+<p>First thing I was sugested was to try to delete all the buildings. Knowing that Carla provides a layered map version of all its maps, we could easily delete all the buildings from the simulatin to lower the resources load. But the whole view from the RGB camera changes enough to make some of our models to malfunction. This gave us an idea that our models where leaning not only on the road to follow the road, but also they were heavily relying on the buildings surrounding them. So we needed to change our training dataset, to make our models focus more on the road, we needed to train them not only on a single town but this time on a town without buildings (in the future, this could be solved by creating a dataset with different towns).</p>
+
+<p>So now we had a “more focused” model that was trained on a normal town and a building-less town. But we found out that unloading a certain layer, it gaves us the same town without sacrificing the original “looks” of it: the Particles layer. Unloading this layer, we had solved the problem of stalling our simulation. Now we can go ahead and continue with the task of adding a new vehicle!</p>
+
+<h2 id="adding-new-vehicles">Adding new vehicles</h2>
+
+<p>To add new vehicles</p>
+:ET
