@@ -25,6 +25,7 @@ carla/PythonAPI/tests/training/*.csv
 carla/PythonAPI/tests/training/logs
 carla/PythonAPI/tests/training/weather
 carla/PythonAPI/tests/training/array*
+carla/PythonAPI/tests/*.tar.gz
 
 carla/PythonAPI/tests/training_segmentation/dataset*
 carla/PythonAPI/tests/training_segmentation/*.png

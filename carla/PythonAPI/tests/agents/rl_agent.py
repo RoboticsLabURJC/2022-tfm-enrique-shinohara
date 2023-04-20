@@ -16,8 +16,10 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 
 from gradcam import GradCAM
+from traffic_light_detector import TLClassifier
 
 import cv2
+import time
 
 
 class RLAgent(object):
@@ -37,7 +39,8 @@ class RLAgent(object):
         self.v = 0
         self.b = 0
         self.velocity = 0
-        self.model = load_model('20230307-215213_pilotnet_model_3_151_cp.h5')
+        self.model = load_model('20230419-155255_pilotnet_model_3_91_cp.h5')
+        # self.tlc = TLClassifier()
         self.first = 0
         # self.model = load_model('20221102-095537_pilotnet_model_3_51_cp.h5', custom_objects={'tf': tf})
 
@@ -64,10 +67,10 @@ class RLAgent(object):
         final_image = velocity_tensor_image[np.newaxis]
 
         # GradCAM from image
-        cam = GradCAM(self.model, 0)
+        """cam = GradCAM(self.model, 0)
         heatmap = cam.compute_heatmap(np.swapaxes(final_image, 1, 2))
         heatmap = cv2.resize(heatmap, (heatmap.shape[1], heatmap.shape[0]))
-        (heatmap, output) = cam.overlay_heatmap(heatmap, tensor_img, alpha=0.5)
+        (heatmap, output) = cam.overlay_heatmap(heatmap, tensor_img, alpha=0.5)"""
         
         steer_val = self.w
         throttle_val = self.v
@@ -94,7 +97,11 @@ class RLAgent(object):
         self.v = throttle_val
         self.w = steer_val
 
-        return steer_val, throttle_val, brake_val, img, output
+        """boxes = self.tlc.detect_multi_object(img,score_threshold=0.2)
+        if len(boxes) != 0:
+            print("SEMAFORO")"""
+
+        return steer_val, throttle_val, brake_val, img# , output
 
 
     def run_step_old(self, img):

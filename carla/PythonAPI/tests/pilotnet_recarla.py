@@ -75,11 +75,11 @@ except ImportError:
     raise RuntimeError(
         'cannot import numpy, make sure numpy package is installed')
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-"""gpus = tf.config.experimental.list_physical_devices('GPU')
+gpus = tf.config.experimental.list_physical_devices('GPU')
 for gpu in gpus:
-    tf.config.experimental.set_memory_growth(gpu, True)"""
+    tf.config.experimental.set_memory_growth(gpu, True)
 
 # TOWN 02:
 # 12 - left turn at the gas station
@@ -91,9 +91,11 @@ for gpu in gpus:
 global SPAWNPOINT
 global NPC_SPAWNPOINT
 global NPC_NAME
-SPAWNPOINT = 34
-NPC_SPAWNPOINT = 32
-NPC_NAME = 'vehicle.tesla.model3'
+"""SPAWNPOINT = 16
+NPC_SPAWNPOINT = 14"""
+SPAWNPOINT = 23
+NPC_SPAWNPOINT = 26
+NPC_NAME = 'vehicle.ford.ambulance'
 LEFT = False
 RIGHT = False
 CHECK07 = -1
@@ -707,15 +709,20 @@ def game_loop(args):
         # world.world.unload_map_layer(carla.MapLayer.Buildings)
         try_spawn_random_vehicles(world, client, 0, NPC_SPAWNPOINT, NPC_NAME)
 
-        # weather = world.world.get_weather()
-        # weather.sun_altitude_angle = 0
-        # # weather.fog_density = 100
-        # # weather.precipitation = 100
-        # # weather.fog_distance = 10
-        # # weather.wetness = 100
-        # world.world.set_weather(weather)
-        # vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
-        # world.vehicle.set_light_state(vehicle_light_state)
+        """weather = world.world.get_weather()
+        print(weather)
+        weather.cloudiness = 60.0
+        weather.precipitation = 40.0
+        weather.wind_intensity = 40.0
+        weather.precipitation_deposits = 40
+        weather.sun_azimuth_angle=275.0
+        weather.sun_altitude_angle=20.0
+        weather.fog_density=5.0
+        weather.fog_distance=0.75
+        weather.wetness=80.0
+        world.world.set_weather(weather)"""
+        """vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
+        world.vehicle.set_light_state(vehicle_light_state)"""
 
         if args.agent == "rl":
             agent = RLAgent(world.vehicle)
@@ -765,6 +772,8 @@ def game_loop(args):
         prev_velocity = 0
         stop_condition = False
         stop_counter = 0
+        start_record = False
+        start_counter = 0
         route = ["Straight"]*1000
         while True:
             # as soon as the server is ready continue!
@@ -772,7 +781,6 @@ def game_loop(args):
                 continue
             step_start = time.time()
             control = world.vehicle.get_control()
-            npc_control = world.npc_vehicle.get_control()
             location = world.vehicle.get_location()
             if (type(world.camera_manager.image).__module__ == np.__name__):
                 # If we use autopilot of carla and no agent to control the car
@@ -789,8 +797,8 @@ def game_loop(args):
                     world.camera_manager._surface = pygame.surfarray.make_surface(world.camera_manager.image.swapaxes(0, 1))
                     v = world.vehicle.get_velocity()
                     current_velocity = 3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)
-                    steer, throttle, brake, image, network_image = agent.run_step(world.camera_manager.image, current_velocity)
-                    # steer, throttle, brake, image = agent.run_step(world.camera_manager.image, current_velocity)
+                    # steer, throttle, brake, image, network_image = agent.run_step(world.camera_manager.image, current_velocity)
+                    steer, throttle, brake, image = agent.run_step(world.camera_manager.image, current_velocity)
                     # world.camera_manager._second_surface = pygame.surfarray.make_surface(world.camera_manager.image2.swapaxes(0, 1))
                     world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer), brake=float(brake)))
 
@@ -798,7 +806,9 @@ def game_loop(args):
 
                 """if world.npc_vehicle != None:
                     # Stop the spawned car at random times
-                    if random.random() < 0.002 and (stop_condition == False):
+                    random_value = random.random()
+                    print(random_value)
+                    if random_value < 0.009 and (stop_condition == False):
                         print("Stopping....")
                         stop_condition = True
                     if stop_condition:
@@ -851,9 +861,27 @@ def game_loop(args):
                     recording = True
                 else:
                     recording = False"""
+                
+                # START THE ENGINE
+                """velocity = world.vehicle.get_velocity()
+                my_velocity = 3.6 * math.sqrt(velocity.x**2 + velocity.y**2 + velocity.z**2)
+                if my_velocity <= 0.01:
+                    # Car has stopped, reset recording status
+                    recording = False
+                    start_record = True
+                if start_record and 1 < my_velocity < 20:
+                    # Car has started accelerating, start recording
+                    recording = True
+                if recording and my_velocity > 25:
+                    # Car has exceeded recording speed, stop recording
+                    recording = False
+                if start_record:
+                    if recording:
+                        print(f"ACELERANDOOO - {image_counter}")"""
+                
 
                 # if (args.rec == True) and (image_counter % 10 == 0):
-                if args.rec == "rgb" and recording:
+                if args.rec == "rgb":
                     first_image_taken, prev_image_number, prev_velocity = save_instance_to_dataset(world, world.camera_manager.image, 
                     image_counter, first_image_taken, prev_image_number, prev_velocity)
 
@@ -972,7 +1000,7 @@ if __name__ == '__main__':
         print(f"THE END: time -> {end}")
     elif choice == 1:  # Run circuits with no deletable traces
         start = time.time()
-        spawnpoints = [34, 36]
+        spawnpoints = [34, 94]
         for spawn in spawnpoints:
             SPAWNPOINT = spawn
             main()
@@ -980,9 +1008,9 @@ if __name__ == '__main__':
         print(f"THE END: time -> {end}")
     elif choice == 2:  # Run circuits with a variety of npcs
         start = time.time()
-        spawnpoints = [2, 94]
-        npc_spawnpoints = [45, 33]
-        npc_names = ['vehicle.harley-davidson.low_rider', 'vehicle.chevrolet.impala']
+        spawnpoints = [0, 19, 2, 8]
+        npc_spawnpoints = [78, 23, 45, 6]
+        npc_names = ['vehicle.dodge.charger_2020', 'vehicle.ford.crown', 'vehicle.mercedes.coupe_2020', 'vehicle.tesla.model3']
         for spawn, npcs, names in zip(spawnpoints, npc_spawnpoints, npc_names):
             SPAWNPOINT = spawn
             NPC_SPAWNPOINT = npcs
