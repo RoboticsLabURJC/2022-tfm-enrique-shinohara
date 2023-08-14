@@ -1,0 +1,33 @@
+20230510-205747_pilotnet_model_3_101_cp (reducido parte de los datos mas extremos en throttle y brake, y reducido bastante las rectas dando mas prioridad a los giros en steering)
+	Town02 (entrenamiento) -> todo bien con las curvas y mantenerse en su carril. Unico problema, que para los vehiculos delanteros a veces se para y en un caso especifico se ha chocado con el vehiculo delantero. Quiza necesite mas casos de frenado... Problemas en diferentes condiciones climaticas, sobre todo en los giros a izquierda
+	Town01 (testeo) -> por el lado de mantenerse en el carril algun error cuando es anticlockwise. En el clockwise sin problema, pero el anticlockwise, las curvas se le dan peor....
+	
+20230511-001702_pilotnet_model_3_101_cp (reducido mucho los datos mas extremos en throttle y brake, y reducido bastante las rectas igualando los giros izquierda y derecha mas cercanos a 0.5 dando mas prioridad a los giros en steering)
+	Town02 (entrenamiento) -> problemas en diferentes condiciones climaticas, sobre todo en los giros a izquierda. Posible solucion seria aumentar datos en estos giros con diferenters climas
+		El vehiculo cae en un minimo local, probablemente por lo que comentamos de que reducimos bastante los datos de throttle y brake. Igual si no borramos tantos, podriamos arreglar este problema.
+		
+20230515-140724_pilotnet_model_3_75_cp (reducido solo las aceleraciones extremas)
+	Parece que tiene problemas en que cae en minimos locales. A ver si no reducimos tanto las aceleraciones extremas y aumentamos las epocas
+	
+	
+20230516-124008_pilotnet_model_3_15+85_cp (reducido un poco las frenadas y las aceleraciones, se entreno con un tamaño de imagen de entrada mas grande. Y con frenos aleatorios en el dataset inicial)
+	No tiene problemas de minimos locales que se hayan visto. Igual tiene algun que otro fallo, sobre todo cuando va a velocidades muy altas, pero por lo general, es bastante docil
+	Capando la velocidad, se tienen resultados muy buenos!
+	
+	CLIMAS VARIADOS!
+	
+20230531-091850_pilotnet_model_3_71_cp (lo he entrenado principalmente en curvas cortando mucho las rectas durante 71 epocas. Voy a intentar ahora entrenarlo en rectas por separado)
+	Tiene pinta de que las toma bien en Town01 las curvas, pero intenta girar en zonas donde no hay linea separadora de carril. Porque tiene poca info de como comportarse en rectas, es lo que voy a intentar darle con fine tuning.
+	
+
+20230601-111423_pilotnet_model_3_71+11_cp
+	Parece que lo hace bien en Town02 en general. Casi perfecto diria. Falla un poco en el Town01
+	
+	
+	
+	
+20230803-133009_pilotnet_model_3_101_cp -> PilotNet** entrenado con dataset 1 solo NPC
+
+20230804-124320_pilotnet_model_3_91_cp -> PilotNet* entrenado con dataset 1 solo NPC
+
+

@@ -15,6 +15,7 @@ from utils.processing import process_dataset
 from utils.pilotnet import pilotnet_model
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard, CSVLogger
 from tensorflow.python.keras.saving import hdf5_format
+from tensorflow.keras.models import load_model
 
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
@@ -92,8 +93,9 @@ class PlotCallback(tf.keras.callbacks.Callback):
                 x_true_throttle.append(self.annotations_val[x][0])
 
                 final_image = self.images_val[x] / 255.0
-                velocity_dim = np.full((66, 200), self.annotations_val[x][2])
-                final_image = np.dstack((final_image, velocity_dim))
+                # print(final_image.shape)
+                """velocity_dim = np.full((66, 200), self.annotations_val[x][2])
+                final_image = np.dstack((final_image, velocity_dim))"""
 
                 final_image = final_image[np.newaxis]
                 prediction = self.model.predict(final_image)
@@ -183,6 +185,7 @@ if __name__ == "__main__":
     model_filename = timestr + '_pilotnet_model_3_' + str(num_epochs)
     model_file = model_filename + '.h5'
 
+
     AUGMENTATIONS_TRAIN, AUGMENTATIONS_TEST = get_augmentations(data_augs)
 
     # Training data
@@ -192,6 +195,15 @@ if __name__ == "__main__":
     # Validation data
     valid_gen = DatasetSequence(images_val, annotations_val, hparams['batch_size'],
                                 augmentations=AUGMENTATIONS_TEST)
+
+
+    # Load model
+    """model = load_model('20230531-091850_pilotnet_model_3_71_cp.h5')
+    pre_score = model.evaluate(valid_gen, verbose=0)
+    print('Test loss: ', pre_score[0])
+    print('Test mean squared error: ', pre_score[1])
+    print('Test mean absolute error: ', pre_score[2])"""
+
 
     # Define callbacks
     log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -214,7 +226,8 @@ if __name__ == "__main__":
         verbose=1,
         validation_data=valid_gen,
         # workers=2, use_multiprocessing=False,
-        callbacks=[tensorboard_callback, cp_callback, csv_logger, plot_callback])
+        callbacks=[tensorboard_callback, cp_callback, csv_logger, plot_callback]
+        )
 
     # Save model
     model.save(model_file)

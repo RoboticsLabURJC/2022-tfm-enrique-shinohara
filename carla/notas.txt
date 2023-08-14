@@ -4,11 +4,13 @@ python train.py --data_dir datasetsimple_followlanenpchalf/ --preprocess crop --
 
 
 TOWN 02
-spawnpoints = [0, 1, 2, 4, 5, 7, 8, 9, 18, 19]
-npc_spawnpoints = [78, 35, 45, 31, 0, 95, 6, 34, 16, 23]
+spawnpoints = 	  [0, 	1,  2,  4, 5,  7, 8,  9, 18, 19, 33, 34]
+npc_spawnpoints = [78, 35, 45, 31, 0, 95, 6, 34, 16, 23, 36, 32]
 
 
 
 export PYTHONPATH=/home/yujiro/git/2022-tfm-enrique-shinohara/carla/venv36/lib/python3.6/site-packages/
+export XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/local/cuda-11.0
+
 
 python pilotnet_recarla.py -c 3 -a rl

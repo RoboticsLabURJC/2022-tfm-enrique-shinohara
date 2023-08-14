@@ -30,8 +30,9 @@ class DatasetSequence(Sequence):
         new_img_batch = []  
         for x, img in enumerate(batch_x):
             aug = self.augment(image=img)["image"]
-            velocity_dim = np.full((66, 200), batch_y[x][2])
-            new_img_vel = np.dstack((aug, velocity_dim))
+            """velocity_dim = np.full((66, 200), batch_y[x][2])
+            new_img_vel = np.dstack((aug, velocity_dim))"""
+            new_img_vel = aug
             new_img_batch.append(new_img_vel)
             
         new_ann_batch = []

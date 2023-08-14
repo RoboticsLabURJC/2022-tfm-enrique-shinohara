@@ -26,7 +26,7 @@ class GradCAM:
             #if i > 6 and len(layer.output_shape) == 4:
             if len(layer.output_shape) == 4 and type(layer) == Conv2D:
                 # return layer.name
-                return 'conv2d_2'
+                return 'conv2d_1'
         # otherwise, we could not find a 4D layer so the GradCAM
         # algorithm cannot be applied
         raise ValueError("Could not find 4D layer. Cannot apply GradCAM.")
@@ -72,7 +72,7 @@ class GradCAM:
         # grab the spatial dimensions of the input image and resize
         # the output class activation map to match the input image
         # dimensions
-        (w, h) = (image.shape[2], image.shape[1])
+        (w, h) = (image.shape[1], image.shape[2])
         heatmap = cv2.resize(cam.numpy(), (w, h))
         # normalize the heatmap such that all values lie in the range
         # [0, 1], scale the resulting values to the range [0, 255],
@@ -89,7 +89,7 @@ class GradCAM:
         # apply the supplied color map to the heatmap and then
         # overlay the heatmap on the input image
         heatmap = cv2.applyColorMap(heatmap, colormap)
-        output = cv2.addWeighted(np.swapaxes(image, 0, 1)*255, alpha, heatmap.astype(image.dtype), 1 - alpha, 0)
+        output = cv2.addWeighted(image*255, alpha, heatmap.astype(image.dtype), 1 - alpha, 0)
         # return a 2-tuple of the color mapped heatmap and the output,
         # overlaid image
         return heatmap, output

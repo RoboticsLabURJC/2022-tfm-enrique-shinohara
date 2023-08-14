@@ -16,14 +16,14 @@ from skimage.transform import resize
 from sklearn.model_selection import train_test_split
 
 
-def delete_ratio(annotations, images, value_min, value_max, x):
+def delete_ratio(annotations, images, value_min, value_max, x, type):
     new_annotations = []
     new_images = []
 
     annotations_steer = []
     for annotation in annotations:
-        annotations_steer.append(annotation[1])
-        
+        annotations_steer.append(annotation[type])
+    print(sum(map(lambda i: ((i >= value_min) and (i <= value_max)), annotations_steer)))
     number_to_delete = np.round(sum(map(lambda i: ((i >= value_min) and (i <= value_max)), annotations_steer)) * x)
     eliminate = random.sample([i for i, val in enumerate(annotations_steer) if ((val >= value_min) and (val <= value_max))], int(number_to_delete))
     for index, (annotations_val, images_val) in enumerate(zip(annotations, images)):
@@ -36,13 +36,13 @@ def delete_ratio(annotations, images, value_min, value_max, x):
     return new_annotations, new_images
 
 
-def delete_until(annotations, images, x, counter, bins):
+def delete_until(annotations, images, x, counter, bins, type):
     new_annotations = []
     new_images = []
 
     annotations_steer = []
     for annotation in annotations:
-        annotations_steer.append(annotation[1])
+        annotations_steer.append(annotation[type])
 
     total_elimination = []
     for index, counts in enumerate(counter):
@@ -62,7 +62,7 @@ def delete_until(annotations, images, x, counter, bins):
 
 
 def get_images(list_images, type_image, image_shape, array_annotations):
-    image_shape = (image_shape[0], image_shape[1])
+    image_shape = (image_shape[1], image_shape[0])
     # Read the images
     array_imgs = []
     for index, name in enumerate(list_images):
@@ -70,7 +70,7 @@ def get_images(list_images, type_image, image_shape, array_annotations):
         img = cv2.imread(name)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if type_image == 'crop':
-            img = img[230:-1, :] # SIempre ha sido 240
+            img = img[200:-1, :] # SIempre ha sido 240
         img = cv2.resize(img, image_shape)# /255.0 # Normalizar
         array_imgs.append(img)
         # j = Image.fromarray(img)
@@ -301,25 +301,38 @@ def process_dataset(path_to_data, type_image, data_type, img_shape):
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.507108, 0.550762, 0.37)
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.463452, 0.507107, 0.5)
     # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.324, 0.372, 0.2)
-    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.34, 0.356, 0.3)
     # array_imgs, array_annotations = add_extreme_data(array_imgs, array_annotations)
 
+
+
     # # print(len(array_annotations))
-    # (n2, bins2, patches) = plt.hist(np.array(array_annotations)[:,1],bins=50)
-    # print(bins2)
+    (n2, bins2, patches) = plt.hist(np.array(array_annotations)[:,1],bins=50)
+    print(bins2)
     # # Delete until reach a certain max value
-    # array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 17000, n2, bins2)
+    array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 40000, n2, bins2, 1)
+    # array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 20000, n2, bins2, 1)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.484, 0.5, 0.4, 1)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.308, 0.388, 0.5, 1)
+
+    # STEERING
+    plt.hist(np.array(array_annotations)[:,1],bins=50)
+    plt.show()
+
+    # # print(len(array_annotations))
+    (n2, bins2, patches) = plt.hist(np.array(array_annotations)[:,0],bins=50)
+    # Delete until reach a certain max value
+    array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 30000, n2, bins2, 0)
+    # array_annotations, array_imgs = delete_until(array_annotations, array_imgs, 10000, n2, bins2, 0)
+    # array_annotations, array_imgs = delete_ratio(array_annotations, array_imgs, 0.90650001, 1, 0.4, 0)
+
+    # ACCELERATION AND BRAKE
+    print(len(array_annotations))
+    plt.hist(np.array(array_annotations)[:,0],bins=50)
+    plt.show()
+
 
     # np.save('array_imgs.npy', array_imgs, allow_pickle=True)
     # np.save('array_annotations.npy', array_annotations, allow_pickle=True)
-
-    """print(len(array_annotations))
-    plt.hist(np.array(array_annotations)[:,0],bins=50)
-    plt.show()"""
-
-    print(len(array_annotations))
-    plt.hist(np.array(array_annotations)[:,1],bins=50)
-    plt.show()
 
     images_train, annotations_train, images_validation, annotations_validation = separate_dataset_into_train_validation(
         array_imgs, array_annotations)

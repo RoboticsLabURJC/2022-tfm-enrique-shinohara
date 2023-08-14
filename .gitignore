@@ -1,5 +1,6 @@
 venv
 carla/venv36
+carla/venv37
 .python-version
 carla/CarlaUE4
 carla/Co-Simulation
@@ -10,6 +11,7 @@ carla/Plugins
 carla/Tools
 carla/*py
 carla/*gz
+carla/start_routine.sh
 
 carla/PythonAPI/examples
 carla/PythonAPI/util
@@ -26,6 +28,7 @@ carla/PythonAPI/tests/training/logs
 carla/PythonAPI/tests/training/weather
 carla/PythonAPI/tests/training/array*
 carla/PythonAPI/tests/*.tar.gz
+carla/PythonAPI/tests/brake_badshape_models/
 
 carla/PythonAPI/tests/training_segmentation/dataset*
 carla/PythonAPI/tests/training_segmentation/*.png

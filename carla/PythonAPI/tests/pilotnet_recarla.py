@@ -91,11 +91,15 @@ for gpu in gpus:
 global SPAWNPOINT
 global NPC_SPAWNPOINT
 global NPC_NAME
-"""SPAWNPOINT = 16
-NPC_SPAWNPOINT = 14"""
-SPAWNPOINT = 23
-NPC_SPAWNPOINT = 26
-NPC_NAME = 'vehicle.ford.ambulance'
+SPAWNPOINT = 41
+NPC_SPAWNPOINT = 43
+# SPAWNPOINT = 28
+# NPC_SPAWNPOINT = 5
+# SPAWNPOINT = 73
+# NPC_SPAWNPOINT = 148
+# SPAWNPOINT = 121
+# NPC_SPAWNPOINT = 207
+NPC_NAME = 'vehicle.mini.cooper_s'
 LEFT = False
 RIGHT = False
 CHECK07 = -1
@@ -177,6 +181,7 @@ class World(object):
         while self.vehicle is None:
             spawn_points = self.world.get_map().get_spawn_points()
             spawn_point = spawn_points[SPAWNPOINT]
+            spawn_point.location.x += 3
             random_starting_point = bool(random.getrandbits(1))
             """if random_starting_point:
                 random_value = random.randint(20, 50)
@@ -429,6 +434,7 @@ class CollisionSensor(object):
             return
         actor_type = get_actor_display_name(event.other_actor)
         self._hud.notification('Collision with %r, id = %d' % (actor_type, event.other_actor.id))
+        print(f"HISTORIA DE COLISIONES ---> {len(self._history)}")
         impulse = event.normal_impulse
         intensity = math.sqrt(impulse.x ** 2 + impulse.y ** 2 + impulse.z ** 2)
         self._history.append((event.frame_number, intensity))
@@ -675,7 +681,7 @@ def try_spawn_random_vehicles(world, client, num, spawnpoint, npc_name):
         traffic_manager = client.get_trafficmanager()
         route = ["Straight"]*1000
         traffic_manager.set_route(vehicle, route)
-        # traffic_manager.ignore_lights_percentage(vehicle, 0)
+        traffic_manager.ignore_lights_percentage(vehicle, 0)
 
         if vehicle is not None:
                 actor_list.append(vehicle)
@@ -698,6 +704,7 @@ def game_loop(args):
     try:
         client = carla.Client(args.host, args.port)
         client.set_timeout(4.0)
+        traffic_manager = client.get_trafficmanager()
 
         display = pygame.display.set_mode(
             (args.width, args.height),
@@ -707,27 +714,33 @@ def game_loop(args):
         world = World(client.load_world('Town02_Opt'), hud, args)
         world.world.unload_map_layer(carla.MapLayer.Particles)
         # world.world.unload_map_layer(carla.MapLayer.Buildings)
-        try_spawn_random_vehicles(world, client, 0, NPC_SPAWNPOINT, NPC_NAME)
+        # try_spawn_random_vehicles(world, client, 0, NPC_SPAWNPOINT, NPC_NAME)
 
-        """weather = world.world.get_weather()
-        print(weather)
-        weather.cloudiness = 60.0
-        weather.precipitation = 40.0
-        weather.wind_intensity = 40.0
-        weather.precipitation_deposits = 40
-        weather.sun_azimuth_angle=275.0
-        weather.sun_altitude_angle=20.0
+        weather = world.world.get_weather()
+        weather.wind_intensity = 00.0
+        weather.cloudiness = 0.0#60.0
+        weather.precipitation = 00.0
+        weather.wind_intensity = 00.0
+        weather.sun_azimuth_angle= 275.0
+        weather.precipitation_deposits = 0.0#50
+        weather.sun_altitude_angle=20#60.0#15.0
         weather.fog_density=5.0
         weather.fog_distance=0.75
-        weather.wetness=80.0
-        world.world.set_weather(weather)"""
+        weather.fog_falloff=0.1
+        weather.wetness=00.0
+        world.world.set_weather(weather)
         """vehicle_light_state = carla.VehicleLightState(carla.VehicleLightState.Position | carla.VehicleLightState.LowBeam)
         world.vehicle.set_light_state(vehicle_light_state)"""
+
+        model = 2 # (0: PilotNet* fl dataset | 1: PilotNet* 1 npc | 2: PilotNet** 1/x npc)
 
         if args.agent == "rl":
             agent = RLAgent(world.vehicle)
             agent.model.summary()
-            agent.model.predict(np.ones((1, 66, 200, 4)))
+            if model == 2:
+                agent.model.predict(np.ones((1, 66, 200, 4)))
+            else:
+                agent.model.predict(np.ones((1, 66, 200, 3)))
         elif args.agent == "fl":
             agent = FLAgent(world.vehicle)
         elif args.agent == "fr":
@@ -736,7 +749,6 @@ def game_loop(args):
             agent = None
             world.vehicle.set_autopilot(True)
 
-            traffic_manager = client.get_trafficmanager()
             route = ["Straight"]*1000
             # route = ["Right", "Straight", "Straight", "Straight", "Straight", "Straight", "Right"]*500 # Town 07 left WAYPOINT: 57
             # route = ["Right", "Right", "Straight", "Straight", "Straight", "Straight", "Straight"]*500 # Town 07 left WAYPOINT: 70
@@ -754,6 +766,7 @@ def game_loop(args):
             traffic_manager.auto_lane_change(world.vehicle, False)
             # traffic_manager.keep_right_rule_percentage(world.vehicle, 100)
             
+        # traffic_manager.vehicle_percentage_speed_difference(world.npc_vehicle, 50)
 
         if args.rec != "":
             if not os.path.exists('./_%d/' % SPAWNPOINT):
@@ -774,6 +787,9 @@ def game_loop(args):
         stop_counter = 0
         start_record = False
         start_counter = 0
+        pre_steer = 0
+        noise_counter = 0
+        start_location = None
         route = ["Straight"]*1000
         while True:
             # as soon as the server is ready continue!
@@ -782,6 +798,17 @@ def game_loop(args):
             step_start = time.time()
             control = world.vehicle.get_control()
             location = world.vehicle.get_location()
+            if image_counter == 0:
+                start_location = location
+
+            if image_counter > 50:
+                if ((location.x > start_location.x - 1) and (location.x <= start_location.x + 1)) and ((location.y > start_location.y - 1) and (location.y <= start_location.y + 1)):
+                    print("VUELTA COMPLETADA!!!!")
+                    break
+
+            
+            # npc_control = world.npc_vehicle.get_control()
+            # npc_transform = world.npc_vehicle.get_transform()
             if (type(world.camera_manager.image).__module__ == np.__name__):
                 # If we use autopilot of carla and no agent to control the car
                 if agent == None:
@@ -795,20 +822,35 @@ def game_loop(args):
                 # The agent selected will be used to control the car
                 else:
                     world.camera_manager._surface = pygame.surfarray.make_surface(world.camera_manager.image.swapaxes(0, 1))
-                    v = world.vehicle.get_velocity()
-                    current_velocity = 3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)
-                    # steer, throttle, brake, image, network_image = agent.run_step(world.camera_manager.image, current_velocity)
-                    steer, throttle, brake, image = agent.run_step(world.camera_manager.image, current_velocity)
-                    # world.camera_manager._second_surface = pygame.surfarray.make_surface(world.camera_manager.image2.swapaxes(0, 1))
-                    world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer), brake=float(brake)))
 
-                    image_counter = image_counter + 1
+                    if model == 2:
+                        v = world.vehicle.get_velocity()
+                        current_velocity = 3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)
+                        steer, throttle, brake, image, network_image = agent.run_step_pilotnet_star_star(world.camera_manager.image, current_velocity)
+                        # steer, throttle, brake, image = agent.run_step_pilotnet_star_star(world.camera_manager.image, current_velocity)
+                        # world.camera_manager._second_surface = pygame.surfarray.make_surface(world.camera_manager.image2.swapaxes(0, 1))
+                        world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer), brake=float(brake)))
+                        image_counter = image_counter + 1
+                    if model == 1:
+                        v = world.vehicle.get_velocity()
+                        current_velocity = 3.6 * math.sqrt(v.x**2 + v.y**2 + v.z**2)
+                        # NO PRE VELOCITY 200x66x3
+                        steer, throttle, brake, image = agent.run_step_pilotnet_star(world.camera_manager.image, current_velocity)
+                        world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer), brake=float(brake)))
+                        image_counter = image_counter + 1
+                    if model == 0:
+                        steer, throttle, image = agent.run_step_old(world.camera_manager.image)
+                        world.vehicle.apply_control(carla.VehicleControl(throttle=float(throttle), steer=float(steer)))
+                        """name = "zoutput_image_" + str(image_counter) + ".png"
+                        name2 = "zoutput_network_image_" + str(image_counter) + ".png"
+                        cv2.imwrite(name, cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
+                        cv2.imwrite(name2, np.swapaxes(network_image, 0, 1))"""
+                        image_counter = image_counter + 1
 
                 """if world.npc_vehicle != None:
                     # Stop the spawned car at random times
                     random_value = random.random()
-                    print(random_value)
-                    if random_value < 0.009 and (stop_condition == False):
+                    if (random_value < 0.005) and (stop_condition == False) and ((abs(npc_control.steer) <=0.1) or (abs(control.steer) <= 0.1)):
                         print("Stopping....")
                         stop_condition = True
                     if stop_condition:
@@ -825,7 +867,7 @@ def game_loop(args):
                             npc_control.brake = 0
                             world.npc_vehicle.apply_control(npc_control)"""
 
-                """if (noise == False) and (image_counter % 250 == 0):
+                """if (noise == False) and (image_counter % 200 == 0):
                     noise = True
                 elif (noise == True) and (image_counter % 15 == 0):
                     noise = False
@@ -833,7 +875,7 @@ def game_loop(args):
 
                 # Apply noise if activated
                 if noise:
-                    noise_value = random.uniform(-0.05, 0.05)
+                    noise_value = random.uniform(-0.03, 0.03)
                     control.steer += noise_value
                     world.vehicle.apply_control(control)"""
 
@@ -856,8 +898,18 @@ def game_loop(args):
                 if ((68 < location.x < 74) and (-27 < location.y < 7)) or ((68 < location.x < 78) and (47 < location.y < 68)) and LEFT: # Map07 left turn
                     continue"""
                 
-                """if abs(control.steer) >= 0.3: # 0.09
+                # TURNING RECORDING
+                """if abs(control.steer) >= 0.09: # 0.3
                     print(f"GIROOOOOOO - {image_counter}")
+                    recording = True
+                else:
+                    recording = False"""
+
+                # ACCELERATING RECORDING
+                """velocity = world.vehicle.get_velocity()
+                my_velocity = 3.6 * math.sqrt(velocity.x**2 + velocity.y**2 + velocity.z**2)
+                if abs(my_velocity) >= 35:
+                    print(f"ACELERANDO - {image_counter}")
                     recording = True
                 else:
                     recording = False"""
@@ -867,7 +919,9 @@ def game_loop(args):
                 my_velocity = 3.6 * math.sqrt(velocity.x**2 + velocity.y**2 + velocity.z**2)
                 if my_velocity <= 0.01:
                     # Car has stopped, reset recording status
-                    recording = False
+                    start_counter += 1
+                    if start_counter > 80:
+                        recording = False
                     start_record = True
                 if start_record and 1 < my_velocity < 20:
                     # Car has started accelerating, start recording
@@ -875,17 +929,33 @@ def game_loop(args):
                 if recording and my_velocity > 25:
                     # Car has exceeded recording speed, stop recording
                     recording = False
-                if start_record:
-                    if recording:
-                        print(f"ACELERANDOOO - {image_counter}")"""
-                
+                    start_counter = 0
+                    start_record = True"""
+                # Apply noise if activated
+                """if (1 < my_velocity < 25) and (noise_counter < 100):
+                    noise_counter += 1
+                    noise_value = random.uniform(-0.1, 0.1)
+                    print(abs((control.steer + noise_value) - pre_steer))
+                    if abs((control.steer + noise_value) - pre_steer) < 0.4:
+                        control.steer += noise_value
+                    else:
+                        control.steer += -1*noise_value
+                    world.vehicle.apply_control(control)
+                elif ((noise_counter > 100) or (my_velocity > 25)) and noise_counter != 0:
+                    noise_counter = 0
+                    pre_steer = control.steer"""
+
 
                 # if (args.rec == True) and (image_counter % 10 == 0):
                 if args.rec == "rgb":
+                    print(f"GRABANDOOOOOOOO - {image_counter}")
                     first_image_taken, prev_image_number, prev_velocity = save_instance_to_dataset(world, world.camera_manager.image, 
                     image_counter, first_image_taken, prev_image_number, prev_velocity)
 
-                    if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 5000:
+                    """if len(glob.glob("_%d/" % (SPAWNPOINT) + '*.png')) > 4:
+                        break"""
+
+                    if image_counter > 10:
                         break
             
             frame_time = time.time() - step_start
@@ -1000,7 +1070,7 @@ if __name__ == '__main__':
         print(f"THE END: time -> {end}")
     elif choice == 1:  # Run circuits with no deletable traces
         start = time.time()
-        spawnpoints = [34, 94]
+        spawnpoints = [41, 94]
         for spawn in spawnpoints:
             SPAWNPOINT = spawn
             main()
@@ -1008,9 +1078,9 @@ if __name__ == '__main__':
         print(f"THE END: time -> {end}")
     elif choice == 2:  # Run circuits with a variety of npcs
         start = time.time()
-        spawnpoints = [0, 19, 2, 8]
-        npc_spawnpoints = [78, 23, 45, 6]
-        npc_names = ['vehicle.dodge.charger_2020', 'vehicle.ford.crown', 'vehicle.mercedes.coupe_2020', 'vehicle.tesla.model3']
+        spawnpoints = [40]*3
+        npc_spawnpoints = [92]*3
+        npc_names = ['vehicle.chevrolet.impala', 'vehicle.ford.crown', 'vehicle.tesla.cybertruck']
         for spawn, npcs, names in zip(spawnpoints, npc_spawnpoints, npc_names):
             SPAWNPOINT = spawn
             NPC_SPAWNPOINT = npcs
